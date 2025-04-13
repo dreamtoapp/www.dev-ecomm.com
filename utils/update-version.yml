@@ -1,0 +1,38 @@
+name: Update Version
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # Fetch the full history to allow version bumping
+
+      # Step 2: Bump the version (using npm or a custom script)
+      - name: Bump Version
+        run: |
+          # If using package.json
+          npm version patch --no-git-tag-version
+
+          # Alternatively, if using a custom version.txt file
+          # VERSION=$(cat version.txt)
+          # NEW_VERSION=$(echo $VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          # echo $NEW_VERSION > version.txt
+
+      # Step 3: Commit the updated version back to the repository
+      - name: Commit Updated Version
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add package.json # Or version.txt if using a custom file
+          git commit -m "Bump version to $(node -p "require('./package.json').version")"
+          git push

@@ -1,0 +1,140 @@
+ 
+### Standardized Prompt for Code Enhancements
+
+**Objective**:  
+Enhance the provided code to meet the following standards:
+
+1. **UI Improvements**:
+   - Use **Tailwind CSS** for styling.
+   - Ensure consistent spacing, typography, and hover effects.
+   - Add smooth transitions and animations for better interactivity.
+   - Use **shadcn/ui** components where applicable.
+
+2. **Localization Trick**:
+   - Centralize all UI text in a `UI_TEXT` object for easy translation and reuse.
+   - Example:
+     ```ts
+     const UI_TEXT = {
+       exampleText: "Example Text",
+       ariaLabel: {
+         example: "Example Aria Label",
+       },
+     };
+     ```
+
+3. **Performance**:
+   - Use `React.memo` to prevent unnecessary re-renders.
+   - Use `useCallback` for event handlers and `useMemo` for expensive calculations.
+   - Optimize image loading with `next/image` and lazy loading.
+
+4. **Accessibility**:
+   - Add ARIA labels and roles for better screen reader support.
+   - Ensure all interactive elements are keyboard-navigable.
+   - Use semantic HTML elements where applicable.
+
+5. **Coding Standards**:
+   - Follow TypeScript best practices (e.g., strong typing, avoid `any`).
+   - Use reusable components and utilities.
+   - Keep the code modular and well-organized.
+
+---
+
+### Example Input Code:
+
+```tsx
+// Example input code to enhance
+import { useState } from "react";
+
+interface ExampleProps {
+  title: string;
+  description: string;
+}
+
+export default function ExampleComponent({ title, description }: ExampleProps) {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      <button onClick={handleClick}>Click Me ({count})</button>
+    </div>
+  );
+}
+```
+
+---
+
+### Example Enhanced Code:
+
+```tsx
+"use client";
+import { useState, useCallback } from "react";
+import { Button } from "@/components/ui/button"; // shadcn/ui Button
+
+// Centralized UI text for localization
+const UI_TEXT = {
+  title: "Example Title",
+  description: "Example Description",
+  buttonText: (count: number) => `Click Me (${count})`,
+  ariaLabel: {
+    button: "Example Button",
+  },
+};
+
+interface ExampleProps {
+  title: string;
+  description: string;
+}
+
+export default function ExampleComponent({ title, description }: ExampleProps) {
+  const [count, setCount] = useState(0);
+
+  // Memoized click handler
+  const handleClick = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  return (
+    <div className="space-y-4 p-4 bg-background text-foreground rounded-lg shadow-sm">
+      <h1 className="text-2xl font-bold">{title}</h1>
+      <p className="text-muted-foreground">{description}</p>
+      <Button
+        onClick={handleClick}
+        aria-label={UI_TEXT.ariaLabel.button}
+        className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+      >
+        {UI_TEXT.buttonText(count)}
+      </Button>
+    </div>
+  );
+}
+```
+
+---
+
+### Key Enhancements in the Example:
+
+1. **UI Improvements**:
+   - Used Tailwind CSS classes for styling (`space-y-4`, `p-4`, `bg-background`, etc.).
+   - Added hover effects and transitions to the button (`hover:bg-primary/90`, `transition-colors`).
+
+2. **Localization Trick**:
+   - Centralized all UI text in a `UI_TEXT` object.
+
+3. **Performance**:
+   - Used `useCallback` for the click handler to prevent unnecessary re-renders.
+
+4. **Accessibility**:
+   - Added `aria-label` to the button for better screen reader support.
+
+5. **Coding Standards**:
+   - Used TypeScript for strong typing.
+   - Used shadcn/ui components (`Button`).
+
+---
+ 
