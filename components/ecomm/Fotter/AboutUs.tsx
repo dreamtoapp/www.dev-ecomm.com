@@ -1,5 +1,5 @@
 const AboutUs = ({ aboutus, companyName }: { aboutus?: string, companyName?: string }) => {
-  console.log("Debug - companyName:", companyName);
+
 
   return (
     <div className="text-center sm:text-right flex flex-col gap-4">

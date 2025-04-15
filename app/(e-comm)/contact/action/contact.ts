@@ -1,8 +1,9 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import db from "@/lib/prisma";
-import { pusher } from "@/lib/pusher";
-import { Notification } from "@/types/notification";
+import { revalidatePath } from 'next/cache';
+
+import { auth } from '@/auth';
+import db from '@/lib/prisma';
+import { pusherServer } from '@/lib/pusherSetting';
 
 export type SubmitFormState = {
   success: boolean;
@@ -30,23 +31,39 @@ export async function submitContactForm(
       data: { name, email, subject, message },
     });
 
-    const notification: Notification = {
-      id: submission.id,
-      type: "message",
-      title: `رسالة جديدة من ${name}`,
-      content: subject,
-      read: false,
-      metadata: {
-        email,
-        fullMessage: message,
-      },
-    };
 
-    await pusher.trigger(
-      "admin-notifications",
-      "new-notification",
-      notification
-    );
+
+
+    const session = await auth();
+
+    const userId = session?.user.id || "Guest";
+    // إنشاء إشعار الطلب
+    const notificationMessage = `رسالة جديدة  ${subject}`;
+    const puserNotifactionmsg = {
+      message: `رسالة جديدة  ${subject}`,
+      type: "contact",
+    };
+    // Save the notification to the database
+    await db.notification.create({
+      data: {
+        message: notificationMessage,
+        type: "contact",
+        status: "unread",
+        userId: userId, // Associate the notification with the authenticated user
+      },
+    });
+    // إرسال الإشعار عبر Pusher
+    await pusherServer.trigger("admin", "new-order", {
+      message: notificationMessage, // Send the message as a string
+      type: puserNotifactionmsg.type, // Include the type explicitly
+    });
+
+
+
+
+
+
+
 
     revalidatePath("/dashboard/contact");
 

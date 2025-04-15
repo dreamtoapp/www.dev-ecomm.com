@@ -1,12 +1,13 @@
-import { Toaster } from "@/components/ui/sonner";
-import "./globals.css";
-import NextTopLoader from "nextjs-toploader";
-import { Directions } from "../constant/enums";
-import { ThemeProvider } from "../provider/theme-provider";
-import { NotificationsProvider } from "../provider/pusherContext";
-import { SessionProvider } from "next-auth/react";
+import './globals.css';
 
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
+import { SessionProvider } from 'next-auth/react';
+import NextTopLoader from 'nextjs-toploader';
+
+import { Toaster } from '@/components/ui/sonner';
+
+import { Directions } from '../constant/enums';
+import { ThemeProvider } from '../provider/theme-provider';
 
 export const metadata: Metadata = {
   title: "amwag",
@@ -33,19 +34,20 @@ export default async function RootLayout({
     <SessionProvider>
       <html lang={locale} dir={dir} suppressHydrationWarning>
         <body className={`min-h-screen bg-background antialiased ${fontClass}`}>
-          <NotificationsProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <NextTopLoader />
-              <div className="container mx-auto px-4 py-3 flex justify-end"></div>
-              <main className="min-h-screen">{children}</main>
-              <Toaster position="top-center" />
-            </ThemeProvider>
-          </NotificationsProvider>
+          {/* <NotificationsProvider> */}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextTopLoader />
+
+
+            <main className="min-h-screen">{children}</main>
+            <Toaster position="top-center" />
+          </ThemeProvider>
+          {/* </NotificationsProvider> */}
         </body>
       </html>
     </SessionProvider>

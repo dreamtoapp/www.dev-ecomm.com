@@ -1,5 +1,5 @@
 // lib/cloudinary.ts
-import cloudinary from 'cloudinary';
+import cloudinary from "cloudinary";
 
 // Configure Cloudinary using environment variables
 cloudinary.v2.config({
@@ -9,7 +9,7 @@ cloudinary.v2.config({
 });
 
 
-
+ 
 
 // Interface for Cloudinary upload response
 export interface CloudinaryUploadResult {
@@ -22,7 +22,8 @@ export interface CloudinaryUploadResult {
 export async function ImageToCloudinary(
   imageFile: string | Blob,
   uploadPreset: string | Blob,
-): Promise<CloudinaryUploadResult> {
+ ): Promise<CloudinaryUploadResult> {
+
   if (!process.env.CLOUDINARY_CLOUD_NAME) {
     throw new Error('Cloudinary cloud name is not configured');
   }
@@ -35,6 +36,9 @@ export async function ImageToCloudinary(
   const formData = new FormData();
   formData.append('file', imageFile);
   formData.append('upload_preset', uploadPreset);
+  
+  // Add folder if provided
+ 
 
   try {
     const response = await fetch(
@@ -57,15 +61,8 @@ export async function ImageToCloudinary(
       throw new Error('Invalid response from Cloudinary');
     }
 
-    // Optimize the secure_url with Cloudinary transformations
-    const optimizedUrl = new URL(data.secure_url);
-    optimizedUrl.searchParams.append('f_auto', 'true'); // Automatically choose the best format
-    optimizedUrl.searchParams.append('q_auto', 'true'); // Automatically adjust quality
-    optimizedUrl.searchParams.append('w', '800');       // Resize width to 800px (adjust as needed)
-    optimizedUrl.searchParams.append('c_scale', 'true'); // Scale image proportionally
-
     return {
-      secure_url: optimizedUrl.toString(), // Return the optimized URL
+      secure_url: data.secure_url,
       public_id: data.public_id,
     };
   } catch (error: any) {
@@ -73,3 +70,4 @@ export async function ImageToCloudinary(
     throw new Error(`Image upload failed: ${error.message}`);
   }
 }
+

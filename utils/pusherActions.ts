@@ -27,10 +27,10 @@ export async function submitForm(formData: {
     createdAt: new Date().toISOString(),
   };
 
-  // إرسال التحديث عبر Pusher
-  await pusher.trigger("dashboard-updates", "new-submission", newSubmission);
+  // Ensure the correct channel and event are used
+  await pusher.trigger("dashboard-updates", "new-order", newSubmission);
 
-  // إعادة تحديث البيانات في لوحة التحكم
+  // Revalidate the dashboard path
   revalidatePath("/dashboard");
 
   return { success: true };

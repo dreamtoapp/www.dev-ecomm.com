@@ -61,7 +61,6 @@ export default async function Page({
   const resolvedSearchParams = await searchParams;
   const { sid } = resolvedSearchParams;
   const session = await auth();
-  console.log("session", session);
 
 
   // Fetch data in parallel
@@ -80,7 +79,7 @@ export default async function Page({
       <OfferSection offers={promotions} />
       <ProducCategory suppliers={supplierWithItems} />
       <ProductList products={products} />
-      <WhatsAppButton /> {/* Add the WhatsApp button */}
+      {/* <WhatsAppButton />   */}
     </div >
   );
 }
@@ -181,51 +180,3 @@ const UserLocation = ({ user }: { user?: UserProps }) => {
 };
 
 
-
-
-// const UserLocation = ({ user }: { user?: UserProps }) => {
-//   // Early return if no user or missing location data
-//   if (!user?.id || (user.latitude && user.longitude)) return null
-
-//   return (
-//     <div className="flex items-center gap-1 mb-4">
-//       <div className={cn(
-//         "flex items-center justify-between w-full p-3 rounded-lg border",
-//         "bg-warning/5 border-warning/20 text-warning-foreground",
-//         "hover:bg-warning/10 transition-colors duration-200"
-//       )}>
-//         <div className="flex items-center gap-3">
-//           <div className="relative">
-//             <MapPinOff className="h-6 w-6" />
-//             <AlertCircle
-//               className="absolute -right-1 -top-1 h-3 w-3 animate-pulse"
-//               fill="currentColor"
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <span className="font-medium">الموقع الجغرافي مطلوب</span>
-//             <span className="text-xs opacity-80">
-//               يرجى تحديث موقعك لإكمال الطلبات
-//             </span>
-//           </div>
-//         </div>
-
-//         <Link
-//           href={{
-//             pathname: "/user/profile",
-//             query: { id: user.id },
-//           }}
-//           className={cn(
-//             "flex items-center gap-2 px-4 py-2 rounded-md",
-//             "bg-primary/5 text-primary hover:bg-primary/10",
-//             "transition-colors duration-150"
-//           )}
-//           aria-label="تحديث الموقع"
-//         >
-//           <MapPin className="h-4 w-4" />
-//           <span className="font-medium">تحديث الموقع</span>
-//         </Link>
-//       </div>
-//     </div>
-//   )
-// }

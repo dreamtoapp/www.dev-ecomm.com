@@ -2,15 +2,25 @@
 import {
   useEffect,
   useState,
-} from 'react'
+} from 'react';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import CartIcon from './CartIcon'
-import Logo from './Logo'
-import NavLinks from './NavLinks'
+import {
+  bingAdmin,
+} from '../../../app/dashboard/(dashboard)/component/pusherNotifaction/action/binAdmin';
+import CartIcon from './CartIcon';
+import Logo from './Logo';
+import NavLinks from './NavLinks';
+
+interface headerProp {
+  logo: string;
+  logoAlt: string;
+  session: any
+}
 
 // Skeleton components
 const UserMenuSkeleton = () => (
@@ -30,12 +40,17 @@ const MobileMenu = dynamic(() => import("./MobileMenu"), {
   loading: () => <MobileMenuSkeleton />,
 });
 
+
+
+
 const UserMenu = dynamic(() => import("./UserMenu"), {
   ssr: false,
   loading: () => <UserMenuSkeleton />,
 });
 
-export default function Header({ session }: { session: any }) {
+
+
+export default function Header({ session, logo, logoAlt }: headerProp) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -43,10 +58,11 @@ export default function Header({ session }: { session: any }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-gray-800/50 border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex justify-between items-center">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-gray-800/50 border-b border-border h-[80px]"> {/* Adjusted header height */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex justify-between items-center">
         {/* Logo */}
-        <Logo />
+        <Testbtn />
+        <Logo logo={logo} logoAlt={logoAlt} />
 
         {/* Navigation Links (Hidden on Mobile) */}
         <div className="hidden md:flex">
@@ -62,4 +78,17 @@ export default function Header({ session }: { session: any }) {
       </div>
     </header>
   );
+}
+
+
+const Testbtn = () => {
+
+  const handleBing = async () => {
+    await bingAdmin()
+
+  }
+  return (<Button onClick={handleBing}
+
+  >Bing Admin</Button>)
+
 }

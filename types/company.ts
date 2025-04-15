@@ -3,6 +3,8 @@ export interface Company {
   fullName: string;
   email: string;
   phoneNumber: string;
+  whatsappNumber?: string;
+  logo?: string;
   profilePicture: string;
   bio: string;
   taxNumber: string;
@@ -20,3 +22,5 @@ export interface Company {
   createdAt?: string;
   updatedAt?: string;
 }
+
+

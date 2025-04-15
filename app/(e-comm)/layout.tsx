@@ -1,10 +1,11 @@
+import BackgroundImage from '@/components/BackgroundImage';
+
+import Fotter from '../../components/ecomm/Fotter/Fotter';
+import Header from '../../components/ecomm/Header/Header';
 // app/(ecommerce)/layout.tsx
-import { TooltipProvider } from "../../components/ui/tooltip";
-import { companyInfo } from "./homepage/actions/companyDetail";
-import Fotter from "../../components/ecomm/Fotter/Fotter";
-import Header from "../../components/ecomm/Header/Header";
-import { auth } from "../../auth";
-import getSession from "../../lib/getSession";
+import { TooltipProvider } from '../../components/ui/tooltip';
+import getSession from '../../lib/getSession';
+import { companyInfo } from './homepage/actions/companyDetail';
 
 export default async function EcommerceLayout({
   children,
@@ -18,7 +19,8 @@ export default async function EcommerceLayout({
   return (
     <TooltipProvider>
       {/* Header is shared across all e-commerce pages */}
-      <Header session={session} />
+      <BackgroundImage />
+      <Header session={session} logo={companyData?.logo || ""} logoAlt={companyData?.fullName || "Dream to app"}/>
       <main className="container mx-auto p-4 min-h-screen">{children}</main>
       <Fotter
         companyName={companyData?.fullName}
@@ -32,6 +34,7 @@ export default async function EcommerceLayout({
         instagram={companyData?.instagram}
         twitter={companyData?.twitter}
         linkedin={companyData?.linkedin}
+        whatsapp={companyData?.whatsappNumber}
 
       />
     </TooltipProvider>

@@ -1,8 +1,8 @@
 // actions/createOrder.ts
 "use server";
-import { auth } from '@/auth';
 import db from '@/lib/prisma';
-import { pusherServer } from '@/lib/pusherSetting';
+import { pusher } from '@/lib/pusher1';
+import { Notification } from '@/types/notification';
 
 import { OrderCartItem } from '../../../../types/order';
 import { generateOrderNumber } from '../helpers/orderNumber';
@@ -20,24 +20,12 @@ export async function CreateOrderInDb(orderData: {
   shiftId: string;
 }) {
   try {
-    // Check if the user is authenticated
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new Error("User is not authenticated");
-    }
-
-    const userId = session.user.id;
-    if (!userId) {
-      throw new Error("Authenticated user ID is missing");
-    }
-
     const orderNumber = await generateOrderNumber();
 
     const createdOrder = await db.order.create({
       data: {
         orderNumber,
-        customerId: userId,
-        // TODO:remove custemr name no need any more relate it with the user info from UserTable
+        customerId: orderData.userId,
         customerName: orderData.name,
         amount: orderData.totalAmount,
         shiftId: orderData.shiftId,
@@ -54,29 +42,26 @@ export async function CreateOrderInDb(orderData: {
     });
 
     // إنشاء إشعار الطلب
-    const notificationMessage = `طلب جديد #${orderNumber} -- ${orderData.totalAmount}`;
-
-    const puserNotifactionmsg = {
-      message: `طلب جديد #${orderNumber} -- ${orderData.totalAmount}`,
+    const notification: Notification = {
+      id: createdOrder.id,
       type: "order",
+      title: `طلب جديد #${orderNumber}`,
+      content: `عميل: ${orderData.name} - المبلغ: ${orderData.totalAmount} ر.س`,
+      read: false,
+      metadata: {
+        orderId: createdOrder.id,
+        customerName: orderData.name,
+        totalAmount: orderData.totalAmount,
+        itemsCount: orderData.totalItems,
+      },
     };
 
-
-    // Save the notification to the database
-    await db.notification.create({
-      data: {
-        message: notificationMessage,
-        type: "order",
-        status: "unread",
-        userId: userId, // Associate the notification with the authenticated user
-      },
-    });
-
     // إرسال الإشعار عبر Pusher
-    await pusherServer.trigger("admin", "new-order", {
-      message: notificationMessage, // Send the message as a string
-      type: puserNotifactionmsg.type, // Include the type explicitly
-    });
+    await pusher.trigger(
+      "admin-notifications",
+      "new-notification",
+      notification
+    );
 
     return createdOrder.orderNumber;
   } catch (error) {

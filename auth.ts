@@ -1,43 +1,49 @@
-import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import authConfig from "./auth.config"
-import db from "./lib/prisma";
-import { getAccountById, getUserById } from "./app/(e-comm)/auth/action";
-import  { Adapter } from "next-auth/adapters"
- 
+import NextAuth from 'next-auth';
+import { Adapter } from 'next-auth/adapters';
+
+import { PrismaAdapter } from '@auth/prisma-adapter';
+
+import {
+  getAccountById,
+  getUserById,
+} from './app/(e-comm)/auth/action';
+import authConfig from './auth.config';
+import db from './lib/prisma';
+
 export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth({
   trustHost: true,
-  adapter: PrismaAdapter(db) as Adapter ,
+  adapter: PrismaAdapter(db) as Adapter,
   session: { strategy: "jwt" },
   ...authConfig,
   callbacks: {
-    async jwt({ token,trigger  }) {
-       if (trigger === "update" && token.email) {
-        console.log(" token refrreshed", token);
-        return token;}
+    async jwt({ token, trigger }) {
+      if (trigger === "update" && token.email) {
+
+        return token;
+      }
 
       if (!token.sub) return token;
-      const existingUser=await getUserById(token.sub);
+      const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
 
-      const existAccuount=await getAccountById(existingUser.id );
+      const existAccuount = await getAccountById(existingUser.id);
 
-      token.isOauth=!!existAccuount;
+      token.isOauth = !!existAccuount;
       token.id = existingUser.id;
       token.role = existingUser.role;
-      token.name = existingUser.name 
-      token.email = existingUser.email 
-      token.phone = existingUser.phone 
-      token.image = existingUser.image 
-      token.latitude = existingUser.latitude 
-      token.longitude = existingUser.longitude 
-      token.address = existingUser.address 
-      token.isOtp = existingUser.isOtp 
+      token.name = existingUser.name
+      token.email = existingUser.email
+      token.phone = existingUser.phone
+      token.image = existingUser.image
+      token.latitude = existingUser.latitude
+      token.longitude = existingUser.longitude
+      token.address = existingUser.address
+      token.isOtp = existingUser.isOtp
 
       return token;
     },
     async session({ token, session }: { token: any; session: any }) {
-      
+
       return {
         ...session,
         user: {

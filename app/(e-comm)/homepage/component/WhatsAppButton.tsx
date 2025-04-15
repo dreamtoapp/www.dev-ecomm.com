@@ -1,10 +1,13 @@
 "use client"; // Mark as a Client Component
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FaWhatsapp } from "react-icons/fa"; // Import WhatsApp icon
+import {
+  useEffect,
+  useState,
+} from 'react'
 
-export default function WhatsAppButton() {
+import { FaWhatsapp } from 'react-icons/fa' // Import WhatsApp icon
+
+export default function WhatsAppButton({ whatsapp }: { whatsapp?: string }) {
   const [isMobile, setIsMobile] = useState(false);
 
   // Check if the user is on a mobile device
@@ -14,12 +17,12 @@ export default function WhatsAppButton() {
   }, []);
 
   // WhatsApp link with a welcome message
-  const phoneNumber = "1234567890"; // Replace with your WhatsApp number
+  const phoneNumber = whatsapp; // Replace with your WhatsApp number
   const welcomeMessage = "Hello! I need help with my order."; // Replace with your welcome message
   const whatsappLink = isMobile
     ? `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(
-        welcomeMessage
-      )}`
+      welcomeMessage
+    )}`
     : `https://wa.me/${phoneNumber}?text=${encodeURIComponent(welcomeMessage)}`;
 
   return (

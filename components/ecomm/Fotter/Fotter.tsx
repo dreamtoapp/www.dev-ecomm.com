@@ -1,14 +1,16 @@
 // "use client";
 
-import React from "react";
-import { Separator } from "@/components/ui/separator";
+import React from 'react'
 
-import QuickLinks from "./QuickLinks";
-import Newsletter from "./Newsletter";
-import SocialMedia from "./SocialMedia";
-import Copyright from "./Copyright";
-import ContactInfo from "./ContactInfo";
-import AboutUs from "./AboutUs";
+import WhatsAppButton from '@/app/(e-comm)/homepage/component/WhatsAppButton'
+import { Separator } from '@/components/ui/separator'
+
+import AboutUs from './AboutUs'
+import ContactInfo from './ContactInfo'
+import Copyright from './Copyright'
+import Newsletter from './Newsletter'
+import QuickLinks from './QuickLinks'
+import SocialMedia from './SocialMedia'
 
 interface FooterProps {
   aboutus?: string;
@@ -22,6 +24,7 @@ interface FooterProps {
   instagram?: string;
   twitter?: string;
   linkedin?: string;
+  whatsapp?: string;
 
 }
 
@@ -29,6 +32,7 @@ const Footer = ({
   aboutus,
   email,
   phone,
+  whatsapp,
   address,
   latitude,
   longitude,
@@ -65,6 +69,7 @@ const Footer = ({
           linkedin={linkedin} />
 
         <Copyright />
+        {whatsapp && <WhatsAppButton whatsapp={whatsapp} />}
       </div>
     </footer>
   );

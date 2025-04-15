@@ -63,6 +63,8 @@ model User {
   isOtp     Boolean @default(false)
   otpCode   String? @default("")
   orders    Order[] // List of orders associated with the user
+
+  Notification Notification[]
 }
 
 model Account {
@@ -90,7 +92,7 @@ model Account {
  
 
  
-// Optional for WebAuthn support
+
  
 
 model Order {
@@ -177,7 +179,7 @@ model Promotion {
   active       Boolean  @default(true) // Whether the promotion is active
   productIds   String[] @db.ObjectId // Links to Products (many-to-many relationship)
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  updatedAt    DateTime @default(now())
 }
 
 model Counter {
@@ -203,7 +205,8 @@ model Company {
   fullName       String   @default("") // Full name of the company owner/contact person
   email          String   @default("") // Email address
   phoneNumber    String   @default("") // Phone number
-  whantappNumber String   @default("") // WhatsApp number
+  whatsappNumber String   @default("") // WhatsApp number
+  logo           String   @default("") // Profile picture URL
   profilePicture String   @default("") // Profile picture URL
   bio            String   @default("") // Bio/description
   taxNumber      String   @default("") // Tax number
@@ -380,3 +383,16 @@ enum IndustryType {
   /// صناعات أخرى
   OTHER
 }
+
+model Notification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  message     String   @default("") // The notification message
+  type        String   @default("order") // Type of notification (e.g., info, success, error)
+  status      String   @default("unread") // Status of the notification (e.g., unread, read)
+  userId      String?  @db.ObjectId // Optional reference to the user receiving the notification
+  user        User?    @relation(fields: [userId], references: [id]) // Relation to the User model
+  createdAt   DateTime @default(now()) // Timestamp of creation
+  updatedAt   DateTime @updatedAt // Timestamp of last update
+}
+
+
