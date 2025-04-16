@@ -1,36 +1,23 @@
 "use client";
-import { useActionState } from 'react'
+import { useActionState } from 'react';
 
 import {
   Lock,
   Phone,
-} from 'lucide-react'
-import { useRouter } from 'next/navigation'
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-import { userLogin } from '../action/action'
+import { userLogin } from '../action/action';
 
 export default function LoginPage({ redirect }: { redirect: string }) {
   const router = useRouter()
 
   const [state, addAction, isPending] = useActionState(userLogin, { success: false, message: "" });
 
-  // useEffect(() => {
-  //   if (!state.success) return;
-  //   console.log({ redirect })
 
-  //   const redirectPath = redirect || "/";
-
-  //   const navigationTimeout = setTimeout(() => {
-  //     router.push(redirectPath);
-  //   }, 100);
-
-  //   return () => {
-  //     clearTimeout(navigationTimeout);
-  //   };
-  // }, [state.success]);
 
 
 

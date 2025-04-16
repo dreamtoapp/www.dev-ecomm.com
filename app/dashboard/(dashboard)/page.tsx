@@ -1,7 +1,6 @@
-import {
-  fetchAnalytics,
-  fetchOrders,
-} from './action/actions';
+// app/dashboard/page.tsx
+import { fetchAnalytics } from './action/fetchAnalytics';
+import { fetchOrdersAction } from './action/fetchOrders';
 import DashboardHeader from './component/DashboardHeader';
 import OrderCardView from './component/OrderCardView';
 
@@ -11,21 +10,30 @@ export default async function DashboardPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const statusFilter = resolvedSearchParams.status;
+  // Show all orders when no status is specified
+  const statusFilter = resolvedSearchParams.status || undefined;
 
-  const filteredOrders = await fetchOrders(statusFilter);
+  // Fetch data in parallel
+  const [filteredOrders, analytics] = await Promise.all([
+    fetchOrdersAction({
+      status: statusFilter, // undefined will fetch all orders
+      page: 1,
+      pageSize: 10,
+    }),
+    fetchAnalytics(),
+  ]);
+
   const {
     totalOrders,
     pendingOrders,
     deliveredOrders,
     inWaydOrders,
     canceledOrders,
-  } = await fetchAnalytics();
+  } = analytics;
 
   return (
     <div className="relative space-y-6 font-cairo p-4 flex flex-col ">
-      {/* Header */}
-
+      {/* Header shows "All" when no filter */}
       <DashboardHeader
         initialFilter={statusFilter || "All"}
         totalOrders={totalOrders}
@@ -35,9 +43,11 @@ export default async function DashboardPage({
         cancelOrders={canceledOrders}
       />
 
-      {/* Pass all orders to OrderCard */}
-      {/* @ts-ignore */}
-      <OrderCardView orders={filteredOrders} />
+      {/* Order list with proper empty state handling */}
+      <OrderCardView
+        initialOrders={filteredOrders ?? []}
+        status={statusFilter}
+      />
     </div>
   );
 }

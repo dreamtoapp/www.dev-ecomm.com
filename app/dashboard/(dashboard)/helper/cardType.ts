@@ -1,29 +1,19 @@
-import { OrderCartItem } from "../../../../types/order";
-
 export interface Order {
   id: string;
-  orderNumber: string;
-  customerName: string | null;
   status: string;
-  isTripStart: boolean;
-
-  resonOfcancel: string | null;
-  amount: number;
-  shift: { name: string };
-  createdAt: Date;
-  updatedAt: Date;
-  items: OrderCartItem[];
-
+  total: number;
+  createdAt: string;
+  updatedAt: string;
   customer: {
     phone: string;
     name: string;
-    address: string;
+    address: string | null; // Changed from `string | undefined` to `string | null`
     latitude: string;
     longitude: string;
   };
-  driver: {
-    id: string;
-    name: string;
-    phone: string;
-  };
+  items: {
+    productId: string;
+    quantity: number;
+    price: number;
+  }[];
 }
