@@ -1,11 +1,12 @@
 "use server";
 
-import db from "@/lib/prisma";
+import db from '@/lib/prisma';
 
-export async function getOrderData(invoiceNo: string) {
+export async function getOrderData(id: string) {
+  console.log(id)
   try {
     const order = await db.order.findUnique({
-      where: { orderNumber: invoiceNo }, // Ensure this matches your schema
+      where: { id }, // Ensure this matches your schema
       include: {
         customer: {
           select: {

@@ -1,12 +1,9 @@
-import PusherNotify from '@/app/dashboard/(dashboard)/component/pusherNotifaction/PusherNotify';
-
 import {
   fetchAnalytics,
   fetchOrders,
 } from './action/actions';
 import DashboardHeader from './component/DashboardHeader';
-// app/dashboard/page.tsx
-import OrderList from './component/OrdersList';
+import OrderCardView from './component/OrderCardView';
 
 export default async function DashboardPage({
   searchParams,
@@ -28,7 +25,7 @@ export default async function DashboardPage({
   return (
     <div className="relative space-y-6 font-cairo p-4 flex flex-col ">
       {/* Header */}
-      <PusherNotify />
+
       <DashboardHeader
         initialFilter={statusFilter || "All"}
         totalOrders={totalOrders}
@@ -40,7 +37,7 @@ export default async function DashboardPage({
 
       {/* Pass all orders to OrderCard */}
       {/* @ts-ignore */}
-      <OrderList orders={filteredOrders} />
+      <OrderCardView orders={filteredOrders} />
     </div>
   );
 }

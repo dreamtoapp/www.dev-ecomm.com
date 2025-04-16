@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/sidebar';
 
 import { AppSidebar } from './(dashboard)/component/AppSidebar';
+import PusherNotify from './(dashboard)/component/pusherNotifaction/PusherNotify';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   // This layout is used for the dashboard pages
@@ -25,6 +26,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </div>
         {children}
       </main>
+      <PusherNotify />
     </SidebarProvider>
   );
 }
