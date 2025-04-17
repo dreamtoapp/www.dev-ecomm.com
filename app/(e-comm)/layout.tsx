@@ -1,4 +1,4 @@
-import BackgroundImage from '@/components/BackgroundImage-1';
+import BackgroundImage from '@/components/BackgroundImage';
 
 import Fotter from '../../components/ecomm/Fotter/Fotter';
 import Header from '../../components/ecomm/Header/Header';
