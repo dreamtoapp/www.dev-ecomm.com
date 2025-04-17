@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+
+import Link from '@/components/link';
 
 export default function Logo({ logo, logoAlt }: { logo: string; logoAlt: string }) {
   return (

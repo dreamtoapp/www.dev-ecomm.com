@@ -1,13 +1,11 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
-  Home,
   Info,
   Phone,
-  ShoppingBagIcon,
   Store,
-  TagsIcon,
-} from "lucide-react";
+} from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+import Link from '@/components/link';
 
 // Define the NavLink type
 interface NavLink {
@@ -50,13 +48,12 @@ export default function NavLinks() {
         return (
           <Link
             key={index}
-            href={{ pathname: link.href }}
+            href={link.href}
             aria-label={link.name}
-            className={`flex items-center gap-2 px-3 py-1 text-base font-medium transition-colors duration-300 rounded-lg ${
-              isActive
+            className={`flex items-center gap-2 px-3 py-1 text-base font-medium transition-colors duration-300 rounded-lg ${isActive
                 ? "bg-green-500 text-white" // Active link styles
                 : "text-foreground hover:text-primary hover:bg-primary/10"
-            }`}
+              }`}
           >
             {/* Apply white color to the icon when active */}
             <span

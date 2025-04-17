@@ -8,12 +8,12 @@ import {
   Truck,
   X,
 } from 'lucide-react';
-import Link from 'next/link';
 import {
   useRouter,
   useSearchParams,
 } from 'next/navigation';
 
+import Link from '@/components/link';
 import {
   Card,
   CardContent,

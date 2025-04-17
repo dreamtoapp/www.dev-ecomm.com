@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import SeoForm from "@/app/seo/components/seo-form";
-import { generateEntityId } from "../../../utils/seo";
+import type { Metadata } from 'next';
+
+import SeoForm from '@/app/seo/components/seo-form';
+import Link from '@/components/link';
+
+import { generateEntityId } from '../../../utils/seo';
 
 export const metadata: Metadata = {
   title: "Create SEO Entry",

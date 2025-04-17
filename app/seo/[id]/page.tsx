@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getSeoEntryById } from "@/app/seo/actions/seo";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import { getSeoEntryById } from '@/app/seo/actions/seo';
+import Link from '@/components/link';
 
 type Props = {
   params: Promise<{ id: string }>;

@@ -22,8 +22,8 @@ import {
   X,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 
+import Link from '@/components/link';
 import { Badge } from '@/components/ui/badge';
 import {
   Button,
@@ -109,27 +109,45 @@ const CustmerCardAction = React.memo(({ phone, address, latitude, longitude, ord
         </a>
       )}
     </Button>
-    <Link
-      href={`/dashboard/show-invoice/${orderNo}`}
-      prefetch={false}
-      className={buttonVariants({ variant: "secondary", size: "icon", className: "text-sm flex items-center gap-2" })}
-    >
-      <ReceiptText className="h-4 w-4 text-muted-foreground" />
-    </Link>
+
   </div>
 ));
 
 // Memoized OrderContent
 const OrderContent = React.memo(({ order }: { order: Order }) => (
   <CardContent className="space-y-2 text-foreground">
-    <CardTitle className="text-sm flex items-center gap-2">
-      <List className="h-4 w-4 text-muted-foreground" />
-      {order.orderNumber}
-    </CardTitle>
-    <CardDescription className="text-sm flex items-center gap-2">
-      <User className="h-4 w-4 text-muted-foreground" />
-      {order.customer?.name || "Unknown Customer"}
-    </CardDescription>
+
+    <div className='flex items-center justify-between w-full'>
+      <CardTitle className="text-sm flex items-center gap-2">
+        <List className="h-4 w-4 text-muted-foreground" />
+        {order.orderNumber}
+      </CardTitle>
+      <Link
+        href={`/dashboard/show-invoice/${order.id}`}
+        prefetch={false}
+        className={buttonVariants({ variant: "secondary", size: "icon", className: "text-sm flex items-center gap-2" })}
+      >
+        <ReceiptText className="h-4 w-4 text-muted-foreground" />
+      </Link>
+
+    </div>
+
+    <div className='flex items-center justify-between w-full flex-wrap'>
+      <CardDescription className="text-sm flex items-center gap-2">
+        <User className="h-4 w-4 text-muted-foreground" />
+        {order.customer?.name || "Unknown Customer"}
+      </CardDescription>
+
+      <CustmerCardAction
+        phone={order.customer.phone}
+        address={order?.customer?.address || ""}
+        latitude={order.customer.latitude}
+        longitude={order.customer.longitude}
+        orderNo={order.id}
+      />
+
+    </div>
+
 
     {order.driver?.name && (
       <CardTitle className="text-xs flex items-center gap-2 justify-end w-full">
@@ -153,7 +171,7 @@ const OrderFooter = React.memo(({ order }: { order: Order }) => (
       {order.status === "InWay" && (
         order.isTripStart ? (
           <Link
-            href={{ pathname: `/dashboard/track/${order.id}` }}
+            href={`/dashboard/track/${order.id}`}
             prefetch={false}
             className="w-full flex items-center justify-center bg-primary/80 p-2 rounded-md text-white gap-2"
           >
@@ -169,7 +187,9 @@ const OrderFooter = React.memo(({ order }: { order: Order }) => (
       )}
       {order.status === "Pending" && (
         <Link
-          href={`/dashboard/ship-order/${order.id}`}
+          // href={`/dashboard/ship-order/${order.id}`}
+          href={`/dashboard/show-invoice/${order.id}?status=ship`}
+          // href={`/dashboard/track/${order.id}?status=ship`}
           prefetch={false}
           className="w-full rounded-md gap-2 flex items-center p-2 shadow-md justify-center bg-primary hover:bg-yellow-600 text-white"
         >
@@ -177,7 +197,7 @@ const OrderFooter = React.memo(({ order }: { order: Order }) => (
           <p>شحن الطلبية</p>
         </Link>
       )}
-      {order.status === "Delivered" && (
+      {/* {order.status === "Delivered" && (
         <Link
           href={`/dashboard/ship-order/${order.id}`}
           prefetch={false}
@@ -186,8 +206,8 @@ const OrderFooter = React.memo(({ order }: { order: Order }) => (
           <MessageCircleMore className="h-4 w-4" />
           <p>اطلب تقييم</p>
         </Link>
-      )}
-      {order.status === "canceled" && (
+      )} */}
+      {/* {order.status === "canceled" && (
         <Link
           href={`/dashboard/ship-order/${order.id}`}
           prefetch={false}
@@ -196,15 +216,9 @@ const OrderFooter = React.memo(({ order }: { order: Order }) => (
           <Rss className="h-4 w-4" />
           <p>متابعة العميل</p>
         </Link>
-      )}
+      )} */}
     </div>
-    <CustmerCardAction
-      phone={order.customer.phone}
-      address={order?.customer?.address || ""}
-      latitude={order.customer.latitude}
-      longitude={order.customer.longitude}
-      orderNo={order.id}
-    />
+
   </CardFooter>
 ));
 

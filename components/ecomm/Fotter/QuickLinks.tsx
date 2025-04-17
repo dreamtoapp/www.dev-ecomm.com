@@ -1,5 +1,5 @@
 import { Home, Phone, Store, Tag, Users } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 
 const QuickLinks = () => {
   const links = [

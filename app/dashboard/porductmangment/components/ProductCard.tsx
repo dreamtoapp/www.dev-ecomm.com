@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Eye, Package } from "lucide-react";
 import CardImage from "../../../../components/CardImage";
-import Link from "next/link";
+import Link from "@/components/link";
 
 // Arabic UI Texts
 const UI_TEXT = {

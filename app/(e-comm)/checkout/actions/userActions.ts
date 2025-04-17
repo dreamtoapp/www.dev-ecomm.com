@@ -43,8 +43,8 @@ export async function createUser(
     // Return the user object
     return {
       id: user.id,
-      phone: user.phone,
-      name: user.name,
+      phone: user.phone ?? "",
+      name: user.name ?? "",
       address: user.address as string,
       lat: user.latitude,
       lng: user.longitude,

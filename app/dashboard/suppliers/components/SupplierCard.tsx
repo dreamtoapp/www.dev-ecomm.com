@@ -6,7 +6,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import Link from "next/link";
+import Link from "@/components/link";
 import CardImage from "../../../../components/CardImage"; // Import the enhanced CardImage component
 import { Badge } from "@/components/ui/badge"; // Import a badge component for the product count
 import MoreAction from "./MoreAction"; // Import the MoreAction dropdown

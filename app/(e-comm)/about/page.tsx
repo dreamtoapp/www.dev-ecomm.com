@@ -1,17 +1,17 @@
 import {
-  MapPin,
-  Truck,
-  Star,
-  MessageCircle,
-  Droplet,
-  ShieldCheck,
   Award,
+  Droplet,
+  MapPin,
+  ShieldCheck,
+  Star,
+  Truck,
   User,
-} from "lucide-react";
-import Link from "next/link";
-import type { Metadata, ResolvingMetadata } from "next";
-import { getSEOData } from "./action/actions";
-import { generatePageMetadata } from "../../../lib/seo-utils";
+} from 'lucide-react';
+
+import Link from '@/components/link';
+
+import { generatePageMetadata } from '../../../lib/seo-utils';
+
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -71,7 +71,7 @@ const AboutUs = () => {
         </p>
 
         <Link
-          href={{ pathname: "/" }}
+          href={"/"}
           className=" px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-secondary hover:text-secondary-foreground transition duration-300"
         >
           تواصلوا معنا الآن
@@ -208,7 +208,7 @@ const AboutUs = () => {
           انضم إلى آلاف العملاء السعداء واستمتع بمياه أمواج اليوم!
         </p>
         <Link
-          href={{ pathname: "/" }}
+          href={"/"}
           className=" px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-gray-100 transition duration-300"
         >
           اطلب الآن

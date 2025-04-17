@@ -1,10 +1,11 @@
-// app/dashboard/actions.ts
 "use server";
-// components/dashboard/actions.ts
+
+import { cacheData } from '@/lib/cache';
 import db from '@/lib/prisma';
 
-export async function fetchAnalytics() {
-  try {
+// Cached analytics function
+export const fetchAnalytics = cacheData(
+  async () => {
     const allOrders = await db.order.findMany({
       select: {
         status: true, // Only need the status field for analytics
@@ -43,8 +44,7 @@ export async function fetchAnalytics() {
       inWaydOrders,
       canceledOrders,
     };
-  } catch (error: any) {
-    console.error("Error fetching analytics:", error);
-    throw new Error("Failed to fetch analytics data.");
-  }
-}
+  },
+  ["analyticsData"], // Cache key
+  { revalidate: 3600 } // Revalidate every hour
+);

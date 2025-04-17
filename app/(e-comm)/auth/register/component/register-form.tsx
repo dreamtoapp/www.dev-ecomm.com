@@ -1,14 +1,13 @@
 // app/(auth)/register/page.tsx
 "use client";
-import { useActionState, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
-import { toast } from "sonner";
-import { FaGoogle } from "react-icons/fa6";
-import { registerUser } from "../action/actions";
-import Link from "next/link";
+import { useActionState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+import { registerUser } from '../action/actions';
 
 export default function RegisterForm() {
   const router = useRouter();

@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { getAllSeoEntries } from "@/app/seo/actions/seo";
-import SeoTable from "@/app/seo/components/seo-table";
+import type { Metadata } from 'next';
+
+import { getAllSeoEntries } from '@/app/seo/actions/seo';
+import SeoTable from '@/app/seo/components/seo-table';
+import Link from '@/components/link';
 
 export const metadata: Metadata = {
   title: "SEO Management",

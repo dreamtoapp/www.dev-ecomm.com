@@ -9,7 +9,7 @@ import {
 import CardImage from "../../../../components/CardImage"; // Import the enhanced CardImage component
 import EditProductDialog from "./EditProductDialog";
 import { Eye } from "lucide-react"; // Import icons for delete and view transactions
-import Link from "next/link";
+import Link from "@/components/link";
 
 interface ProductCardProps {
   product: {

@@ -10,6 +10,8 @@ import { getOrderData } from '../actions/Actions';
 import SendOrderViaEmail from '../components/SendOrderViaEmail';
 import ConfirmDriver from '../components/ConfirmDriver';
 import { getDriver } from '../actions/driver-list';
+import { ArrowDownFromLine } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 
 // Order Type Definition
@@ -51,19 +53,14 @@ export default async function InvoicePage({
   let drivers;
   if (status) {
     drivers = await getDriver();
+    console.log(drivers)
   }
-
-
 
   return (
     <div className='max-w-3xl mx-auto my-10 '>
-      <div className="flex items-center justify-between" >
-        {order && <SendOrderViaEmail orderId={orderId} invoiceNumber={order.orderNumber} email={order.customerEmail} />}
 
-        {status === "ship" && <ConfirmDriver orderNo={order?.orderNumber || ""} driverList={drivers} />}
 
-        <BackButton /> </div>
-
+      <Button> تحميل الفاتورة<ArrowDownFromLine /></Button>
       <div className=" p-6 shadow-md rounded-md text-right bg-white">
 
         <Card>

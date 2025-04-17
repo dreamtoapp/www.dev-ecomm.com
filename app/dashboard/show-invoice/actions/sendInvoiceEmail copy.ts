@@ -5,14 +5,11 @@ interface EmailOptions {
   to: string;
   orderNumber: string;
   cc?: string;
-  pdfBlob: Blob;
+  orderId?: string;
 }
 
 // 🔹 تحويل `Blob` إلى `Buffer`
-const blobToBuffer = async (blob: Blob): Promise<Buffer> => {
-  const arrayBuffer = await blob.arrayBuffer();
-  return Buffer.from(arrayBuffer);
-};
+
 
 // 🔹 إنشاء وإرجاع كائن `nodemailer` لنقل البريد
 const createTransporter = () => {
@@ -32,24 +29,19 @@ export const sendInvoiceEmail = async ({
   to,
   orderNumber,
   cc,
-  pdfBlob,
+  orderId
+
 }: EmailOptions) => {
   try {
     const transporter = createTransporter();
-    const pdfBuffer = await blobToBuffer(pdfBlob);
+
 
     const mailOptions = {
       from: `"Amwag Co." <${process.env.EMAIL_USER}>`,
       to,
       cc, // Include CC if provided
       subject: `Invoice for Order #${orderNumber}`,
-      text: `Dear customer,\n\nAttached is your invoice for Order #${orderNumber}.\n\nThank you for your business!\n\nBest Regards,\nAmwag Co.`,
-      attachments: [
-        {
-          filename: `Invoice_${orderNumber}.pdf`,
-          content: pdfBuffer,
-        },
-      ],
+      text: `Dear customer,\n\nAttached is your invoice for Order #${orderNumber}.\n\nYou can view your order details here: ${process.env.BASE_URL}/orders/${orderId}\n\nThank you for your business!\n\nBest Regards,\nAmwag Co.`,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -58,4 +50,3 @@ export const sendInvoiceEmail = async ({
     throw new Error(`Failed to send email: ${error.message}`);
   }
 };
- 

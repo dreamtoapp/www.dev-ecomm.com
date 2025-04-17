@@ -1,3 +1,6 @@
+import { ViewIcon } from 'lucide-react';
+
+import Link from '@/components/link';
 import {
   Table,
   TableBody,
@@ -5,14 +8,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import {
-  getUsers,
-} from "./action/actions";
-import EditUser from "./component/EditUser";
-import { View, ViewIcon } from "lucide-react";
-import Link from "next/link";
-import Map from "../../../components/Map";
+} from '@/components/ui/table';
+
+import Map from '../../../components/Map';
+import { getUsers } from './action/actions';
+import EditUser from './component/EditUser';
 
 export default async function UserManagement() {
   const users = await getUsers();

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { deleteSeoEntry } from "@/app/seo/actions/seo";
-import type { GlobalSEO } from "@prisma/client";
+import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { deleteSeoEntry } from '@/app/seo/actions/seo';
+import Link from '@/components/link';
+import type { GlobalSEO } from '@prisma/client';
 
 type SeoTableProps = {
   initialData: GlobalSEO[];
