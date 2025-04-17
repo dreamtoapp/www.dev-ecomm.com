@@ -1,6 +1,5 @@
-import BackButton from "../../../../components/BackButton";
-import LocationMap from "../../../../components/LocationMap";
-import { fetchTrackInfo } from "../action/action";
+import BackButton from '../../../../components/BackButton';
+import { fetchTrackInfo } from '../action/action';
 
 export default async function Page({
   params,
@@ -55,7 +54,6 @@ export default async function Page({
           </div>
         </div>
 
-        {/* <LocationMap lat={latitude} lng={longitude} /> */}
 
         {/* Map Section */}
         <div className="p-6 pt-0">

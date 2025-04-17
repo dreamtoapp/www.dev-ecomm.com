@@ -1,19 +1,25 @@
-import React from "react";
-import { getActiveTrip, getOrderCount } from "./action/actions";
-import MenuList from "../components/MenuList";
-import DriverHeader from "../components/DriverHeader";
-import ActiveTrip from "./component/ActiveTrip";
+import React from 'react';
+
+import { RocketIcon } from 'lucide-react';
+
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { RocketIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/card';
+
+import DriverHeader from '../components/DriverHeader';
+import {
+  getActiveTrip,
+  getOrderCount,
+} from './action/actions';
+import ActiveTrip from './component/ActiveTrip';
 
 const NoActiveOrder = () => (
   <Card className="w-full max-w-md mx-auto mt-8">

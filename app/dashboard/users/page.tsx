@@ -38,7 +38,7 @@ export default async function UserManagement() {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell className="flex gap-3 items-center justify-end">
-                <Link href={{ pathname: `/dashboard/users/viewuser`, query: { id: user.id } }}>
+                <Link href={`/dashboard/users/viewuser?id=${user.id}`}>
                   <ViewIcon />
                 </Link>
 

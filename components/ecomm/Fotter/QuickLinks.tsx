@@ -1,5 +1,10 @@
-import { Home, Phone, Store, Tag, Users } from "lucide-react";
-import Link from "@/components/link";
+import {
+  Phone,
+  Store,
+  Users,
+} from 'lucide-react';
+
+import Link from '@/components/link';
 
 const QuickLinks = () => {
   const links = [
@@ -29,7 +34,7 @@ const QuickLinks = () => {
         {links.map((link) => (
           <li key={link.name}>
             <Link
-              href={{ pathname: link.href }}
+              href={link.href}
               className="hover:text-primary transition-colors duration-300 flex items-center gap-2"
               aria-label={link.name}
             >

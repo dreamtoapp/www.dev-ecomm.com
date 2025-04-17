@@ -1,14 +1,20 @@
 "use client";
-import { formatDistanceToNow } from "date-fns";
-import { ar } from "date-fns/locale";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { User, Phone, MapPin, PhoneCall, Package } from "lucide-react";
-import { Order } from "../../../../types/orderType";
-import { Button } from "../../../../components/ui/button";
-import DeleverOrder from "./DeleverOrder";
-import CancelOrder from "./CancelOrder";
-import DriverTracker from "./TrackDriver";
+import { formatDistanceToNow } from 'date-fns';
+import { ar } from 'date-fns/locale';
+import {
+  MapPin,
+  Package,
+  PhoneCall,
+  User,
+} from 'lucide-react';
+
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { Order } from '../../../../types/orderType';
+import CancelOrder from './CancelOrder';
+import DeleverOrder from './DeleverOrder';
+import DriverTracker from './TrackDriver';
 
 export default function ActiveTrip({ order }: { order: Order }) {
   // Dummy coordinates for Google Maps (replace with real data if available)
@@ -59,7 +65,7 @@ export default function ActiveTrip({ order }: { order: Order }) {
                 key={item.id + index.toString()}
                 className="flex justify-between items-center"
               >
-                <span>{item.product.name}</span>
+                <span>{item.product?.name}</span>
                 <div className="flex gap-4">
                   <span className="text-gray-500">x{item.quantity}</span>
                   <span className="font-medium">{item.price} ريال</span>

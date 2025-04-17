@@ -1,27 +1,28 @@
 "use client"
-import React, { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../../../components/ui/dialog';
-import { Edit, Locate, Map, MapPin } from 'lucide-react';
-import { getUserToUpdate, updateUserData } from '../action/actions';
-import { toast } from 'sonner';
-import { ScrollArea } from '../../../../components/ui/scroll-area';
-import { Input } from '../../../../components/ui/input';
-import { Button } from '../../../../components/ui/button';
+import React, { useState } from 'react';
 
-export type UserWithOrders = {
-  id: string;
-  phone: string;
-  name: string;
-  email: string | null;
-  role: string;
-  address: string | null;
-  isOtp: boolean;
-  latitude: string;
-  longitude: string;
-};
+import { Edit } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { User } from '@/types/user';
+
+import { Button } from '../../../../components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../../../../components/ui/dialog';
+import { Input } from '../../../../components/ui/input';
+import { ScrollArea } from '../../../../components/ui/scroll-area';
+import {
+  getUserToUpdate,
+  updateUserData,
+} from '../action/actions';
 
 function EditUser({ userId }: { userId: string }) {
-  const [user, setUser] = useState<UserWithOrders | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -87,7 +88,7 @@ function EditUserForm({
   user,
   onClose,
 }: {
-  user: UserWithOrders;
+  user: User;
   onClose: () => void;
 }) {
   const [saving, setSaving] = useState<boolean>(false);
@@ -116,7 +117,7 @@ function EditUserForm({
             <label>الجوال</label>
             <Input
               name="phone"
-              defaultValue={user.phone}
+              defaultValue={user.phone || ""}
               maxLength={10}
               minLength={10}
               type="tel"
@@ -127,7 +128,7 @@ function EditUserForm({
           </div>
           <div>
             <label>الاسم</label>
-            <Input name="name" defaultValue={user.name} required />
+            <Input name="name" defaultValue={user.name || ""} required />
           </div>
           <div>
             <label>الإيميل</label>

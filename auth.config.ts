@@ -1,7 +1,8 @@
-import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import type { NextAuthConfig } from "next-auth";
-import db from "./lib/prisma";
+import type { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import Google from 'next-auth/providers/google';
+
+import db from './lib/prisma';
 
 export default {
   providers: [
@@ -37,7 +38,15 @@ export default {
           id: user.id,
           name: user.name || undefined,
           email: user.email || undefined,
-          role: user.role || undefined,
+          role: user.role || "",
+          phone: user.phone || "", // Ensure phone is always a string
+          address: user.address || "", // Default if nullable
+          latitude: user.latitude?.toString() || "0",
+          longitude: user.longitude?.toString() || "0",
+          image: user.image || null,
+          emailVerified: user.emailVerified?.toISOString() || null,
+          isOauth: user.isOauth || false, // Default if nullable
+          isOtp: user.isOtp || false // Default if nullable
         };
       },
     }),

@@ -1,4 +1,4 @@
-import BackgroundImage from '@/components/BackgroundImage';
+import BackgroundImage from '@/components/BackgroundImage-1';
 
 import Fotter from '../../components/ecomm/Fotter/Fotter';
 import Header from '../../components/ecomm/Header/Header';
@@ -20,7 +20,7 @@ export default async function EcommerceLayout({
     <TooltipProvider>
       {/* Header is shared across all e-commerce pages */}
       <BackgroundImage />
-      <Header session={session} logo={companyData?.logo || ""} logoAlt={companyData?.fullName || "Dream to app"}/>
+      <Header session={session} logo={companyData?.logo || ""} logoAlt={companyData?.fullName || "Dream to app"} />
       <main className="container mx-auto p-4 min-h-screen">{children}</main>
       <Fotter
         companyName={companyData?.fullName}

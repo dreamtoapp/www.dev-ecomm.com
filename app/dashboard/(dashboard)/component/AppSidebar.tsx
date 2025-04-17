@@ -3,7 +3,7 @@ import {
   memo,
   useEffect,
   useState,
-} from 'react'
+} from 'react';
 
 import {
   Drama,
@@ -19,19 +19,18 @@ import {
   Truck,
   User2,
   Users,
-} from 'lucide-react'
-import { useTheme } from 'next-themes'
-import Link from 'next/link'
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
 
-import Text from '@/components/Text'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-} from '@/components/ui/sidebar'
+} from '@/components/ui/sidebar';
 
-import ThemeToggle from '../../../../components/ThemeToggle'
+import ThemeToggle from '../../../../components/ThemeToggle';
 
 // Centralized UI text for localization
 const UI_TEXT = {
@@ -138,16 +137,16 @@ const NavItem = memo(
   }) => {
     return (
       <Link
-        href={{ pathname: href }}
+        href={href}
         className="flex items-center w-full py-1.5 px-3 text-sm rounded-md hover:bg-blue-400 hover:text-white transition-colors"
         aria-label={label} // Add ARIA label for accessibility
       >
         {/* Icon */}
         <span className="mr-2">{icon}</span>
         {/* Label */}
-        <Text variant="p" locale="ar" className="font-cairo text-sm ">
+        <p className="font-cairo text-sm ">
           {label}
-        </Text>
+        </p>
       </Link>
     );
   }
@@ -177,14 +176,14 @@ export function AppSidebar() {
         {UI_TEXT.navigationGroups.map((group, index) => (
           <SidebarGroup key={index}>
             {/* Group Title */}
-            <Text
+            <p
               className="font-semibold text-sm mb-1"
-              variant="p"
-              locale="ar"
-              cairoFont
+
+
+
             >
               {group.title}
-            </Text>
+            </p>
             {/* Navigation Links */}
             <div className="space-y-1">
               {group.links.map((link, idx) => (
@@ -205,7 +204,7 @@ export function AppSidebar() {
           <LogOut size={16} />
         </Link>
 
-        <Link href={{ pathname: "/khalidnadish" }}>
+        <Link href={"/khalidnadish"}>
           <File size={16} />
         </Link>
 

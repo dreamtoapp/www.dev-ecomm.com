@@ -4,19 +4,19 @@ import {
   MapPin,
   MapPinOff,
   ShieldX,
-} from 'lucide-react'
-import dynamic from 'next/dynamic'
-import Link from 'next/link'
+} from 'lucide-react';
+import dynamic from 'next/dynamic';
 
 import {
   fetchProducts,
   getPromotions,
   getSuppliersWithProducts,
-} from '@/app/(e-comm)/homepage/actions/fetchProducts'
-import { auth } from '@/auth'
-import { cn } from '@/lib/utils'
+} from '@/app/(e-comm)/homepage/actions/fetchProducts';
+import { auth } from '@/auth';
+import Link from '@/components/link';
+import { cn } from '@/lib/utils';
 
-import { generatePageMetadata } from '../../lib/seo-utils'
+import { generatePageMetadata } from '../../lib/seo-utils';
 
 interface UserProps {
 
@@ -112,10 +112,7 @@ const UserActivation = ({ user }: { user?: UserProps }) => {
         </div>
 
         <Link
-          href={{
-            pathname: "/auth/verify",
-            query: { id: user.id },
-          }}
+          href={`/auth/verify?id=${user.id}`}
           className={cn(
             "flex items-center gap-2 px-4 py-2 rounded-md",
             "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -160,10 +157,8 @@ const UserLocation = ({ user }: { user?: UserProps }) => {
         </div>
 
         <Link
-          href={{
-            pathname: "/user/profile",
-            query: { id: user.id },
-          }}
+          href={`/user/profile?id=${user.id}`
+          }
           className={cn(
             "flex items-center gap-2 px-4 py-2 rounded-md",
             "bg-primary text-primary-foreground hover:bg-primary/90",

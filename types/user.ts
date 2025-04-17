@@ -1,15 +1,20 @@
 // types/user.ts
 export interface User {
+
+
+
   id: string;
-  phone: string;
-  name: string;
+  phone: string | null;
+  name: string | null;
   email: string | null;
+  role: string | null;
   address: string | null;
-  password: string;
-  role: string;
-  avatar: string | null;
+  isOtp: boolean;
   latitude: string;
   longitude: string;
+  password?: string | null | undefined;
+  avatar?: string | null;
+
 }
 
 export type UserFormState = Omit<

@@ -64,12 +64,12 @@ export interface Order {
     productId: string;
     quantity: number;
     price: number;
-    product: Product;
+    product: Product | null;
   }[];
   customer: {
     id: string;
-    phone: string;
-    name: string;
+    phone: string | null;
+    name: string | null;
     address: string | null;
     latitude: string;
     longitude: string;

@@ -1,4 +1,6 @@
-import BackButton from '@/components/BackButton';
+import { ArrowDownFromLine } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,12 +9,6 @@ import {
 } from '@/components/ui/card';
 
 import { getOrderData } from '../actions/Actions';
-import SendOrderViaEmail from '../components/SendOrderViaEmail';
-import ConfirmDriver from '../components/ConfirmDriver';
-import { getDriver } from '../actions/driver-list';
-import { ArrowDownFromLine } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-
 
 // Order Type Definition
 interface OrderItem {
@@ -50,11 +46,7 @@ export default async function InvoicePage({
   const order = await getOrderData(orderId as string);
   const resolvedSearchParams = await searchParams;
   const status = resolvedSearchParams.status;
-  let drivers;
-  if (status) {
-    drivers = await getDriver();
-    console.log(drivers)
-  }
+
 
   return (
     <div className='max-w-3xl mx-auto my-10 '>

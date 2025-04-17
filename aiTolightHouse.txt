@@ -1,0 +1,1 @@
+ www.dev-ecomm.com> npx next build && npx next export && npx lighthouse http://localhost:3000 --output=json --output-path=homepage-lighthouse-report.json
