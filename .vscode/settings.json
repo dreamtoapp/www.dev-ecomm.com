@@ -18,5 +18,7 @@
     "commandCenter.border": "#e7e7e799",
     "activityBarBadge.foreground": "#e7e7e7"
   },
-  "peacock.color": "#dd0531"
+  "peacock.color": "#dd0531",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }

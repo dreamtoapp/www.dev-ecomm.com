@@ -61,7 +61,7 @@ export default function Header({ session, logo, logoAlt }: headerProp) {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-gray-800/50 border-b border-border h-[80px]"> {/* Adjusted header height */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex justify-between items-center">
         {/* Logo */}
-        <Testbtn />
+        {/* <Testbtn /> */}
         <Logo logo={logo} logoAlt={logoAlt} />
 
         {/* Navigation Links (Hidden on Mobile) */}
