@@ -23,11 +23,7 @@ export default function NavLinks() {
       href: "/",
       icon: <Store size={20} />, // No className here
     },
-    // {
-    //   name: "عروضنا",
-    //   href: "/offers",
-    //   icon: <TagsIcon size={20} />, // No className here
-    // },
+
     {
       name: "من نحن",
       href: "/about",
@@ -51,8 +47,8 @@ export default function NavLinks() {
             href={link.href}
             aria-label={link.name}
             className={`flex items-center gap-2 px-3 py-1 text-base font-medium transition-colors duration-300 rounded-lg ${isActive
-                ? "bg-green-500 text-white" // Active link styles
-                : "text-foreground hover:text-primary hover:bg-primary/10"
+              ? "bg-green-500 text-white" // Active link styles
+              : "text-foreground hover:text-primary hover:bg-primary/10"
               }`}
           >
             {/* Apply white color to the icon when active */}

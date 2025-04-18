@@ -1,5 +1,3 @@
-import BackgroundImage from '@/components/BackgroundImage';
-
 import Fotter from '../../components/ecomm/Fotter/Fotter';
 import Header from '../../components/ecomm/Header/Header';
 // app/(ecommerce)/layout.tsx
@@ -19,7 +17,6 @@ export default async function EcommerceLayout({
   return (
     <TooltipProvider>
       {/* Header is shared across all e-commerce pages */}
-      <BackgroundImage />
       <Header session={session} logo={companyData?.logo || ""} logoAlt={companyData?.fullName || "Dream to app"} />
       <main className="container mx-auto p-4 min-h-screen">{children}</main>
       <Fotter

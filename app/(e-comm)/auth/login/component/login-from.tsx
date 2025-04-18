@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { userLogin } from '../action/action';
+import { userLogin } from '../action/userLogin';
 
 export default function LoginPage({ redirect }: { redirect: string }) {
   const router = useRouter()

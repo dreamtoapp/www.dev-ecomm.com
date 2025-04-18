@@ -1,6 +1,4 @@
-// lib/seo-utils.ts
-import { GlobalSEO } from "@prisma/client";
-import { getSEOData } from "../app/(e-comm)/about/action/actions";
+import { getSEOData } from '../app/(e-comm)/about/action/SeoData';
 
 export interface PageMetadata {
   title: string;

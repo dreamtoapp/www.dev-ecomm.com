@@ -1,17 +1,15 @@
 "use client";
-import { useState, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import InputField from "@/components/InputField";
-import ImageUploadField from "@/components/ImageUploadField";
-import { createOffer } from "../actions/Actions";
+  useCallback,
+  useState,
+} from 'react';
+
+import { Loader2 } from 'lucide-react';
+
+import ImageUploadField from '@/components/ImageUploadField';
+import { Button } from '@/components/ui/button';
+
+import { createOffer } from '../actions/createOffer';
 
 // Centralized UI text for localization
 const UI_TEXT = {

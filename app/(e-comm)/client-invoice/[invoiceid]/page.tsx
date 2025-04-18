@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import { getOrderData } from '../actions/Actions';
+import { getOrderData } from '../actions/getOrderData';
 
 // Order Type Definition
 interface OrderItem {
