@@ -3,10 +3,10 @@ export interface User {
 
 
 
-  id: string;
+  id?: string;
   phone: string | null;
-  name: string | null;
-  email: string | null;
+  name?: string | null;
+  email?: string | null;
   role: string | null;
   address: string | null;
   isOtp: boolean;

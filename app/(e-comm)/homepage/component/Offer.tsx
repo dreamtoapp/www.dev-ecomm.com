@@ -1,11 +1,21 @@
 "use client";
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
-import Image from "next/image";
+import 'swiper/css'; // Import core Swiper CSS
+import 'swiper/css/autoplay'; // Import Autoplay module CSS
+import 'swiper/css/effect-fade'; // Import EffectFade module CSS
+
+import React from 'react';
+
+import Image from 'next/image';
+import {
+  Autoplay,
+  EffectFade,
+  Navigation,
+  Pagination,
+} from 'swiper/modules'; // Import necessary modules
+import {
+  Swiper,
+  SwiperSlide,
+} from 'swiper/react';
 
 interface Offer {
   id: string;
@@ -18,104 +28,65 @@ interface OfferSliderProps {
 }
 
 const OfferSlider: React.FC<OfferSliderProps> = ({ offers }) => {
+  console.log("Debug: Offers passed to OfferSlider:", offers);
   return (
-    <Swiper
-      modules={[Autoplay, Pagination, EffectCoverflow]}
-      effect="coverflow"
-      grabCursor={true}
-      centeredSlides={true}
-      coverflowEffect={{
-        rotate: 15,
-        stretch: 0,
-        depth: 300,
-        modifier: 1,
-        slideShadows: false,
-      }}
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      }}
-      // pagination={{
-      //   clickable: true,
-      //   bulletClass: "swiper-pagination-bullet bg-gray-400 hover:bg-gray-600",
-      //   bulletActiveClass: "swiper-pagination-bullet-active !bg-primary",
-      // }}
-      loop={true}
-      speed={1000}
-      slidesPerView={1}
-      spaceBetween={30}
-      breakpoints={{
-        640: {
-          slidesPerView: 1.5,
-          coverflowEffect: {
-            rotate: 10,
-            depth: 200,
-          },
-        },
-        768: {
-          slidesPerView: 3,
-          coverflowEffect: {
-            rotate: 0,
-            stretch: -30,
-            depth: 100,
-            modifier: 2.5,
-          },
-        },
-      }}
-      className="w-full h-full pb-16"
-    >
-      {offers.map((offer) => (
-        <SwiperSlide key={offer.id} className="!h-auto !flex items-center">
-          <div className="relative w-full max-w-[720px] aspect-[720/550] mx-auto rounded-xl overflow-hidden group transform transition-transform duration-300 hover:scale-105 shadow-xl">
-            <div className="absolute inset-0 w-full h-full">
-              <Image
-                src={offer.imageUrl || "/fallback-image.jpg"}
-                alt={offer.title}
-                fill
-                className="object-cover object-center"
-                priority
-                sizes="(max-width: 768px) 90vw, 720px"
-                quality={90}
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-6">
-              <h3 className="text-white text-xl font-bold">{offer.title}</h3>
-            </div>
-          </div>
-        </SwiperSlide>
-      ))}
-
-      <style jsx global>{`
-        .swiper-pagination {
-          bottom: 30px !important;
-        }
-        .swiper-slide {
-          transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-        .swiper-slide-active {
-          transform: translate3d(0, 0, 0) scale(1) !important;
-          z-index: 1;
-        }
-        .swiper-slide-next,
-        .swiper-slide-prev {
-          transform: translate3d(0, 0, -100px) rotateX(20deg) scale(0.9) !important;
-          opacity: 0.7;
-        }
-        @media (max-width: 768px) {
-          .swiper-slide-next,
-          .swiper-slide-prev {
-            transform: translate3d(0, 0, -50px) rotateX(30deg) scale(0.85) !important;
-          }
-        }
-      `}</style>
-    </Swiper>
+    <div className="relative w-full max-w-[720px] mx-auto">
+      {/* Reserve space for the slider to prevent layout shift */}
+      <div className="relative w-full h-0" style={{ paddingBottom: "76.39%" }}>
+        <Swiper
+          modules={[Autoplay, EffectFade, Navigation, Pagination]} // Added Navigation and Pagination modules
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          effect="fade" // Use fade effect for smooth transitions
+          fadeEffect={{ crossFade: true }}
+          navigation // Enable navigation buttons
+          pagination={{ clickable: true }} // Enable clickable pagination
+          loop={true}
+          speed={800} // Smooth transition speed
+          slidesPerView={1}
+          className="absolute inset-0 w-full h-full"
+        >
+          {offers.map((offer) => (
+            // Move the debug statement outside of JSX
+            console.log("Debug: Rendering SwiperSlide with imageUrl:", offer.imageUrl),
+            <SwiperSlide key={offer.id}>
+              <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg">
+                {/* Ensure the image URL is valid */}
+                {offer.imageUrl ? (
+                  <Image
+                    src={offer.imageUrl}
+                    alt={offer.title}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 768px) 90vw, 720px"
+                    quality={85} // Reduced quality for better performance
+                    priority // Add priority for better LCP (Largest Contentful Paint)
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-gray-200">
+                    <span className="text-gray-500">No Image Available</span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
+                  <h3 className="text-white text-lg font-semibold">
+                    {offer.title}
+                  </h3>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
   );
 };
 
 const OfferSection: React.FC<OfferSliderProps> = ({ offers }) => {
   return (
-    <section className="relative py-12 px-4 bg-gray-100 dark:bg-gray-800">
+    <section className="relative py-8 px-4 bg-gray-100 dark:bg-gray-800">
       <div className="container mx-auto">
         <OfferSlider offers={offers} />
       </div>

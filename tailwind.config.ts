@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+
+import typography from '@tailwindcss/typography';
+
+export default {
   darkMode: "class", // Use class-based dark mode
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -49,23 +52,25 @@ module.exports = {
         roboto: ["var(--font-roboto)", "sans-serif"],
       },
       animation: {
-      'bounce-slow': 'bounce-slow 1.5s infinite',
+        'bounce-slow': 'bounce-slow 1.5s infinite',
         "fade-in": "fade-in 0.5s ease-in-out forwards",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       keyframes: {
-       "caret-blink": {
+        "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
-         
+        "bounce-slow": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-20px)" }
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" }
+        }
       },
-
-
-
-      
-      
     },
   },
-  plugins: [require("@tailwindcss/typography")], // Add typography plugin
-};
+  plugins: [typography],
+} satisfies Config

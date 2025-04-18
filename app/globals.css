@@ -104,11 +104,7 @@
   }
 }
 
-.border-gradient {
-  border-image: linear-gradient(to right, #3b82f6, #9333ea);
-  border-image-slice: 1;
-}
-
+ 
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -118,56 +114,54 @@
   }
 }
 
-/* Add to your global CSS */
-/* Hide print source content on screen */
-.print-source {
-  display: none !important;
+.relative.w-full.h-0 {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* Adjust aspect ratio as needed */
 }
 
-/* Print button styling */
-.print-button {
-  margin: 1rem 0;
+.absolute.inset-0.w-full.h-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-@media print {
-  .print-button {
-    display: none;
-  }
-}
-
-@keyframes seamlessMarquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-seamless-marquee {
+.swiper-slide {
   display: flex;
-  animation: seamlessMarquee 150s linear infinite;
-  width: max-content; /* Ensures the content width drives the animation */
-  will-change: transform; /* Improves performance */
-  backface-visibility: hidden; /* Prevents flickering */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-/* Pause on hover */
-.animate-seamless-marquee:hover {
-  animation-play-state: paused;
+.swiper-slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-/* Ensure consistent rendering */
-.animate-seamless-marquee > * {
-  flex: 0 0 auto;
-}
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@media (max-width: 768px) {
+  .relative.w-full.h-0 {
+    padding-bottom: 100%; /* Adjust aspect ratio for smaller screens */
+  }
+
+  .swiper-slide img {
+    object-fit: contain; /* Ensure images fit well on smaller screens */
+  }
 }
 
-.animate-bounce-slow {
-  animation: bounce-slow 1.5s infinite;
+@media (max-width: 480px) {
+  .swiper-slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Maintain cover for very small screens */
+  }
+
+  .absolute.inset-0.w-full.h-full {
+    padding: 10px; /* Add padding for better spacing */
+  }
 }
 
 
