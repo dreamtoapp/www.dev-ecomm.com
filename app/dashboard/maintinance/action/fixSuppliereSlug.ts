@@ -1,8 +1,9 @@
 "use server"
 
+import { revalidatePath } from 'next/cache';
+
 import db from '@/lib/prisma';
 import { Slugify } from '@/utils/slug';
-import { revalidatePath } from 'next/cache';
 
 export async function fixSupplierSlugs() {
   try {
@@ -22,7 +23,6 @@ export async function fixSupplierSlugs() {
       }
     }
     revalidatePath('/');
-    console.log('Supplier slugs have been successfully updated.');
   } catch (error) {
     console.error('Error updating supplier slugs:', error);
     throw new Error('Failed to update supplier slugs.');

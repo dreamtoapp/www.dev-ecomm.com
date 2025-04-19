@@ -1,6 +1,8 @@
 import React from 'react';
-import { userData } from '../action/actions';
+
 import { format } from 'date-fns';
+
+import { userData } from '../action/actions';
 
 async function page({
   searchParams,
@@ -10,7 +12,6 @@ async function page({
   const resolvedSearchParams = await searchParams;
   const USERID = resolvedSearchParams.id;
   const user = await userData(USERID as string);
-  console.log(JSON.stringify(user, null, 2));
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">

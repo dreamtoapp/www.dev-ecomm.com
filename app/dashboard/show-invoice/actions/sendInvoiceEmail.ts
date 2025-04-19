@@ -1,6 +1,7 @@
 "use server";
-import db from "@/lib/prisma";
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
+
+import db from '@/lib/prisma';
 
 interface EmailOptions {
   to: string;
@@ -127,7 +128,6 @@ export const sendInvoiceEmail = async ({
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log(`📨 Invoice email sent to ${to} for order ${orderNumber}`);
     return true;
 
   } catch (error: any) {

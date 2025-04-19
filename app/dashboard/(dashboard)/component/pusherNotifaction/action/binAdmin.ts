@@ -9,7 +9,6 @@ export const bingAdmin = async () => {
     type: "order",
   };
 
-  console.log("Debug: Preparing notification", notification);
 
   try {
     // إرسال الإشعار عبر Pusher
@@ -22,7 +21,6 @@ export const bingAdmin = async () => {
       },
     });
     await pusherServer.trigger("admin", "new-order", notification);
-    console.log("Debug: Notification sent successfully");
   } catch (error) {
     console.error("Debug: Error sending notification", error);
   }

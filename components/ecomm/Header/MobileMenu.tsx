@@ -1,16 +1,17 @@
-import { motion } from 'framer-motion'
-import { Menu } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+"use client"
+import { motion } from 'framer-motion';
+import { Menu } from 'lucide-react';
+import Image from 'next/image';
 
+import Link from '@/components/link';
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet'
+} from '@/components/ui/sheet';
 
-import NavLinks from './NavLinks'
+import NavLinks from './NavLinks';
 
 export default function MobileMenu() {
   return (

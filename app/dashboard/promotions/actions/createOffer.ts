@@ -40,7 +40,6 @@ async function uploadImage(
     throw new Error("Cloudinary upload preset is not defined.");
   }
 
-  console.log("Uploading image to Cloudinary...", uploadPreset, imageFile);
 
   try {
     // Make sure imageFile is passed correctly

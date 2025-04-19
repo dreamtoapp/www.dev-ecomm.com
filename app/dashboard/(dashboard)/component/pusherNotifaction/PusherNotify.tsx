@@ -75,7 +75,6 @@ export default function PusherNotify() {
   }, []);
 
   const handleNewOrder = useCallback((data: { message: string; type?: string }) => {
-    console.log('New order data:', data); // Debugging: Log the data object
 
     setMsgCounter(prev => prev + 1);
 

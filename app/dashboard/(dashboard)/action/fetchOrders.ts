@@ -14,7 +14,6 @@ export const fetchOrdersAction = cacheData(
     page?: number;
     pageSize?: number;
   }) => {
-    console.log(status);
 
     try {
       const orders = await db.order.findMany({
@@ -75,7 +74,6 @@ export const fetchOrdersAction = cacheData(
         },
         orderBy: { updatedAt: 'desc' },
       });
-      console.log(orders);
       return orders as Order[];
     } catch (error) {
       console.error('Error fetching orders:', error);

@@ -50,7 +50,7 @@ const OfferSlider: React.FC<OfferSliderProps> = ({ offers }) => {
         >
           {offers.map((offer) => (
             // Move the debug statement outside of JSX
-            console.log("Debug: Rendering SwiperSlide with imageUrl:", offer.imageUrl),
+
             <SwiperSlide key={offer.id}>
               <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg">
                 {/* Ensure the image URL is valid */}

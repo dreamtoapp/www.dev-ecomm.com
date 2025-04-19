@@ -1,7 +1,8 @@
 "use server"
+import { revalidatePath } from 'next/cache';
+
 import db from '@/lib/prisma';
 import { Slugify } from '@/utils/slug';
-import { revalidatePath } from 'next/cache';
 
 export async function fixProductSlugs() {
   try {
@@ -22,7 +23,6 @@ export async function fixProductSlugs() {
     }
     revalidatePath('/'); // Revalidate the homepage or any specific path
 
-    console.log('Product slugs have been successfully updated.');
   } catch (error) {
     console.error('Error updating product slugs:', error);
     throw new Error('Failed to update product slugs.');

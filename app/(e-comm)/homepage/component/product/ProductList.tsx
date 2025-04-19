@@ -18,7 +18,6 @@ import ProductSkeleton from '../ProductSkeleton';
 import ProductCard from './ProductCard';
 
 export default function ProductList({ products }: { products: Product[] }) {
-  console.log("Debug: Rendering ProductList with products:", products);
   if (!products || products.length === 0) {
     return <NoData message="لا توجد منتجات متاحة" />;
   }

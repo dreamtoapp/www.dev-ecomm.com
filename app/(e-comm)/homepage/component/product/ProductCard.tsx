@@ -1,17 +1,21 @@
-import { Check, DollarSign } from "lucide-react";
+import { motion } from 'framer-motion';
+import {
+  Check,
+  DollarSign,
+} from 'lucide-react';
+import Image from 'next/image';
+import { FaCartPlus } from 'react-icons/fa6';
+
+import { Button } from '../../../../../components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "../../../../../components/ui/card";
-import { Product } from "../../../../../types/product";
-import { motion } from "framer-motion";
-import Notification from "../NotificationSection";
-import Image from "next/image";
-import QuantityControls from "../QuantityControls";
-import { Button } from "../../../../../components/ui/button";
-import { FaCartPlus } from "react-icons/fa6";
+} from '../../../../../components/ui/card';
+import { Product } from '../../../../../types/product';
+import Notification from '../NotificationSection';
+import QuantityControls from '../QuantityControls';
 
 // Product Card Component
 const ProductCard = ({
@@ -51,7 +55,7 @@ const ProductCard = ({
           width={300}
           height={200}
           className="w-full h-40 object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
-          priority
+          // priority
         />
       </CardHeader>
 

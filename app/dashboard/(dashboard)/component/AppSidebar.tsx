@@ -21,9 +21,9 @@ import {
   Users,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import Link from 'next/link';
 import { IoMdBuild } from 'react-icons/io';
 
+import Link from '@/components/link';
 import {
   Sidebar,
   SidebarContent,

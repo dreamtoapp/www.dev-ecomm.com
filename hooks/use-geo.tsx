@@ -1,4 +1,10 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import { toast } from 'sonner';
 
 type GeolocationOptions = {
@@ -39,7 +45,6 @@ const useAccurateGeolocation = (options: GeolocationOptions = {}) => {
 
   // Function to fetch geolocation
   const getGeolocation = useCallback(() => {
-    console.log('getGeolocation called'); // Debugging log
 
     const defaultOptions: GeolocationOptions = {
       enableHighAccuracy: true,
@@ -63,7 +68,6 @@ const useAccurateGeolocation = (options: GeolocationOptions = {}) => {
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
 
-          console.log('Fetched Position:', { latitude, longitude, accuracy });
 
           if (accuracy <= (mergedOptions.accuracyThreshold || 10)) {
             setState((prev) => ({

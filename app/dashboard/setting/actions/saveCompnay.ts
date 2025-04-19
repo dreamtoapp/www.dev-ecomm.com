@@ -24,7 +24,6 @@ export const saveCompany = async (formData: FormData): Promise<void> => {
       const imageUrl = secure_url;
 
       companyData.logo = imageUrl;
-      console.log(imageUrl)
     } else {
       console.log("No imageUrl")
     }
@@ -32,7 +31,6 @@ export const saveCompany = async (formData: FormData): Promise<void> => {
 
 
 
-    console.log(companyData)
 
     if (existingCompany) {
       // Update the existing company

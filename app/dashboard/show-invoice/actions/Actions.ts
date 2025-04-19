@@ -3,7 +3,6 @@
 import db from '@/lib/prisma';
 
 export async function getOrderData(id: string) {
-  console.log(id)
   try {
     const order = await db.order.findUnique({
       where: { id }, // Ensure this matches your schema
