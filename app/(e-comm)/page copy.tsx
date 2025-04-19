@@ -11,14 +11,14 @@ import CheckUserActivation from './homepage/component/CheckUserActivation';
 import CheckUserLocation from './homepage/component/CheckUserLocation';
 
 // Dynamically import components with proper configuration
-const ProductList = dynamic(() => import("./homepage/component/ProductList"), {
+const ProductList = dynamic(() => import("./homepage/component/product/ProductList"), {
   ssr: true, // Enable server-side rendering for better SEO
 });
-const OfferSection = dynamic(() => import("./homepage/component/Offer"), {
+const OfferSection = dynamic(() => import("./homepage/component/slider/SliderSection"), {
   ssr: true,
 });
 const ProducCategory = dynamic(
-  () => import("./homepage/component/ProducCategory"),
+  () => import("./homepage/component/product/ProducCategory"),
   {
     ssr: true,
   }

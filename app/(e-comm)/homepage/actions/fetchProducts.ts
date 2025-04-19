@@ -1,15 +1,22 @@
-// app/(e-comm)/actions/fetchProducts.ts
 "use server";
 
 import { cacheData } from '@/lib/cache';
 import db from '@/lib/prisma';
 
-// Helper function to fetch products
-async function fetchProductsFromDB(sid?: string) {
+async function fetchProductsFromDB(sulg?: string) {
+  // if (!sulg || typeof sulg !== "string" || sulg.trim() === "") {
+  //   return []; // Return an empty array if the slug is invalid
+  // }
+
+  const supplier = await db.supplier.findFirst({
+    where: { slug: sulg },
+    select: { id: true }
+  });
+
   const products = await db.product.findMany({
     where: {
       published: true,
-      supplierId: sid ? sid : undefined, // Filter by supplierId if sid is provided
+      supplierId: supplier?.id, // Filter by supplierId if sid is provided
     },
     include: { supplier: true },
   });

@@ -1,13 +1,28 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { FaExpand, FaCompress } from "react-icons/fa6";
-import { useCartStore } from "@/store/cartStore";
-import { Product } from "@/types/product";
-import { Button } from "@/components/ui/button";
-import ProductSkeleton from "./ProductSkeleton";
-import ProductCard from "./ProductCard";
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  FaCompress,
+  FaExpand,
+} from 'react-icons/fa6';
+
+import NoData from '@/app/(e-comm)/homepage/component/product/NoProduct';
+import { Button } from '@/components/ui/button';
+import { useCartStore } from '@/store/cartStore';
+import { Product } from '@/types/product';
+
+import ProductSkeleton from '../ProductSkeleton';
+import ProductCard from './ProductCard';
 
 export default function ProductList({ products }: { products: Product[] }) {
+  console.log("Debug: Rendering ProductList with products:", products);
+  if (!products || products.length === 0) {
+    return <NoData message="لا توجد منتجات متاحة" />;
+  }
+
   const { addItem, cart } = useCartStore();
   const [quantities, setQuantities] = useState<{ [key: string]: number }>(
     products.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
@@ -57,9 +72,8 @@ export default function ProductList({ products }: { products: Product[] }) {
       </div>
 
       <div
-        className={`grid gap-6 ${
-          isSingleColumn ? "grid-cols-1" : "grid-cols-2"
-        } sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
+        className={`grid gap-6 ${isSingleColumn ? "grid-cols-1" : "grid-cols-2"
+          } sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
       >
         {products.map((product) => (
           <ProductCard

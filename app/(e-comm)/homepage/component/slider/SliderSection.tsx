@@ -28,7 +28,6 @@ interface OfferSliderProps {
 }
 
 const OfferSlider: React.FC<OfferSliderProps> = ({ offers }) => {
-  console.log("Debug: Offers passed to OfferSlider:", offers);
   return (
     <div className="relative w-full max-w-[720px] mx-auto">
       {/* Reserve space for the slider to prevent layout shift */}
@@ -84,7 +83,7 @@ const OfferSlider: React.FC<OfferSliderProps> = ({ offers }) => {
   );
 };
 
-const OfferSection: React.FC<OfferSliderProps> = ({ offers }) => {
+const SliderSection: React.FC<OfferSliderProps> = ({ offers }) => {
   return (
     <section className="relative py-8 px-4 bg-gray-100 dark:bg-gray-800">
       <div className="container mx-auto">
@@ -94,4 +93,4 @@ const OfferSection: React.FC<OfferSliderProps> = ({ offers }) => {
   );
 };
 
-export default OfferSection;
+export default SliderSection;

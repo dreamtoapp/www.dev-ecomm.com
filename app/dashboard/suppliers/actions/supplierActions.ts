@@ -1,8 +1,11 @@
 // app/dashboard/suppliers/actions/supplierActions.ts
 "use server";
-import db from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { ImageToCloudinary } from "../../../../lib/uploadImageToCloudinary";
+import { revalidatePath } from 'next/cache';
+
+import db from '@/lib/prisma';
+import { Slugify } from '@/utils/slug';
+
+import { ImageToCloudinary } from '../../../../lib/uploadImageToCloudinary';
 
 // Create or Update Supplier
 export async function updateSupplier(id: string, data: any) {
@@ -54,7 +57,8 @@ export async function deleteSupplier(
     where: { id },
   });
 
-  // Return a success message
+  revalidatePath("/dashboard/suppliers");
+  revalidatePath("/");
   return {
     success: true,
     message: "Supplier deleted successfully.",
@@ -104,18 +108,10 @@ export async function createOrUpdateSupplier(
   // Upload the logo to Cloudinary if a file is provided
   if (logoFile) {
     try {
-      // const cloudinaryResponse = await uploadImageToCloudinary(
-      //   logoFile,
-      //   process.env.CLOUDINARY_UPLOAD_PRESET_SUPPLIER || ""
-      // );
       const cloudinaryResponse = await ImageToCloudinary(
         logoFile,
         process.env.CLOUDINARY_UPLOAD_PRESET_SUPPLIER || ""
       );
-
-      
-
-      
       logoUrl = cloudinaryResponse.secure_url; // Save the secure URL
       publicId = cloudinaryResponse.public_id; // Save the public ID directly
     } catch (error: any) {
@@ -127,6 +123,7 @@ export async function createOrUpdateSupplier(
   // Prepare the supplier data
   const supplierData = {
     ...data,
+    slug: Slugify(data.name),
     logo: logoUrl, // Update the logo URL
     publicId: publicId, // Update the public ID
   };
@@ -145,6 +142,8 @@ export async function createOrUpdateSupplier(
       });
     }
     revalidatePath("/dashboard/suppliers");
+    revalidatePath("/");
+
   } catch (error: any) {
     console.error("Error creating/updating supplier:", error);
     throw new Error("Failed to save supplier data.");

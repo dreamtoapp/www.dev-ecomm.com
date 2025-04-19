@@ -4,13 +4,13 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "../../../../components/ui/card";
-import { Product } from "../../../../types/product";
+} from "../../../../../components/ui/card";
+import { Product } from "../../../../../types/product";
 import { motion } from "framer-motion";
-import Notification from "./NotificationSection";
+import Notification from "../NotificationSection";
 import Image from "next/image";
-import QuantityControls from "./QuantityControls";
-import { Button } from "../../../../components/ui/button";
+import QuantityControls from "../QuantityControls";
+import { Button } from "../../../../../components/ui/button";
 import { FaCartPlus } from "react-icons/fa6";
 
 // Product Card Component

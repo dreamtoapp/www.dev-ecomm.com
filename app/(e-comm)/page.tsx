@@ -10,29 +10,27 @@ import CategoryList from './homepage/component/category/CategoryList';
 import CheckUserActivation from './homepage/component/CheckUserActivation';
 import CheckUserLocation from './homepage/component/CheckUserLocation';
 
-// Dynamically import components with proper configuration
-const ProductList = dynamic(() => import("./homepage/component/ProductList"), {
-  ssr: true, // Enable server-side rendering for better SEO
-});
-const OfferSection = dynamic(() => import("./homepage/component/Offer"), {
+const SkeletonLoader = () => <div className="animate-pulse">Loading...</div>;
+
+const ProductList = dynamic(() => import("./homepage/component/product/ProductList"), {
   ssr: true,
+  loading: SkeletonLoader,
+});
+const SliderSection = dynamic(() => import("./homepage/component/slider/SliderSection"), {
+  ssr: true,
+  loading: SkeletonLoader,
 });
 const ProducCategory = dynamic(
-  () => import("./homepage/component/ProducCategory"),
+  () => import("./homepage/component/product/ProducCategory"),
   {
     ssr: true,
+    loading: SkeletonLoader,
   }
 );
-
-export async function generateStaticParams() {
-  const suppliers = await fetchSuppliersWithProducts();
-  console.log("suppliers - generateStaticParams", suppliers);
-
-  return suppliers.map((supplier) => ({
-    sid: supplier.id.toString(),
-  }));
-}
-
+const ClearButton = dynamic(() => import("./homepage/component/category/ClearButton"), {
+  ssr: true,
+  loading: SkeletonLoader,
+});
 
 // Generate metadata dynamically
 export async function generateMetadata() {
@@ -42,28 +40,51 @@ export async function generateMetadata() {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ sid?: string }>;
+  searchParams: Promise<{ slug?: string }>;
 }) {
-  const { sid } = await searchParams;
+  const { slug } = await searchParams;
   const session = await auth();
 
   // Fetch data in parallel without artificial delays
   const [products, supplierWithItems, promotions] = await Promise.all([
-    fetchProducts(sid?.toString() || ""), // Ensure sid is a string
+    fetchProducts(slug || ""),
     fetchSuppliersWithProducts(),
     getPromotions(),
   ]);
-  // getServerSideProps
+
   return (
     <div className="container mx-auto bg-background text-foreground flex flex-col gap-4">
       {session && <CheckUserActivation user={session.user} />}
       {session && <CheckUserLocation user={session.user} />}
 
-      {/* Render components directly; loading.tsx will handle loading states */}
-      {/* <OfferSection offers={promotions} /> */}
-      {/* <ProducCategory suppliers={supplierWithItems} /> */}
-      <CategoryList suppliers={supplierWithItems} />
-
+      <SliderSection offers={promotions} />
+      <ClearButton slugString={slug} />
+      <CategoryList
+        suppliers={supplierWithItems.companyData}
+        cardDescription={
+          supplierWithItems.companyData.length > 0
+            ? "اكتشف المنتجات من الشركات الموثوقة وتمتع بأفضل الخيارات المتاحة"
+            : "لا توجد شركات متاحة حالياً"
+        }
+        cardHeader={
+          supplierWithItems.companyData.length > 0
+            ? "قائمة الشركات المميزة"
+            : "الشركات غير متوفرة"
+        }
+      />
+      {supplierWithItems.offerData && supplierWithItems.offerData.length > 0 ? (
+        <CategoryList
+          suppliers={supplierWithItems.offerData}
+          cardDescription="استمتع بأفضل العروض والخصومات على المنتجات المختارة"
+          cardHeader="قائمة العروض الحصرية"
+        />
+      ) : (
+        <CategoryList
+          suppliers={[]}
+          cardDescription="لا توجد عروض متاحة حالياً"
+          cardHeader="العروض غير متوفرة"
+        />
+      )}
       <ProductList products={products} />
     </div>
   );

@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
+import { IoMdBuild } from 'react-icons/io';
 
 import {
   Sidebar,
@@ -47,7 +48,7 @@ const UI_TEXT = {
           icon: <ListOrdered className="h-5 w-5 text-muted-foreground ml-2" />,
         },
         {
-          label: "ادارة الشركات",
+          label: "ادارة الشركات والعروض",
           href: "/dashboard/suppliers",
           icon: (
             <ShoppingBasket className="h-5 w-5 text-muted-foreground ml-2" />
@@ -207,8 +208,12 @@ export function AppSidebar() {
         <Link href={"/khalidnadish"}>
           <File size={16} />
         </Link>
+        <Link href={"/dashboard/maintinance"}>
+          <IoMdBuild size={16} />
+        </Link>
 
         <ThemeToggle />
+
       </SidebarFooter>
     </Sidebar>
   );

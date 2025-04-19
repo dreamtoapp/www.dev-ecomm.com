@@ -11,6 +11,7 @@ datasource db {
 model Supplier {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String    @default("")
+  slug      String    @default("") 
   logo      String? // Logo URL for branding (optional)
   publicId  String? // Public ID of the image in Cloudinary (optional)
   email     String    @default("")
@@ -26,6 +27,7 @@ model Supplier {
 model Product {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String   @default("")
+  slug       String   @default("") 
   price      Float    @default(0)
   size       String?
   details    String?
