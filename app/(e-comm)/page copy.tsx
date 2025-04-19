@@ -26,7 +26,6 @@ const ProducCategory = dynamic(
 
 export async function generateStaticParams() {
   const suppliers = await fetchSuppliersWithProducts();
-  console.log("suppliers - generateStaticParams", suppliers);
 
   return suppliers.map((supplier) => ({
     sid: supplier.id.toString(),
