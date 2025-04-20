@@ -1,8 +1,5 @@
 // types/user.ts
 export interface User {
-
-
-
   id?: string;
   phone: string | null;
   name?: string | null;
@@ -14,7 +11,6 @@ export interface User {
   longitude: string;
   password?: string | null | undefined;
   avatar?: string | null;
-
 }
 
 export type UserFormState = Omit<

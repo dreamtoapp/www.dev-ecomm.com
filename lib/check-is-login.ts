@@ -1,13 +1,13 @@
 // lib/check-is-login.ts
 "use server";
 
-import { auth } from '@/auth'
-import { CustomSession } from '@/types/customSesstion'
+import { auth } from '@/auth';
+import { CustomSession } from '@/types/customSesstion';
 
 export const checkIsLogin = async (): Promise<CustomSession | null> => {
   try {
     const session = await auth();
-    
+
     if (!session?.user) return null;
 
     return {
@@ -25,7 +25,7 @@ export const checkIsLogin = async (): Promise<CustomSession | null> => {
         isOtp: session.user.isOtp
       }
     } as CustomSession;
-    
+
   } catch (error) {
     console.error('Authentication check failed:', error);
     return null;

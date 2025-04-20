@@ -4,10 +4,10 @@
 import {
   useEffect,
   useState,
-} from 'react'
+} from 'react';
 
-import { checkIsLogin } from '@/lib/check-is-login'
-import { CustomSession } from '@/types/customSesstion'
+import { checkIsLogin } from '@/lib/check-is-login';
+import { CustomSession } from '@/types/customSesstion';
 
 // Custom type definitions
 
@@ -24,7 +24,7 @@ export const useCheckIsLogin = () => {
       try {
         setStatus('loading');
         const result = await checkIsLogin();
-        
+
         if (result?.user) {
           // Type assertion with validation
           const validSession = result as CustomSession;
