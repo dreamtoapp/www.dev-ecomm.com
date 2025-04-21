@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 
-import ImageUpload from '@/components/ImageUpload';
+import ImageUpload from '@/components/image-upload';
 
 import {
   Card,
@@ -35,7 +35,7 @@ const GeneralInfoSection = ({
   return (
     <Card className="relative">
       <CardHeader>
-    
+
         <CardTitle className="flex items-center gap-2">
           <Globe className="w-5 h-5 text-primary" />
           المعلومات العامة
@@ -191,7 +191,7 @@ const GeneralInfoSection = ({
             مثال: 9665xxxxxxxx (بدون علامة + أو مسافات)
           </p>
         </div>
-            <div className="space-y-2 md:col-span-2 w-fit">
+        <div className="space-y-2 md:col-span-2 w-fit">
           <Label className="block">
             <span className="flex items-center gap-1 mb-2">
               <ImageIcon className="w-4 h-4" />

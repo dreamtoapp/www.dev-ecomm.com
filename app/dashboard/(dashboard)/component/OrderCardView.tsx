@@ -107,7 +107,7 @@ export default function OrderCardView({
   }
 
   return (
-    <div id="scroll-container" className="h-[70vh] overflow-auto">
+    <div id="scroll-container" className="h-[70vh] overflow-auto p-4">
       <InfiniteScroll
         dataLength={orders.length}
         next={fetchMoreData}

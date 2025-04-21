@@ -1,186 +1,151 @@
+
 "use client";
-import { useState } from "react";
+import {
+  useActionState,
+  useState,
+} from 'react';
+
+import {
+  ImageIcon,
+  Loader2,
+  ShoppingBasket,
+} from 'lucide-react';
+
+import ImageUpload from '@/components/image-upload';
+import { InputWithValidation } from '@/components/InputField';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { createOrUpdateSupplier } from "../actions/supplierActions";
-import { z } from "zod"; // Import Zod
-import { supplierSchema } from "../logic/validation";
-import InputField from "../../../../components/InputField";
-import ImageUploadField from "../../../../components/ImageUploadField";
-import { Loader2 } from "lucide-react"; // Import a loading spinner icon
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 
-export default function AddSupplierDialog() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    type: "company", // Default type is "supplier"
-  });
-  const [logoFile, setLogoFile] = useState<File | null>(null);
+import { updateSupplier } from '../actions/update-supplier';
+import { createSupplier } from '../actions/add-supplier';
+import { FaAddressCard } from 'react-icons/fa';
+
+interface EditSupplierDialogProps {
+  supplier: {
+    id: string;
+    name: string;
+    logo: string | null;
+  };
+}
+
+// Extracted Form Component
+const SupplierForm = () => {
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [loading, setLoading] = useState(false); // State to track loading
 
-  // Handle changes in input fields
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    // Handle checkbox separately
-    if (type === "checkbox") {
-      setFormData({ ...formData, [name]: checked ? "offer" : "company" });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" })); // Clear errors
-  };
 
-  // Handle file upload
+
   const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setLogoFile(file); // Update the selected file in the parent state
-      setErrors((prevErrors) => ({ ...prevErrors, logo: "" })); // Clear logo error
-    } else {
-      setLogoFile(null); // Reset the selected file
-    }
+    setPreviewUrl(file ? URL.createObjectURL(file) : null);
   };
 
-  // Handle form submission
-  const handleSubmit = async () => {
-    try {
-      setLoading(true); // Start loading
-      // Validate form data using Zod
-      supplierSchema.parse(formData);
-      // Ensure a logo file is provided
-      if (!logoFile) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          logo: "Logo is required.",
-        }));
-        setLoading(false); // Stop loading if validation fails
-        return;
-      }
-      // If validation passes, submit the form
-      await createOrUpdateSupplier(null, formData, logoFile);
-      window.location.reload();
-      // Reset form and close dialog (optional)
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        address: "",
-        type: "company", // Reset type to default
-      });
-      setLogoFile(null);
-      setPreviewUrl(null);
-      setErrors({});
-    } catch (error: any) {
-      // Handle Zod validation errors
-      if (error instanceof z.ZodError) {
-        const fieldErrors: { [key: string]: string } = {};
-        error.errors.forEach((err: z.ZodIssue) => {
-          fieldErrors[err.path[0]] = err.message;
-        });
-        // Find the first error and display it
-        const firstErrorKey = Object.keys(fieldErrors)[0];
-        setErrors({ [firstErrorKey]: fieldErrors[firstErrorKey] });
-      } else {
-        // Log other errors (e.g., API errors)
-        console.error("Error adding supplier:", error.message);
-      }
-    } finally {
-      // Ensure loading state is reset regardless of success or failure
-      setLoading(false);
-    }
-  };
+
+  const [state, addAction, isPending] = useActionState(createSupplier, { success: false, message: "" });
+
+
+  return (
+    <form action={addAction} className="overflow-y-auto max-h-[350px] mt-4 space-y-4 p-4">
+      <InputWithValidation
+        name="name"
+        label="اسم الشركة"
+        placeholder="أدخل اسم الشركة"
+        required
+        error="الاسم  مطلوب"
+      />
+
+      <Label className="block">
+        <span className="flex items-center gap-1 mb-2">
+          <ImageIcon className="w-4 h-4" />
+          شعار الشركة
+        </span>
+        <ImageUpload
+          name="logo"
+          initialImage={previewUrl}
+          onImageUpload={handleFileSelect}
+          aspectRatio={1}
+          maxSizeMB={2}
+          allowedTypes={['image/png', 'image/jpeg', 'image/webp']}
+          uploadLabel="انقر لرفع الصورة"
+          previewType="contain"
+          className="h-36"
+          alt="شعار الشركة"
+          minDimensions={{ width: 300, height: 300 }}
+        />
+
+      </Label>
+
+
+
+
+      {state.message && (
+        <div
+          className={`mt-4 p-3 rounded ${state.success ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+            }`}
+        >
+          {state.message}
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        disabled={isPending}
+        className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+      >
+        {isPending ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            جاري الحفظ...
+          </>
+        ) : (
+          "حفظ التغييرات"
+        )}
+      </Button>
+    </form>
+  );
+};
+
+// Main Dialog Component
+export default function AddSupplierDialog() {
+
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-          إضافة شركة
+        <Button variant="default" aria-label="تعديل">
+          <ShoppingBasket className="h-4 w-4 text-primary-foreground" /> اضافة شركة جديدة
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] min-h-[500px] bg-background text-foreground border-border shadow-lg">
+
+      <DialogContent className="sm:max-w-[425px] min-h-[500px] bg-background text-foreground border-border shadow-lg" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-foreground">
-            إضافة شركة جديد
-          </DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><ShoppingBasket className="h-4 w-4 text-primary" /> اضافة شركة جديدة</DialogTitle>
+          <DialogDescription className='text-right'>قم باضافة تفاصيل الشركة هنا</DialogDescription>
         </DialogHeader>
-        {/* Fixed Tabs List */}
 
-        {/* Form Content */}
-        <form className="space-y-4 p-4 overflow-y-auto max-h-[350px]">
-          {/* Supplier Details Tab */}
+        <SupplierForm
 
-          <div className="space-y-4">
-            <InputField
-              name="name"
-              label="اسم الشركة"
-              placeholder="أدخل اسم الشركة"
-              value={formData.name}
-              onChange={handleChange}
-              error={errors.name}
-            />
 
-            {/* Checkbox for Offer Type */}
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                name="type"
-                id="type"
-                checked={formData.type === "offer"}
-                onChange={handleChange}
-                className="w-4 h-4 text-primary rounded border-border focus:ring-primary"
-              />
-              <label htmlFor="type" className="text-sm text-foreground">
-                هذا المورد هو عرض
-              </label>
-            </div>
-            <div className="flex flex-col h-full">
-              <ImageUploadField
-                label="الصورة"
-                onFileSelect={handleFileSelect} // Pass the callback to receive the selected file
-                error={errors.logo} // Pass any validation error
-                width={200}
-                height={200}
-              />
-            </div>
-          </div>
 
-          {/* Logo Upload Tab */}
-        </form>
-        {/* Single Error Message */}
-        <div className="mt-4 px-4">
-          {Object.entries(errors).map(([field, message]) => (
-            <p key={field} className="text-sm text-destructive">
-              {message}
-            </p>
-          ))}
-        </div>
-        {/* Submit Button with Loader */}
-        <div className="w-full bg-background py-4 border-t border-border">
-          <Button
-            type="button"
-            onClick={handleSubmit}
-            disabled={loading} // Disable button while loading
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> جاري الحفظ...
-              </>
-            ) : (
-              "حفظ الشركة"
-            )}
-          </Button>
-        </div>
+
+
+        />
       </DialogContent>
     </Dialog>
   );
 }
+
+
+
+
+
+
+
+// await createSupplier(formData, logoFile);

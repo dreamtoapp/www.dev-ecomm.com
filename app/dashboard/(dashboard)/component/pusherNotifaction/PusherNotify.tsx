@@ -133,14 +133,14 @@ export default function PusherNotify() {
   }, [handleNewOrder]);
 
   return (
-    <div className="fixed top-7 left-8 z-50 flex gap-3 items-center">
+    <div className="flex gap-3 items-center">
       {/* Audio Toggle */}
       <Button
         aria-label={isAudioEnabled ? "Mute notifications" : "Unmute notifications"}
         onClick={toggleAudio}
         size="icon"
         className={cn(
-          "relative h-11 w-11 rounded-full transition-all",
+          "relative h-8 w-8 rounded-full transition-all",
           "bg-gradient-to-br hover:scale-105",
           isAudioEnabled
             ? "from-green-400 to-teal-500 hover:shadow-green-400/30"
@@ -164,7 +164,7 @@ export default function PusherNotify() {
         aria-label="Notifications"
         size="icon"
         className={cn(
-          "relative h-11 w-11 rounded-full transition-all",
+          "relative h-8 w-8 rounded-full transition-all",
           "bg-gradient-to-br from-purple-500 to-pink-500",
           "hover:scale-105 hover:from-purple-600 hover:to-pink-600",
           "shadow-lg hover:shadow-purple-400/30"

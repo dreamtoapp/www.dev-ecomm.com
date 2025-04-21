@@ -1,19 +1,14 @@
 // app/dashboard/suppliers/actions/supplierActions.ts
 "use server";
-import { revalidatePath } from 'next/cache';
-
 import db from '@/lib/prisma';
-import { Slugify } from '@/utils/slug';
-
-import { ImageToCloudinary } from '../../../../lib/uploadImageToCloudinary';
 
 // Create or Update Supplier
-export async function updateSupplier(id: string, data: any) {
-  await db.supplier.update({
-    where: { id },
-    data,
-  });
-}
+// export async function updateSupplier(id: string, data: any) {
+//   await db.supplier.update({
+//     where: { id },
+//     data,
+//   });
+// }
 // ***********************************
 // Fetch the supplier and check if it has related products
 // ***********************************
@@ -35,35 +30,6 @@ export async function getSupplierDetails(id: string) {
   };
 }
 
-export async function deleteSupplier(
-  id: string
-): Promise<{ success: boolean; message: string }> {
-  // Check if the supplier has any related products
-  const productCount = await db.product.count({
-    where: { supplierId: id },
-  });
-
-  if (productCount > 0) {
-    // Return a message indicating that deletion is not possible
-    return {
-      success: false,
-      message:
-        "Cannot delete this supplier because it is linked to one or more products. Please delete the associated products first.",
-    };
-  }
-
-  // If no related products, proceed with deletion
-  await db.supplier.delete({
-    where: { id },
-  });
-
-  revalidatePath("/dashboard/suppliers");
-  revalidatePath("/");
-  return {
-    success: true,
-    message: "Supplier deleted successfully.",
-  };
-}
 
 export async function getSuppliers() {
   try {
@@ -71,9 +37,9 @@ export async function getSuppliers() {
       select: {
         id: true,
         name: true,
-        email: true,
-        phone: true,
-        address: true,
+        // email: true,
+        // phone: true,
+        // address: true,
         logo: true,
         type: true,
         publicId: true,
@@ -91,61 +57,61 @@ export async function getSuppliers() {
   }
 }
 
-/**
- * Creates or updates a supplier.
- * @param id - The ID of the supplier (null for new suppliers).
- * @param data - The supplier data (name, email, phone, address).
- * @param logoFile - The logo file to upload (optional).
- */
-export async function createOrUpdateSupplier(
-  id: string | null,
-  data: any,
-  logoFile?: File | null
-) {
-  let logoUrl = data.logo; // Existing logo URL (if any)
-  let publicId = data.publicId; // Existing public ID (if any)
+// /**
+//  * Creates or updates a supplier.
+//  * @param id - The ID of the supplier (null for new suppliers).
+//  * @param data - The supplier data (name, email, phone, address).
+//  * @param logoFile - The logo file to upload (optional).
+//  */
+// export async function createOrUpdateSupplier(
+//   id: string | null,
+//   data: any,
+//   logoFile?: File | null
+// ) {
+//   let logoUrl = data.logo; // Existing logo URL (if any)
+//   let publicId = data.publicId; // Existing public ID (if any)
 
-  // Upload the logo to Cloudinary if a file is provided
-  if (logoFile) {
-    try {
-      const cloudinaryResponse = await ImageToCloudinary(
-        logoFile,
-        process.env.CLOUDINARY_UPLOAD_PRESET_SUPPLIER || ""
-      );
-      logoUrl = cloudinaryResponse.secure_url; // Save the secure URL
-      publicId = cloudinaryResponse.public_id; // Save the public ID directly
-    } catch (error: any) {
-      console.error("Error uploading image to Cloudinary:", error.message);
-      throw new Error("Failed to upload image to Cloudinary.");
-    }
-  }
+//   // Upload the logo to Cloudinary if a file is provided
+//   if (logoFile) {
+//     try {
+//       const cloudinaryResponse = await ImageToCloudinary(
+//         logoFile,
+//         process.env.CLOUDINARY_UPLOAD_PRESET_SUPPLIER || ""
+//       );
+//       logoUrl = cloudinaryResponse.secure_url; // Save the secure URL
+//       publicId = cloudinaryResponse.public_id; // Save the public ID directly
+//     } catch (error: any) {
+//       console.error("Error uploading image to Cloudinary:", error.message);
+//       throw new Error("Failed to upload image to Cloudinary.");
+//     }
+//   }
 
-  // Prepare the supplier data
-  const supplierData = {
-    ...data,
-    slug: Slugify(data.name),
-    logo: logoUrl, // Update the logo URL
-    publicId: publicId, // Update the public ID
-  };
+//   // Prepare the supplier data
+//   const supplierData = {
+//     ...data,
+//     slug: Slugify(data.name),
+//     logo: logoUrl, // Update the logo URL
+//     publicId: publicId, // Update the public ID
+//   };
 
-  try {
-    if (id) {
-      // Update existing supplier
-      await db.supplier.update({
-        where: { id },
-        data: supplierData,
-      });
-    } else {
-      // Create new supplier
-      await db.supplier.create({
-        data: supplierData,
-      });
-    }
-    revalidatePath("/dashboard/suppliers");
-    revalidatePath("/");
+//   try {
+//     if (id) {
+//       // Update existing supplier
+//       await db.supplier.update({
+//         where: { id },
+//         data: supplierData,
+//       });
+//     } else {
+//       // Create new supplier
+//       await db.supplier.create({
+//         data: supplierData,
+//       });
+//     }
+//     revalidatePath("/dashboard/suppliers");
+//     revalidatePath("/");
 
-  } catch (error: any) {
-    console.error("Error creating/updating supplier:", error);
-    throw new Error("Failed to save supplier data.");
-  }
-}
+//   } catch (error: any) {
+//     console.error("Error creating/updating supplier:", error);
+//     throw new Error("Failed to save supplier data.");
+//   }
+// }

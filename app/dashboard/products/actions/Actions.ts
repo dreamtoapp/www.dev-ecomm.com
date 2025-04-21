@@ -1,7 +1,7 @@
 "use server";
 import { uploadImageToCloudinary } from "../../../../lib/cloudinary";
 import db from "../../../../lib/prisma";
-import { ImageToCloudinary } from "../../../../lib/uploadImageToCloudinary";
+import { ImageToCloudinary } from "../../../../lib/cloudinary/uploadImageToCloudinary";
 
 /**
  * Helper function to upload an image to Cloudinary.
@@ -33,10 +33,10 @@ async function prepareProductData(data: any, imageFile?: File): Promise<any> {
 
   // Upload the image to Cloudinary if a file is provided
   if (imageFile) {
-    const { secure_url, public_id }= await ImageToCloudinary(
+    const { secure_url, public_id } = await ImageToCloudinary(
       imageFile,
-        process.env.CLOUDINARY_UPLOAD_PRESET_PRODUCTS || ""
-      );
+      process.env.CLOUDINARY_UPLOAD_PRESET_PRODUCTS || ""
+    );
 
     // const { secure_url, public_id } = await uploadImage(imageFile);
     imageUrl = secure_url;

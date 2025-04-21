@@ -36,6 +36,12 @@ export async function ImageToCloudinary(
   formData.append('file', imageFile);
   formData.append('upload_preset', uploadPreset);
 
+  // const { valid, error } = isValidImageFile(imageFile, 2);
+  // if (!valid) {
+  //   console.log(error, "error")
+  //   return
+  // }
+
   try {
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -72,4 +78,67 @@ export async function ImageToCloudinary(
     console.error('Cloudinary upload error:', error);
     throw new Error(`Image upload failed: ${error.message}`);
   }
+}
+
+
+function isValidImageFile(
+  imageFile: unknown,
+  maxSizeMB: number = 5
+): { valid: boolean, error?: string } {
+  // Check for null/undefined
+  if (!imageFile) {
+    return { valid: false, error: 'لم يتم اختيار ملف' };
+  }
+
+  // Handle string case (existing URL)
+  if (typeof imageFile === 'string') {
+    // Basic URL validation
+    try {
+      new URL(imageFile);
+    } catch {
+      return { valid: false, error: 'رابط الصورة غير صالح' };
+    }
+
+    // Check image extension
+    if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(imageFile)) {
+      return { valid: false, error: 'صيغة الصورة غير مدعومة' };
+    }
+
+    return { valid: true };
+  }
+
+  // Handle File/Blob cases
+  if (!(imageFile instanceof File || imageFile instanceof Blob)) {
+    return { valid: false, error: 'الملف المرفق ليس صورة' };
+  }
+
+  const file = imageFile as File;
+
+  // Size checks
+  if (file.size === 0) {
+    return { valid: false, error: 'الملف فارغ أو تالف' };
+  }
+
+  const maxSizeBytes = maxSizeMB * 1024 * 1024;
+  if (file.size > maxSizeBytes) {
+    return { valid: false, error: `حجم الملف يتجاوز ${maxSizeMB} ميجابايت` };
+  }
+
+  // Type checks
+  if (!file.type.startsWith('image/')) {
+    return { valid: false, error: 'الملف ليس صورة' };
+  }
+
+  // Specific image type validation
+  const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (!validTypes.includes(file.type)) {
+    return { valid: false, error: 'صيغة الصورة غير مدعومة' };
+  }
+
+  // Filename validation
+  if (!file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+    return { valid: false, error: 'امتداد الملف غير صالح' };
+  }
+
+  return { valid: true };
 }

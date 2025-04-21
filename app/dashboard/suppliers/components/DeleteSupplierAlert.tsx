@@ -1,119 +1,141 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from 'react';
+
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { deleteSupplier, getSupplierDetails } from "../actions/supplierActions";
-import { Trash, Loader2 } from "lucide-react";
-import { Button } from "../../../../components/ui/button";
+  Loader2,
+  Trash,
+} from 'lucide-react';
+import Swal from 'sweetalert2';
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+
+import { Button } from '../../../../components/ui/button';
+import { deleteSupplier } from '../actions/delete-supplier';
 
 interface DeleteSupplierAlertProps {
   supplierId: string;
 }
 
-// Centralized UI text
-const UI_TEXT = {
-  deleteButton: "حذف",
-  alertTitle: "هل أنت متأكد؟",
-  alertDescriptionWithProducts:
-    "هذا الشركة مرتبط بواحد أو أكثر من المنتجات. يرجى حذف المنتجات المرتبطة أولاً.",
-  alertDescriptionWithoutProducts:
-    "لا يمكن التراجع عن هذا الإجراء. سيتم حذف الشركة بشكل دائم.",
-  cancelButton: "إلغاء",
-  confirmDeleteButton: "حذف",
-  deleteInProgress: "جاري الحذف...",
-  errorMessage: "حدث خطأ أثناء حذف الشركة.",
-};
+export default function DeleteSupplierAlert({ supplierId }: DeleteSupplierAlertProps) {
+  const [isProcessing, setIsProcessing] = useState(false);
 
-export default function DeleteSupplierAlert({
-  supplierId,
-}: DeleteSupplierAlertProps) {
-  const [message, setMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasProducts, setHasProducts] = useState<boolean>(false);
-
-  // Fetch supplier details to check if it has related products
-  useEffect(() => {
-    const fetchSupplierDetails = async () => {
-      try {
-        const { hasProducts } = await getSupplierDetails(supplierId);
-        setHasProducts(hasProducts);
-      } catch (error) {
-        console.error(
-          "Error fetching supplier details:",
-          error instanceof Error ? error.message : "Unknown error"
-        );
-      }
-    };
-    fetchSupplierDetails();
-  }, [supplierId]);
-
-  // Handle supplier deletion
   const handleDelete = async () => {
-    setIsLoading(true);
-    setMessage(null); // Clear previous messages
-
+    setIsProcessing(true);
     try {
-      await deleteSupplier(supplierId);
-      window.location.reload(); // Refresh the page after successful deletion
+      const result = await deleteSupplier(supplierId);
+
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'تم الحذف بنجاح',
+          text: 'تم إزالة بيانات العنصر بشكل نهائي من النظام',
+          confirmButtonText: 'تم',
+          confirmButtonAriaLabel: 'تأكيد استلام رسالة النجاح'
+        });
+        // window.location.reload();
+        return;
+      }
+
+      Swal.fire({
+        icon: 'error',
+        title: 'تعذر الحذف',
+        text: result.message || 'حدث خطأ أثناء محاولة الحذف. يرجى المحاولة لاحقًا',
+        confirmButtonText: 'حسنا',
+        confirmButtonAriaLabel: 'تأكيد استلام رسالة الخطأ'
+      });
     } catch (error) {
-      setMessage(UI_TEXT.errorMessage); // Use centralized error message
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ غير متوقع',
+        text: 'حدث عطل تقني غير متوقع. يرجى إبلاغ الدعم الفني',
+        confirmButtonText: 'تم الإبلاغ'
+      });
     } finally {
-      setIsLoading(false);
+      setIsProcessing(false);
     }
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="w-full hover:bg-destructive">
-          <Trash className="h-4 w-4" /> {UI_TEXT.deleteButton}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full hover:bg-destructive/90 hover:text-destructive-foreground flex flex-row-reverse"
+          aria-label="فتح نافذة حذف العنصر"
+        >
+          <span>حذف </span>
+          <Trash className="h-4 w-4 ml-2 text-destructive" aria-hidden />
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="bg-background text-foreground border-border shadow-lg">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-lg font-semibold">
-            {UI_TEXT.alertTitle}
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-muted-foreground">
-            {hasProducts
-              ? UI_TEXT.alertDescriptionWithProducts
-              : UI_TEXT.alertDescriptionWithoutProducts}
-          </AlertDialogDescription>
-          {message && (
-            <p className="mt-2 text-sm text-destructive">{message}</p>
-          )}
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="border border-input bg-background hover:bg-accent">
-            {UI_TEXT.cancelButton}
-          </AlertDialogCancel>
-          {!hasProducts && (
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isLoading}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+      </DialogTrigger>
+
+      <DialogContent
+        className="border-destructive/30 bg-background/95 backdrop-blur-sm"
+        role="dialog"
+        aria-labelledby="deleteConfirmationHeading"
+        dir="rtl"
+      >
+        {/* Accessibility-required title */}
+
+        <DialogTitle id="deleteConfirmationHeading">
+          تأكيد الحذف النهائي للمورد
+        </DialogTitle>
+
+
+        <DialogHeader>
+          <DialogTitle className="text-destructive text-xl font-bold text-right">
+            ⚠️ تأكيد الحذف النهائي
+          </DialogTitle>
+
+          <DialogDescription className='text-right text-sm text-muted-foreground/90'>
+            سيتم حذف جميع بيانات العنصر بما في ذلك:
+          </DialogDescription>
+
+          <div className="text-muted-foreground/90 text-right">
+            <ul className="list-disc pr-4 space-y-2">
+              <li>المنتجات المرتبطة</li>
+              <li>سجل التعاملات</li>
+              <li>بيانات الاتصال</li>
+            </ul>
+          </div>
+        </DialogHeader>
+
+        <DialogFooter className="gap-3 flex flex-row-reverse">
+          <DialogClose asChild>
+            <Button
+              variant="secondary"
+              className="bg-muted/80 hover:bg-accent"
+              aria-label="إلغاء عملية الحذف"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
-                  {UI_TEXT.deleteInProgress}
-                </>
-              ) : (
-                UI_TEXT.confirmDeleteButton
-              )}
-            </AlertDialogAction>
-          )}
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+              إلغاء الحذف
+            </Button>
+          </DialogClose>
+
+          <Button
+            onClick={handleDelete}
+            disabled={isProcessing}
+            className="bg-destructive/90 text-destructive-foreground hover:bg-destructive"
+            aria-describedby="deleteConfirmationHeading"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin ml-2" aria-hidden />
+                <span>جارِ تنفيذ العملية...</span>
+              </>
+            ) : (
+              'تأكيد الحذف الدائم'
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
