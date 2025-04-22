@@ -32,6 +32,7 @@ export default async function RootLayout({
 
   return (
     <SessionProvider>
+      
       <html lang={locale} dir={dir} suppressHydrationWarning>
         <body className={`min-h-screen bg-background antialiased ${fontClass}`}>
           {/* <NotificationsProvider> */}
@@ -50,6 +51,7 @@ export default async function RootLayout({
           {/* </NotificationsProvider> */}
         </body>
       </html>
+     
     </SessionProvider>
   );
 }

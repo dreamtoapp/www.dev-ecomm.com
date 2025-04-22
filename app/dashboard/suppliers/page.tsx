@@ -1,7 +1,7 @@
 import EmptyBox from '@/components/empty-box';
 import { Badge } from '@/components/ui/badge';
 
-import { getSuppliers } from './actions/supplierActions';
+import { getSuppliers } from './actions/get-supplier';
 import AddSupplierDialog from './components/AddSupplierDialog';
 import SupplierCard from './components/supplier-card';
 

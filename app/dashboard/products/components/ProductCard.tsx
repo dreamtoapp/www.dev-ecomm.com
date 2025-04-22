@@ -1,14 +1,9 @@
-"use client"; // Mark as a Client Component
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import CardImage from "../../../../components/CardImage"; // Import the enhanced CardImage component
-import EditProductDialog from "./EditProductDialog";
-import { Eye } from "lucide-react"; // Import icons for delete and view transactions
+import CardImage from "../../../../components/CardImage";
+import { Eye } from "lucide-react";
 import Link from "@/components/link";
 
 interface ProductCardProps {
@@ -16,63 +11,62 @@ interface ProductCardProps {
     id: string;
     name: string;
     price: number;
-    size?: string | null; // Optional field
-    details?: string | null; // Optional field for product details
-    imageUrl?: string | null; // Optional field
+    size?: string | null;
+    details?: string | null;
+    imageUrl?: string | null;
+    published: boolean;
   };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="shadow-md hover:shadow-lg transition-shadow rounded-lg overflow-hidden border border-border bg-card text-card-foreground">
-      {/* Card Header */}
-      <CardHeader className="p-4 flex justify-between items-center border-b border-border">
-        <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
-      </CardHeader>
-
-      {/* Card Content */}
-      <CardContent className="p-4 space-y-4">
-        {/* Image */}
-        <CardImage
-          imageUrl={product.imageUrl || undefined} // Pass undefined if no image is available
-          altText={`${product.name} image`}
-          aspectRatio="square" // Use a square aspect ratio for product images
-          fallbackSrc="/default-product.jpg" // Default fallback image
-          placeholderText="لا توجد صورة متاحة" // Custom placeholder text in Arabic
-        />
-
-        {/* Details */}
-        <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">
-            <strong>السعر:</strong> ${product.price.toFixed(2)}
-          </p>
-          {product.size && (
-            <p className="text-sm text-muted-foreground">
-              <strong>الحجم:</strong> {product.size}
-            </p>
-          )}
-          {product.details ? (
-            <p className="text-sm text-muted-foreground">
-              <strong>التفاصيل:</strong> {product.details}
-            </p>
+    <Card className="w-full border-b border-border rounded-none p-0 bg-card text-card-foreground hover:bg-muted/40 transition-colors group">
+      <CardContent className="grid grid-cols-1 sm:grid-cols-[7rem_1fr_1fr_1fr_2fr_7rem] items-center gap-y-2 gap-x-2 p-2 sm:p-0 w-full min-h-[80px]">
+        {/* Image Cell */}
+        <div className="flex items-center justify-center w-full h-20 sm:h-16 bg-muted border-b sm:border-b-0 sm:border-r border-muted flex-shrink-0 rounded-md overflow-hidden">
+          <CardImage
+            imageUrl={product.imageUrl || undefined}
+            altText={`${product.name} image`}
+            aspectRatio="square"
+            fallbackSrc="/default-product.jpg"
+            placeholderText="لا توجد صورة متاحة"
+            className="object-cover w-full h-full"
+          />
+        </div>
+        {/* Name Cell */}
+        <div className="font-bold text-primary text-base truncate text-center sm:text-right" title={product.name}>{product.name}</div>
+        {/* Size Cell */}
+        <div className="text-sm text-muted-foreground text-center">{product.size || <span className='text-destructive'>—</span>}</div>
+        {/* Price Cell */}
+        <div className="text-base font-bold text-primary text-center">{product.price.toLocaleString("ar-EG", { style: "currency", currency: "USD" })}</div>
+        {/* Details Cell */}
+        <div className="text-xs text-muted-foreground line-clamp-2 w-full text-center sm:text-right" title={product.details || undefined}>{product.details || <span className='text-destructive'>لا توجد تفاصيل</span>}</div>
+        {/* Published Status Cell */}
+        <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-center">
+          {product.published ? (
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-green-700 bg-green-100 text-xs font-semibold">
+              منشور
+            </span>
           ) : (
-            <p className="text-sm text-destructive">لا توجد تفاصيل متاحة</p>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-red-700 bg-red-100 text-xs font-semibold">
+              غير منشور
+            </span>
           )}
         </div>
+        {/* Action Cell */}
+        <div className="flex items-center justify-center w-full">
+          <Link
+            href={`/dashboard/porductmangment/itemdetail/${product.id}`}
+            className="flex items-center gap-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/80 transition-colors text-xs font-semibold shadow-sm  justify-center"
+            aria-label="عرض التفاصيل"
+          >
+            <Eye className="h-4 w-4" />
+            <span className="hidden sm:inline">التفاصيل</span>
+          </Link>
+        </div>
+        </div>
       </CardContent>
-
-      <CardFooter className="p-4 flex justify-between items-center border-t border-border bg-card">
-        {/* <EditProductDialog product={product} /> */}
-        <Link
-          href={`/dashboard/porductmangment/itemdetail/${product.id}`}
-          className="flex bg-primary w-full items-center justify-center gap-2   hover:bg-primary/10 p-2 rounded-md text-primary-foreground transition-colors"
-          aria-label="عرض التفاصيل"
-          onClick={() => console.log("View product details:", product.id)}
-        >
-          <Eye className="h-4 w-4" />
-          <span className="truncate">عرض التفاصيل</span>
-        </Link>
-      </CardFooter>
     </Card>
   );
 }

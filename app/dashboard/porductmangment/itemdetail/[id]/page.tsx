@@ -1,4 +1,4 @@
-import { getProductById } from "./actions/productActions";
+import { getProductById } from "./actions/get-product-by-id";
 import ProductDetails from "./component/ProductDetails";
 
 export default async function Page({
@@ -12,9 +12,10 @@ export default async function Page({
   if (!product) {
     return <div>Product not found</div>;
   }
+  
 
   return (
-    <div className="p-8">
+    <div className="p-4">
       <ProductDetails product={product} />
     </div>
   );

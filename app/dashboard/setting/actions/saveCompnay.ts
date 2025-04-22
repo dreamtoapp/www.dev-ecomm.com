@@ -15,13 +15,13 @@ export const saveCompany = async (formData: FormData): Promise<void> => {
 
 
     if (formData.has("logo")) {
-      const { secure_url } = await ImageToCloudinary(
+      const ImageData= await ImageToCloudinary(
         formData.get("logo") as File,
         process.env.CLOUDINARY_UPLOAD_PRESET_ASSETS || ""
       );
 
       // const { secure_url, public_id } = await uploadImage(imageFile);
-      const imageUrl = secure_url;
+      const imageUrl = ImageData.result?.secure_url;
 
       companyData.logo = imageUrl;
     } else {

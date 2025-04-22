@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import {
   Check,
   DollarSign,
+  UserIcon,
 } from 'lucide-react';
 import Image from 'next/image';
 import { FaCartPlus } from 'react-icons/fa6';
@@ -55,7 +56,7 @@ const ProductCard = ({
           width={300}
           height={200}
           className="w-full h-40 object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
-          // priority
+        // priority
         />
       </CardHeader>
 
@@ -63,15 +64,15 @@ const ProductCard = ({
         <h3 className="text-base font-bold text-foreground">{product.name}</h3>
         <p className="text-muted-foreground">{product.details}</p>
 
-        <div className="flex justify-between items-center text-sm font-semibold text-foreground">
-          <div className="flex items-center gap-2">
+        <div className="flex justify-between items-center text-sm font-semibold text-foreground  ">
+          <div className="flex items-center justify-center gap-2 w-full">
             <DollarSign size={16} className="text-amber-500" />
-            <span>{product.price.toFixed(2)} $</span>
+            <span>{product.price.toFixed(2)} </span>
           </div>
           <TotalPrice quantity={quantity} price={product.price} />
         </div>
 
-        <QuantityControls
+        {product.outOfStock ? null : <QuantityControls
           quantity={quantity}
           onDecrease={() => {
             onQuantityChange(product.id, -1);
@@ -79,15 +80,25 @@ const ProductCard = ({
           onIncrease={() => {
             onQuantityChange(product.id, 1);
           }}
-        />
+        />}
       </CardContent>
 
       <CardFooter className="flex justify-evenly items-center flex-col gap-2">
-        <AddToCartButton
+        {!product.outOfStock ? <AddToCartButton
           onClick={() => {
             onAddToCart(product.id, quantity, product);
           }}
-        />
+
+        /> : (
+          <div className="flex flex-col gap-2">
+            <div className="bg-red-500 text-white rounded-2xl px-3 py-1 shadow-lg w-full flex items-center justify-center">
+              غير متوفر</div>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 shadow-md rounded-full">
+              <UserIcon size={16} className="mr-2" />
+              <span>تواصل مع المبيعات</span>
+            </Button>
+          </div>)}
+
       </CardFooter>
     </Card>
   );
@@ -101,12 +112,17 @@ const TotalPrice = ({
   price: number;
 }) => {
   return (
-    <div className="p-2 rounded-lg shadow-sm bg-secondary">
-      <div className="flex items-center justify-center gap-2 text-sm font-semibold text-foreground">
-        <span className="md:block">الإجمالي:</span>
-        <span>${(quantity * price).toFixed(2)}</span>
-      </div>
-    </div>
+    <>
+      {quantity !== 1 &&
+        <div className="p-2 rounded-lg shadow-sm bg-secondary w-full">
+          <div className="flex items-center justify-center gap-2 text-sm font-semibold text-foreground">
+            <span className="md:block">الإجمالي:</span>
+            <span>${(quantity * price).toFixed(2)}</span>
+          </div>
+
+        </div>
+      }
+    </>
   );
 };
 

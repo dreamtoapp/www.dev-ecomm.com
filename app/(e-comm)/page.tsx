@@ -57,7 +57,7 @@ export default async function Page({
       {session && <CheckUserActivation user={session.user} />}
       {session && <CheckUserLocation user={session.user} />}
 
-      <SliderSection offers={promotions} />
+      {/* <SliderSection offers={promotions} /> */}
       <ClearButton slugString={slug} />
       <CategoryList
         suppliers={supplierWithItems.companyData}

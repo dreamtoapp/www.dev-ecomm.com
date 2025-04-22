@@ -18,12 +18,12 @@ import { menuItems } from '../helper/menuItem';
 
 export default function DashboardSidebar() {
   return (
-    <Sidebar collapsible='icon' variant='inset' side="right">
-      <SidebarHeader>
+    <Sidebar collapsible='icon' variant='inset' side="right" >
+      <SidebarHeader  className='bg-background shadow-xl'>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href='/' className='text-sky-700 hover:text-sky-600'>
+              <Link href='/' className='text-sky-700 hover:text-sky-600 '>
                 <ArrowLeft />
                 <span>العودة للمتجر  </span>
               </Link>
@@ -31,7 +31,7 @@ export default function DashboardSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='bg-background'>
         <SidebarGroup>
           <SidebarGroupLabel className='bg-secondary text-secondary-foreground  rounded-none'>لوحة التحكم</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -39,7 +39,7 @@ export default function DashboardSidebar() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link href={item.url} className='hover:bg-primary hover:text-primary-foreground'>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>

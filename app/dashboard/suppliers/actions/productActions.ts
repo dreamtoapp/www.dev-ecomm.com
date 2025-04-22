@@ -1,7 +1,6 @@
 // app/dashboard/suppliers/actions/supplierActions.ts
 "use server";
-import db from "@/lib/prisma";
-import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import db from '@/lib/prisma';
 
 export async function getProducts(supplierId?: string) {
   return await db.product.findMany({

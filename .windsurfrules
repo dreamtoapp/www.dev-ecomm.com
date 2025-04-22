@@ -1,5 +1,3 @@
-# www.ammawag.com
-
 ## 📋 Project Overview
 
 A modern e-commerce platform designed for the Saudi Arabian market, focusing on user-friendly interface, cultural relevance, and efficient order management.
@@ -115,7 +113,6 @@ www.ammawag.com/
   - SweetAlert2
 - **Maps:** Google Maps & Leaflet
 - **Real-time:** Pusher
-- **PDF Generation:** jsPDF, PDFMake
 - **State Management:** Zustand
 
 ## 🔐 Security
@@ -136,8 +133,7 @@ www.ammawag.com/
 - Dark/Light mode
 - Real-time updates
 - Map integration
-- PDF generation
-- QR code generation
+
 - Image upload with Cloudinary
 - Email notifications
 - Social sharing

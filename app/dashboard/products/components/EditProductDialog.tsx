@@ -13,7 +13,7 @@ import { productSchema } from "../logic/validation"; // Import Zod schema for pr
 import { Loader2, Pencil } from "lucide-react"; // Import icons
 import InputField from "@/components/InputField"; // Reusable InputField
 import ImageUploadField from "@/components/ImageUploadField"; // Reusable ImageUploadField
-import { updateProduct } from "../actions/Actions";
+import { updateProduct } from "../actions";
 
 interface EditProductDialogProps {
   product: {
