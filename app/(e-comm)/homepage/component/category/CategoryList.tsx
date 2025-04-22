@@ -27,7 +27,7 @@ interface ProductCategoryProps {
 
 }
 
-const SupplierCard = ({ supplier }: { supplier: Supplier }) => {
+const SupplierCard = ({ supplier, index }: { supplier: Supplier, index: number }) => {
   const productCount = supplier._count?.products ?? 0;
   const hasProducts = productCount > 0;
 
@@ -45,7 +45,8 @@ const SupplierCard = ({ supplier }: { supplier: Supplier }) => {
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
-              loading="lazy"
+              // loading="lazy"
+              priority={index < 4}
               decoding="async"
             />
           ) : (
@@ -84,7 +85,7 @@ const CategoryList = ({ suppliers, cardHeader, cardDescription }: ProductCategor
 
       <ScrollArea className="w-full">
         <div className="flex gap-3 pb-4">
-          {suppliers.map((supplier) => (
+          {suppliers.map((supplier, index) => (
             <Link
               key={supplier.id}
               href={`?slug=${supplier.slug}`}
@@ -95,7 +96,7 @@ const CategoryList = ({ suppliers, cardHeader, cardDescription }: ProductCategor
             >
               <SupplierCard
                 supplier={supplier}
-
+                index={index}
               />
             </Link>
           ))}

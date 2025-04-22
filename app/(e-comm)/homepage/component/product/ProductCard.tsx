@@ -58,8 +58,8 @@ const ProductCard = ({
           width={300}
           height={200}
           className="w-full h-40 object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
-          // priority
-          priority={index < 4}
+        // priority
+        // priority={index < 4}
         />
       </CardHeader>
 
