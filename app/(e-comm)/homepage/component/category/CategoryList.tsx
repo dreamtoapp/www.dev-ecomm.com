@@ -46,7 +46,7 @@ const SupplierCard = ({ supplier, index }: { supplier: Supplier, index: number }
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
               // loading="lazy"
-              priority={index < 4}
+              priority={index < 6}
               decoding="async"
             />
           ) : (
