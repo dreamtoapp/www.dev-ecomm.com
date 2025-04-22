@@ -74,7 +74,7 @@ export default function ProductList({ products }: { products: Product[] }) {
         className={`grid gap-6 ${isSingleColumn ? "grid-cols-1" : "grid-cols-2"
           } sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
       >
-        {products.map((product) => (
+        {products.map((product, index) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -83,6 +83,7 @@ export default function ProductList({ products }: { products: Product[] }) {
             onAddToCart={handleAddToCart}
             isInCart={!!cart[product.id]}
             showNotification={!!notifications[product.id]}
+            index={index}
           />
         ))}
       </div>

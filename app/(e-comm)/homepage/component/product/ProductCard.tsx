@@ -26,9 +26,11 @@ const ProductCard = ({
   onAddToCart,
   isInCart,
   showNotification,
+  index,
 }: {
   product: Product;
   quantity: number;
+  index: number;
   onQuantityChange: (productId: string, delta: number) => void;
   onAddToCart: (productId: string, quantity: number, product: Product) => void;
   isInCart: boolean;
@@ -56,7 +58,8 @@ const ProductCard = ({
           width={300}
           height={200}
           className="w-full h-40 object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
-        // priority
+          // priority
+          priority={index < 4}
         />
       </CardHeader>
 
