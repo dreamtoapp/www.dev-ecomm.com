@@ -33,7 +33,7 @@ export const menuItems = [
   },
   {
     title: "إدارة المنتجات",
-    url: "/dashboard/productmanagement",
+    url: "/dashboard/porductmangment",
     icon: Package,
   },
   {

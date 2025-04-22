@@ -1,16 +1,17 @@
 import React from 'react';
-
-import { getOfferCategory } from './actions/getOfferCategory';
+import { getSliderImages } from './actions/getSliderImages';
 import AddOfferForm from './components/AddOffer';
+import SliderImagesGallery from './components/SliderImagesGallery';
 
 async function page() {
-  // Fetch categories from the backend
-  const offerCategory = await getOfferCategory();
+  // Fetch slider images from the backend
+  const sliderImages = await getSliderImages();
 
   return (
-
-    <AddOfferForm suppliers={offerCategory} />
-
+    <>
+      <AddOfferForm />
+      <SliderImagesGallery images={sliderImages} />
+    </>
   );
 }
 

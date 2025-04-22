@@ -7,6 +7,7 @@ export const getAllProduct = async () => {
 };
 
 export const getAllProductsWithSupplier = async (supplierId?: string) => {
+ 
   try {
     const products = await db.product.findMany({
       where: supplierId ? { supplierId } : undefined, // Filter by supplierId if provided
@@ -14,6 +15,7 @@ export const getAllProductsWithSupplier = async (supplierId?: string) => {
         supplier: true, // Include supplier information
       },
     });
+   
     return products;
   } catch (error) {
     console.error("Error fetching products with supplier info:", error);
@@ -22,5 +24,5 @@ export const getAllProductsWithSupplier = async (supplierId?: string) => {
 };
 
 export async function getAllSuppliers() {
-  return await db.supplier.findMany({ select: { id: true, name: true } });
+  return await db.supplier.findMany({ select: { id: true, name: true,type:true } });
 }
