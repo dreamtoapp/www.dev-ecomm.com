@@ -19,7 +19,7 @@ import { menuItems } from '../helper/menuItem';
 export default function DashboardSidebar() {
   return (
     <Sidebar collapsible='icon' variant='inset' side="right" >
-      <SidebarHeader  className='bg-background shadow-xl'>
+      <SidebarHeader className='bg-background shadow-xl'>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
@@ -39,7 +39,7 @@ export default function DashboardSidebar() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className='hover:bg-primary hover:text-primary-foreground'>
+                    <Link href={item.url} className='hover:bg-primary hover:text-primary-foreground' target={item.newTab ? '_blank' : '_self'}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -49,7 +49,6 @@ export default function DashboardSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

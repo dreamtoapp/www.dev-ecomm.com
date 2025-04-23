@@ -1,8 +1,13 @@
 "use client";
 
+import dynamic from 'next/dynamic';
 import React from "react";
 
-import Map from "../../Map";
+// Dynamic import for Map (potentially heavy component)
+const Map = dynamic(() => import('../../GoogleMap'), {
+  ssr: false,
+  loading: () => <div>Loading map…</div>,
+});
 
 const ContactInfo = ({
   email,
@@ -27,7 +32,6 @@ const ContactInfo = ({
       <p className="text-muted-foreground text-sm">{address}</p>
       {/* Professional Button to Open Dialog */}
       <Map latitude={latitude ? parseFloat(latitude) : null} longitude={longitude ? parseFloat(longitude) : null} />
-
     </div>
   );
 };

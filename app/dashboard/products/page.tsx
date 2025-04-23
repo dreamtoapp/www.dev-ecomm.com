@@ -63,7 +63,13 @@ function ProductsGrid({ products, supplierId }: { products: any[]; supplierId: s
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <img src="/empty-box.svg" alt="No products" className="w-32 h-32 mb-4 opacity-80" />
+        <Image
+          src="/empty-box.svg"
+          alt="No products"
+          width={128}
+          height={128}
+          className="w-32 h-32 mb-4 opacity-80"
+        />
         <p className="text-muted-foreground text-lg mb-2">لا توجد منتجات حتى الآن</p>
         <AddProductDialog supplierId={supplierId} />
       </div>

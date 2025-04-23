@@ -10,11 +10,11 @@ export default function Logo({ logo, logoAlt }: { logo: string; logoAlt: string 
       >
         <Image
           src={logo || "/assets/logo.png"}
-          alt={logoAlt} // Improved alt text for better SEO
-          fill // Use fill to ensure the image scales to fit the parent
+          alt={logoAlt}
+          fill
           priority
-          className="object-contain rounded-full" // Ensure the image is rounded
-          sizes="(max-width: 768px) 120px, 160px" // Responsive sizes for mobile and desktop
+          className="object-contain rounded-full"
+          sizes="(max-width: 768px) 120px, 160px"
         />
       </div>
     </Link>

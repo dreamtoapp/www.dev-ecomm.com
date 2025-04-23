@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import Map from '../../../components/Map';
+import Map from '../../../components/GoogleMap';
 import { getUsers } from './action/actions';
 import EditUser from './component/EditUser';
 

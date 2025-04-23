@@ -117,7 +117,7 @@ async function seedSuppliers(count: number): Promise<void> {
         data: {
           name: faker.company.name(),
           logo: getRealImage(), // Use real image URL
-          publicId: faker.string.uuid(),
+          
           email: faker.internet.email(),
           phone: faker.phone.number(),
           address: faker.location.streetAddress(),
@@ -130,7 +130,7 @@ async function seedSuppliers(count: number): Promise<void> {
   }
 }
 
-// Seed products (now including details and publicId fields)
+
 async function seedProducts(count: number): Promise<void> {
   try {
     log(`Generating ${count} fake products...`);
@@ -148,7 +148,7 @@ async function seedProducts(count: number): Promise<void> {
           size: faker.helpers.arrayElement(["1L", "500ml", "250ml"]),
           details: faker.lorem.sentence(), // Added details field
           imageUrl: getRealImage(), // Use real image URL
-          publicId: faker.string.uuid(), // Added publicId field
+          
           published: faker.datatype.boolean(),
         },
       });

@@ -13,6 +13,7 @@ model Supplier {
   name      String    @default("")
   slug      String    @default("") 
   logo      String? // Logo URL for branding (optional)
+  publicId  String? // Public ID of the image in Cloudinary (optional)
   email     String    @default("")
   phone     String    @default("")
   address   String    @default("")
@@ -31,6 +32,7 @@ model Product {
   size       String?
   details    String?
   imageUrl   String?
+  publicId   String? // Public ID of the image in Cloudinary (optional)
   supplierId String   @db.ObjectId
   type       String   @default("product")
   supplier   Supplier @relation(fields: [supplierId], references: [id])

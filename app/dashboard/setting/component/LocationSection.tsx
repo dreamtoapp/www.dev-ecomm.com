@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../../components
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
-import Map from "../../../../components/Map";
+import Map from "../../../../components/GoogleMap";
 import { toast } from "sonner";
 
 const LocationSection = ({

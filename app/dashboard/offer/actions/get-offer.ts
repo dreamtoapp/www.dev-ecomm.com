@@ -13,7 +13,6 @@ export async function getOfferCount() {
 
         logo: true,
         type: true,
-        publicId: true,
         _count: { select: { products: true } }, // Count of associated products
       },
     });

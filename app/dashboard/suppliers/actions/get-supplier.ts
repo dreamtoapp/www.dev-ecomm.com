@@ -13,7 +13,7 @@ export async function getSuppliers() {
 
         logo: true,
         type: true,
-        publicId: true,
+        
         _count: { select: { products: true } }, // Count of associated products
       },
     });

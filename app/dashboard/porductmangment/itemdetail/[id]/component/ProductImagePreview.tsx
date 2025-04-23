@@ -22,7 +22,7 @@ const ProductImagePreview: React.FC<ProductImagePreviewProps> = ({ src, alt, fal
           fill
           className="object-cover w-full h-full bg-background"
           onLoad={() => setImageLoading(false)}
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 640px) 90vw, (max-width: 1200px) 33vw, 25vw"
           priority={false}
         />
         {imageLoading && (

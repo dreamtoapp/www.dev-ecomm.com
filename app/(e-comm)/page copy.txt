@@ -6,10 +6,9 @@ import { generatePageMetadata } from '../../lib/seo-utils';
 import { fetchProducts } from './homepage/actions/fetchProducts';
 import { getPromotions } from './homepage/actions/getPromotions';
 import { fetchSuppliersWithProducts } from './homepage/actions/getSuppliersWithProducts';
-// import CategoryList from './homepage/component/category/CategoryList';
-// import CheckUserActivation from './homepage/component/CheckUserActivation';
-// import CheckUserLocation from './homepage/component/CheckUserLocation';
-import { CategoryListClient, CheckUserActivationClient, CheckUserLocationClient } from './components/EcommClientWrappers';
+import CategoryList from './homepage/component/category/CategoryList';
+import CheckUserActivation from './homepage/component/CheckUserActivation';
+import CheckUserLocation from './homepage/component/CheckUserLocation';
 
 const SkeletonLoader = () => <div className="animate-pulse">Loading...</div>;
 
@@ -55,12 +54,12 @@ export default async function Page({
 
   return (
     <div className="container mx-auto bg-background text-foreground flex flex-col gap-4">
-      {session && <CheckUserActivationClient user={session.user} />}
-      {session && <CheckUserLocationClient user={session.user} />}
+      {session && <CheckUserActivation user={session.user} />}
+      {session && <CheckUserLocation user={session.user} />}
 
       <SliderSection offers={promotions} />
       <ClearButton slugString={slug} />
-      <CategoryListClient
+      <CategoryList
         suppliers={supplierWithItems.companyData}
         cardDescription={
           supplierWithItems.companyData.length > 0
@@ -74,13 +73,13 @@ export default async function Page({
         }
       />
       {supplierWithItems.offerData && supplierWithItems.offerData.length > 0 ? (
-        <CategoryListClient
+        <CategoryList
           suppliers={supplierWithItems.offerData}
           cardDescription="استمتع بأفضل العروض والخصومات على المنتجات المختارة"
           cardHeader="قائمة العروض الحصرية"
         />
       ) : (
-        <CategoryListClient
+        <CategoryList
           suppliers={[]}
           cardDescription="لا توجد عروض متاحة حالياً"
           cardHeader="العروض غير متوفرة"
@@ -90,3 +89,8 @@ export default async function Page({
     </div>
   );
 }
+
+
+
+
+

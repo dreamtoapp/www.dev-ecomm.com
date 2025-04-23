@@ -1,14 +1,26 @@
-// "use client";
+"use client";
+
+import dynamic from 'next/dynamic';
+
+// Dynamic import for Newsletter (client-only, interactive)
+const Newsletter = dynamic(() => import('./Newsletter'), {
+  ssr: false,
+  loading: () => <div>Loading newsletter…</div>,
+});
+
+// Dynamic import for WhatsAppButton (optional, lightweight)
+const WhatsAppButton = dynamic(() => import('@/app/(e-comm)/homepage/component/WhatsAppButton'), {
+  ssr: false,
+  loading: () => null,
+});
 
 import React from 'react'
 
-import WhatsAppButton from '@/app/(e-comm)/homepage/component/WhatsAppButton'
 import { Separator } from '@/components/ui/separator'
 
 import AboutUs from './AboutUs'
 import ContactInfo from './ContactInfo'
 import Copyright from './Copyright'
-import Newsletter from './Newsletter'
 import QuickLinks from './QuickLinks'
 import SocialMedia from './SocialMedia'
 

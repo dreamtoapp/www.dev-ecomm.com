@@ -78,8 +78,9 @@ export const menuItems = [
   },
   {
     title: "لوحة المطور",
-    url: "/dashboard/setting",
+    url: "https://www.dreamto.app",
     icon: FaCode,
+    newTab: true
   },
   {
     title: "صيانة النظام",

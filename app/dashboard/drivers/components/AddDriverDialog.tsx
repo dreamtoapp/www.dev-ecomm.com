@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createDriver } from "../actions/Actions";
+import Image from "next/image";
 
 export default function AddDriverDialog({
   children,
@@ -118,10 +119,13 @@ export default function AddDriverDialog({
             {/* Image Preview */}
             {imagePreview && (
               <div className="mt-2">
-                <img
+                <Image
                   src={imagePreview}
                   alt="Preview"
+                  width={128}
+                  height={128}
                   className="w-32 h-32 object-cover rounded-md"
+                  unoptimized
                 />
               </div>
             )}

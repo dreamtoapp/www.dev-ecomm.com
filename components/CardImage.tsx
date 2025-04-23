@@ -74,21 +74,19 @@ const CardImage: React.FC<CardImageProps> = ({
       {imageUrl && !hasError && (
         <div className="relative w-full h-full">
           <Image
-            src={imageUrl}
+            src={imageUrl || fallbackSrc}
             alt={altText}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={`object-cover object-center transition-opacity duration-500 ${
-              isLoading ? "opacity-0" : "opacity-100"
-            }`}
-            onLoad={() => setIsLoading(false)} // Hide skeleton when image loads
-            onError={(e) => {
-              e.currentTarget.src = ""; // Clear the broken image source
-              setIsLoading(false); // Stop showing the skeleton
-              setHasError(true); // Mark as errored
-            }}
-            loading={priority ? "eager" : "lazy"} // Use eager loading if priority is true
-            priority={priority} // Add the priority property
+            width={300}
+            height={300}
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 300px"
+            priority={priority}
+            className={className}
+            style={style}
+            onLoad={() => setIsLoading(false)}
+            onError={() => setHasError(true)}
+            unoptimized={!!imageUrl && imageUrl.startsWith('data:')}
+            placeholder={priority ? 'blur' : undefined}
+            blurDataURL={priority ? '/default-logo.png' : undefined}
           />
           {/* Overlay for Gradual Reveal */}
           {isLoading && (

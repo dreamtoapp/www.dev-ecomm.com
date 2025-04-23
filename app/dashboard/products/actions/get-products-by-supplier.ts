@@ -21,7 +21,6 @@ export async function getProductsBySupplier(supplierId: string) {
         name: true,
         slug: true,
         logo: true,
-        publicId: true,
         email: true,
         phone: true,
         address: true,

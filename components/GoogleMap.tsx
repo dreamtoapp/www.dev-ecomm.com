@@ -17,7 +17,7 @@ interface MapProps {
   zoom?: number;
 }
 
-const Map = ({ latitude, longitude, zoom = 15 }: MapProps) => {
+const GoogleMap = ({ latitude, longitude, zoom = 15 }: MapProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Check if valid coordinates are provided
@@ -25,11 +25,9 @@ const Map = ({ latitude, longitude, zoom = 15 }: MapProps) => {
   const isLongitudeValid = longitude !== undefined && longitude !== null && longitude >= -180 && longitude <= 180;
   const hasValidCoordinates = isLatitudeValid && isLongitudeValid;
 
-  // Construct the map URL if valid coordinates exist
+  // Construct a Google Maps embed URL for high-accuracy display without API key
   const mapUrl = hasValidCoordinates
-    ? `https://www.openstreetmap.org/export/embed.html?bbox=${longitude! - 0.01
-    },${latitude! - 0.01},${longitude! + 0.01},${latitude! + 0.01
-    }&layer=mapnik&marker=${latitude},${longitude}`
+    ? `https://maps.google.com/maps?q=${latitude},${longitude}&z=18&output=embed`
     : "";
 
   return (
@@ -46,33 +44,25 @@ const Map = ({ latitude, longitude, zoom = 15 }: MapProps) => {
         <DialogContent className="sm:max-w-[800px]">
           <DialogHeader>
             <DialogTitle>عرض الموقع</DialogTitle>
-            {/* <DialogDescription>
-              {hasValidCoordinates
-                ? "Below is the map for the provided coordinates:"
-                : "The provided coordinates are invalid. Please check the latitude and longitude values."}
-            </DialogDescription> */}
+
           </DialogHeader>
 
           {/* Map Display */}
           {hasValidCoordinates ? (
-            <div className="w-full h-[400px] rounded-lg shadow-md overflow-hidden">
+            <div className="w-full h-[400px]">
               <iframe
-                title="Location Map"
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                scrolling="no"
-                marginHeight={0}
-                marginWidth={0}
+                title="Google Map Location"
                 src={mapUrl}
+                width="100%"
+                height="400"
                 style={{ border: 0 }}
                 allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
           ) : (
-            <div className="text-center text-red-500 font-medium">
-              Unable to display the map due to invalid coordinates.
-            </div>
+            <div className="text-red-500">Invalid coordinates provided.</div>
           )}
         </DialogContent>
       </Dialog>
@@ -80,4 +70,4 @@ const Map = ({ latitude, longitude, zoom = 15 }: MapProps) => {
   );
 };
 
-export default Map;
+export default GoogleMap;

@@ -31,7 +31,7 @@ export default function DriverTrip() {
   useEffect(() => {
     if (driver) {
       router.push(
-        `/driver-trip/driver?driverId=${driver.id}&status=InWay&name=${driver.name}`
+        `/driver/driver?driverId=${driver.id}&status=InWay&name=${driver.name}`
       );
     }
   }, [driver, router]);

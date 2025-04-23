@@ -57,6 +57,7 @@ const ProductCard = ({
           alt={product.name}
           width={300}
           height={200}
+          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 300px"
           className="w-full h-40 object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
         // priority
         // priority={index < 4}

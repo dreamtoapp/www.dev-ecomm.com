@@ -77,17 +77,6 @@ export default function RealTimeTable({
 
   return (
     <div className="p-6 relative bg-background text-foreground">
-      {/* Notification */}
-
-      {/* <AnimatePresence>
-        {notification && (
-          <Notification
-            key="notification"
-            message={notification}
-            onClose={() => setNotification(null)}
-          />
-        )}
-      </AnimatePresence> */}
 
       {/* Title and Total Messages Count */}
       <div className="mb-4 text-right">
@@ -135,9 +124,8 @@ export default function RealTimeTable({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`${
-                  index % 2 === 0 ? "bg-muted/50" : "bg-background"
-                } hover:bg-muted/80 transition-colors`}
+                className={`${index % 2 === 0 ? "bg-muted/50" : "bg-background"
+                  } hover:bg-muted/80 transition-colors`}
               >
                 <TableCell className="text-right text-foreground">
                   {submission.name}
