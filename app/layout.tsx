@@ -20,15 +20,15 @@ export const metadata: Metadata = {
   },
 };
 
-export function head() {
-  return (
-    <>
-      {/* Removed preload links for fallback AVIF and WebP images for Lighthouse retest */}
-      {/* <link rel="preload" as="image" href="/fallback/fallback.avif" type="image/avif" crossOrigin="anonymous" /> */}
-      {/* <link rel="preload" as="image" href="/fallback/fallback.webp" type="image/webp" crossOrigin="anonymous" /> */}
-    </>
-  );
-}
+// export function head() {
+//   return (
+//     <>
+//       {/* Removed preload links for fallback AVIF and WebP images for Lighthouse retest */}
+//       {/* <link rel="preload" as="image" href="/fallback/fallback.avif" type="image/avif" crossOrigin="anonymous" /> */}
+//       {/* <link rel="preload" as="image" href="/fallback/fallback.webp" type="image/webp" crossOrigin="anonymous" /> */}
+//     </>
+//   );
+// }
 
 export default async function RootLayout({
   children,
@@ -43,7 +43,7 @@ export default async function RootLayout({
   return (
     <SessionProvider>
       <html lang={locale} dir={dir} suppressHydrationWarning>
-        <head>{head()}</head>
+        {/* <head>{head()}</head> */}
         <body className={`min-h-screen bg-background antialiased ${fontClass}`}>
           <ThemeProvider
             attribute="class"
