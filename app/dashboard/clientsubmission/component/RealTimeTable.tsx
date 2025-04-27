@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Pusher from "pusher-js";
+// import dynamic from "next/dynamic";
+// const Pusher = dynamic(() => import("pusher-js"), { ssr: false });
 import {
   Table,
   TableHeader,
@@ -38,42 +39,11 @@ export default function RealTimeTable({
     useState<Submission[]>(initialSubmissions);
   const [notification, setNotification] = useState<string | null>(null);
   // const { contacts } = usePusher();
-  useEffect(() => {
-    // Initialize Pusher
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-    });
 
-    // Subscribe to the Pusher channel
-    const channel = pusher.subscribe("contact-submissions");
-    channel.bind("new-submission", (newSubmission: Submission) => {
-      // Format the date before adding it to the state
-      const formattedSubmission = {
-        ...newSubmission,
-        createdAt: format(
-          new Date(newSubmission.createdAt),
-          "dd/MM/yyyy HH:mm:ss",
-          {
-            locale: ar,
-          }
-        ),
-      };
-
-      setSubmissions((prevSubmissions) => [
-        ...prevSubmissions,
-        formattedSubmission,
-      ]);
-
-      // Show a notification for the new submission
-      setNotification(`رسالة جديدة من ${newSubmission.name}`);
-      setTimeout(() => setNotification(null), 5000); // Auto-dismiss after 5 seconds
-    });
-
-    // Cleanup on unmount
-    return () => {
-      pusher.unsubscribe("contact-submissions");
-    };
-  }, []);
+  // TODO: Re-implement Pusher functionality
+  // useEffect(() => {
+  //   // Pusher-related code
+  // }, []);
 
   return (
     <div className="p-6 relative bg-background text-foreground">

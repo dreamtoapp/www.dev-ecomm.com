@@ -1,6 +1,7 @@
 "use server";
 import Pusher from "pusher";
 import { revalidatePath } from "next/cache";
+import uniqeId from "./uniqeId";
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
@@ -18,7 +19,7 @@ export async function submitForm(formData: {
   type: "message" | "order";
 }) {
   const newSubmission = {
-    id: crypto.randomUUID(),
+    id: uniqeId(),
     type: formData.type, // "message" أو "order"
     name: formData.name,
     email: formData.email,

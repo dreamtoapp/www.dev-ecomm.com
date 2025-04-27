@@ -39,6 +39,7 @@ export async function createProduct(prevState: any, formData: FormData) {
   try {
     await db.product.create({ data: offerData });
     revalidatePath("/dashboard/products");
+    revalidatePath("/dashboard/products-control");
     revalidatePath("/")
     return { success: true, message: "Product created successfully" };
   } catch (error: any) {

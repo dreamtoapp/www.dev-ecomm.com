@@ -2,7 +2,8 @@
 "use server";
 import { auth } from '@/auth';
 import db from '@/lib/prisma';
-import { pusherServer } from '@/lib/pusherSetting';
+import { pusherServer } from '@/lib/pusherServer';
+// import { pusherServer } from '@/lib/pusherSetting'; // Commented out for reference
 //  TODO:import { OrderCartItem } from '../../../../types/order'; need to remove and refactore
 import { OrderCartItem } from '../../../../types/order';
 import { generateOrderNumber } from '../helpers/orderNumber';

@@ -431,3 +431,10 @@ enum RequestType {
   FEATURE     // طلب جديد
   IMPROVEMENT // تعديل
 }
+
+model SupportPing {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  message   String
+  timestamp DateTime @default(now())
+}

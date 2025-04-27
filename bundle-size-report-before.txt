@@ -1,0 +1,17 @@
+# Next.js Bundle Size Report (Before Optimization)
+# Date: 2025-04-24 00:04
+
+| File Name                                 | Size (bytes) | Size (KB) |
+|-------------------------------------------|--------------|-----------|
+| 7209.0fa86535cd163eeb.js                  | 516,591      | 504 KB    |
+| d653e73f-2a323475a8b9ca55.js (index.js)   | 325,566      | 318 KB    |
+| 9525-a897288de156d423.js                  | 172,412      | 168 KB    |
+| a9a1cbce-f4c5da9b523f8cf7.js              | 169,089      | 165 KB    |
+| c405c232.279e0015ca8a8273.js              | 141,864      | 138 KB    |
+| framework-18ce6816b8c93495.js             | 182,812      | 179 KB    |
+| 5625-8df91eef8cf7ae8b.js                  | 173,303      | 169 KB    |
+| main-3a77399af350c2b1.js                  | 112,932      | 110 KB    |
+| polyfills-42372ed130431b0a.js             | 112,594      | 110 KB    |
+| 5895-3028c0e958dffed7.js                  | 116,983      | 114 KB    |
+
+# Note: Chunks over 200 KB are considered large and should be optimized.

@@ -3,7 +3,8 @@ import { revalidatePath } from 'next/cache';
 
 import { auth } from '@/auth';
 import db from '@/lib/prisma';
-import { pusherServer } from '@/lib/pusherSetting';
+import { pusherServer } from '@/lib/pusherServer';
+// import { pusherServer } from '@/lib/pusherSetting';
 
 export type SubmitFormState = {
   success: boolean;
@@ -69,13 +70,13 @@ export async function submitContactForm(
 
     return {
       success: true,
-      message: "تم إرسال الرسالة بنجاح ✅",
+      message: "تم إرسال الرسالة بنجاح ",
     };
   } catch (error) {
     console.error("Submission error:", error);
     return {
       success: false,
-      message: "حدث خطأ أثناء الإرسال ⚠️",
+      message: "حدث خطأ أثناء الإرسال ",
     };
   }
 }

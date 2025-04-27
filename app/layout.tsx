@@ -1,7 +1,7 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import { SessionProvider } from 'next-auth/react';
+// import { SessionProvider } from 'next-auth/react';
 import NextTopLoader from 'nextjs-toploader';
 
 import { Toaster } from '@/components/ui/sonner';
@@ -41,7 +41,7 @@ export default async function RootLayout({
   const fontClass = dir === Directions.RTL ? "font-cairo" : "font-roboto"; // Use Tailwind directly
 
   return (
-    <SessionProvider>
+    // <SessionProvider>
       <html lang={locale} dir={dir} suppressHydrationWarning>
         {/* <head>{head()}</head> */}
         <body className={`min-h-screen bg-background antialiased ${fontClass}`}>
@@ -58,6 +58,6 @@ export default async function RootLayout({
           {/* </NotificationsProvider> */}
         </body>
       </html>
-    </SessionProvider>
+    // </SessionProvider>
   );
 }

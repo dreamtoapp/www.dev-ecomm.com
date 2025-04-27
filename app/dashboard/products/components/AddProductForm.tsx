@@ -1,5 +1,5 @@
 "use client"
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import InputField from "../../../../components/InputField";
 import { createProduct } from "../actions";
@@ -8,9 +8,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface AddProductFormProps {
   supplierId: string;
+  onSuccess?: () => void;
 }
 
-export default function AddProductForm({ supplierId }: AddProductFormProps) {
+export default function AddProductForm({ supplierId, onSuccess }: AddProductFormProps) {
    
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<any>({});
@@ -23,6 +24,23 @@ export default function AddProductForm({ supplierId }: AddProductFormProps) {
 
  
    const [state, addAction, isPending] = useActionState(createProduct, { success: false, message: "" });
+
+  useEffect(() => {
+    if (state.success && state.message) {
+      import("@/lib/swal-config").then(({ default: ReactSwal }) => {
+        ReactSwal.fire({
+          icon: "success",
+          title: "تمت إضافة المنتج بنجاح",
+          text: state.message,
+          timer: 2000,
+          showConfirmButton: false,
+          position: "top",
+          toast: true,
+        });
+      });
+      if (onSuccess) onSuccess();
+    }
+  }, [state.success, state.message, onSuccess]);
 
   return (
     <>

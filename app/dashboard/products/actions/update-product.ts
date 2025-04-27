@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import db from "../../../../lib/prisma";
 import { prepareProductData } from "./prepare-product-data";
 
@@ -16,6 +17,10 @@ export async function updateProduct(
       where: { id: productId },
       data: productData,
     });
+    revalidatePath("/dashboard/products");
+    revalidatePath("/dashboard/products-control");
+    revalidatePath("/");
+    return { success: true, message: "Product updated successfully" };
   } catch (error: any) {
     console.error("Error updating product:", error);
     throw new Error("Failed to update product.");

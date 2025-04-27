@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache';
 
 import { auth } from '@/auth';
 import db from '@/lib/prisma';
-import { pusherServer } from '@/lib/pusherSetting';
+import { pusherServer } from '@/lib/pusherServer';
+// import { pusherServer } from '@/lib/pusherSetting';
 
 export async function subscribeToNewsletter(formData: FormData) {
   const email = formData.get("email") as string;

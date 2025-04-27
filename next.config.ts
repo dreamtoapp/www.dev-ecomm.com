@@ -1,3 +1,8 @@
+// Enable bundle analyzer only for production builds when ANALYZE env var is set
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production',
+});
+
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -25,6 +30,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // experimental: {
+  //   fallbackNodePolyfills: false,
+  // },
 };
 
-export default nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

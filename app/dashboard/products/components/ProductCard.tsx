@@ -57,7 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Action Cell */}
         <div className="flex items-center justify-center w-full">
           <Link
-            href={`/dashboard/porductmangment/itemdetail/${product.id}`}
+            href={`/dashboard/products/itemdetail/${product.id}`}
             className="flex items-center gap-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/80 transition-colors text-xs font-semibold shadow-sm  justify-center"
             aria-label="عرض التفاصيل"
           >

@@ -3,6 +3,7 @@ import React from 'react';
 import { format } from 'date-fns';
 
 import { userData } from '../action/actions';
+import uniqeId from '@/utils/uniqeId';
 
 async function page({
   searchParams,
@@ -73,7 +74,7 @@ async function page({
                       <div className="mt-4 flex items-center flex-col gap-2 w-full">
                         {order.items.map((item: any, itemIndex: number) => (
                           <div
-                            key={order.id + itemIndex + crypto.randomUUID()}
+                            key={uniqeId()}
                             className="flex  items-center justify-between bg-secondary p-2 rounded-lg shadow-sm border border-gray-200 w-full"
                           >
                             <p className="text-lg font-medium text-gray-800">
