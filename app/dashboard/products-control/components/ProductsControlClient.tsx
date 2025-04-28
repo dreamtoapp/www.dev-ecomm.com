@@ -134,6 +134,7 @@ export default function ProductsControlClient() {
         products={filteredProducts !== null ? filteredProducts : []}
         total={total}
         loading={loading}
+        onDeleted={() => fetchAndSetProducts()}
       />
       <PaginationControls
         page={page}

@@ -25,9 +25,10 @@ interface ProductTableProps {
   products: Product[];
   total: number;
   loading?: boolean;
+  onDeleted?: () => void;
 }
 
-export default function ProductTable({ page, pageSize, products, total, loading }: ProductTableProps) {
+export default function ProductTable({ page, pageSize, products, total, loading, onDeleted }: ProductTableProps) {
   if (loading) {
     return (
       <div className="overflow-x-auto border rounded-lg bg-white shadow-sm">
@@ -103,7 +104,7 @@ export default function ProductTable({ page, pageSize, products, total, loading 
               </td>
               <td className="py-2 px-4">{product.outOfStock ? 'غير متوفر' : 'متوفر'}</td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 flex gap-2">
-                <ProductTableClientActions product={product} />
+                <ProductTableClientActions product={product} onDeleted={onDeleted} />
               </td>
             </tr>
           ))}
