@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductTableClientActions from "./ProductTableClientActions";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Supplier {
   id: string;
@@ -23,10 +24,43 @@ interface ProductTableProps {
   pageSize: number;
   products: Product[];
   total: number;
+  loading?: boolean;
 }
 
-export default function ProductTable({ page, pageSize, products, total }: ProductTableProps) {
-  if (!products.length) {
+export default function ProductTable({ page, pageSize, products, total, loading }: ProductTableProps) {
+  if (loading) {
+    return (
+      <div className="overflow-x-auto border rounded-lg bg-white shadow-sm">
+        <table className="min-w-full text-sm rtl text-right">
+          <thead className="bg-accent">
+            <tr>
+              <th className="py-3 px-4">الصورة</th>
+              <th className="py-3 px-4">اسم المنتج</th>
+              <th className="py-3 px-4">السعر</th>
+              <th className="py-3 px-4">الحجم</th>
+              <th className="py-3 px-4">التفاصيل</th>
+              <th className="py-3 px-4">المورد</th>
+              <th className="py-3 px-4">الحالة</th>
+              <th className="py-3 px-4">الكمية</th>
+              <th className="py-3 px-4">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(pageSize)].map((_, i) => (
+              <tr key={i}>
+                {Array(9).fill(0).map((_, j) => (
+                  <td key={j} className="py-2 px-4">
+                    <Skeleton className="h-5 w-full" />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  if (!loading && (!products || products.length === 0)) {
     return <div className="flex items-center justify-center min-h-[200px] text-muted-foreground">لا توجد منتجات</div>;
   }
   return (
