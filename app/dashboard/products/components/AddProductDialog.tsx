@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface AddProductDialogProps {
-  supplierId: string;
+  supplierId?: string;
   disabled?: boolean;
 }
 

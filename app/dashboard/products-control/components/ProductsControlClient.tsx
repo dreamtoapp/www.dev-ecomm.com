@@ -105,46 +105,29 @@ export default function ProductsControlClient() {
 
   return (
     <div className="container mx-auto py-8" dir="rtl">
-      {/* Main section title only once */}
-      <div className="flex flex-col gap-2 mb-6">
-        <h1 className="text-2xl font-bold text-primary">إدارة المنتجات</h1>
-        <p className="text-muted-foreground">عرض جميع المنتجات، التصفية، والبحث، مع إمكانية إضافة منتج جديد.</p>
-      </div>
-      {/* Filter + Add Product: Best Practice Layout */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        {/* Filter bar */}
-        <div className="flex-1 max-w-md">
-          <ProductFilters
-            value={filters.name}
-            onChange={debouncedNameFilterChange}
-            status={filters.status}
-            onStatusChange={(status: string) => handleFilterChange({ status })}
-            type={filters.type}
-            onTypeChange={(type: string) => handleFilterChange({ type })}
-            stock={filters.stock}
-            onStockChange={(stock: string) => handleFilterChange({ stock })}
-          />
-          <button
-            className="btn btn-outline mt-2 w-full"
-            type="button"
-            onClick={handleResetFilters}
-          >
-            إعادة تعيين الفلاتر
-          </button>
+      {/* Header and Add Product Button at the top */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-primary mb-1">إدارة المنتجات</h1>
+          <p className="text-muted-foreground text-sm">عرض جميع المنتجات، التصفية، والبحث، مع إمكانية إضافة منتج جديد.</p>
         </div>
-        {/* Add Product Section - blue card */}
-        <div className="flex-1 bg-blue-50 border border-blue-300 rounded-lg p-4 flex flex-col md:flex-row md:items-end gap-4 min-w-[320px]">
-          {/* Supplier select and AddProductDialog in one line */}
-          <div className="flex flex-row items-center gap-3 w-full">
-            <SupplierSelect value={filters.supplierId} onChange={(supplierId: string | null) => handleFilterChange({ supplierId })} onSupplierCount={setSupplierCount} />
-            {filters.supplierId && supplierCount > 0 && (
-              <div className="flex-1">
-                <AddProductDialog supplierId={filters.supplierId} disabled={false} />
-              </div>
-            )}
-          </div>
-        </div>
+        <AddProductDialog supplierId={filters.supplierId || undefined} />
       </div>
+      {/* Filter Section - modern card UI */}
+      <div className="w-full bg-white border border-border rounded-xl shadow-sm p-4 mb-8 flex flex-col md:flex-row md:items-end gap-4">
+        <ProductFilters
+          value={filters.name}
+          onChange={debouncedNameFilterChange}
+          status={filters.status}
+          onStatusChange={(status: string) => handleFilterChange({ status })}
+          type={filters.type}
+          onTypeChange={(type: string) => handleFilterChange({ type })}
+          stock={filters.stock}
+          onStockChange={(stock: string) => handleFilterChange({ stock })}
+          onReset={handleResetFilters}
+        />
+      </div>
+      {/* Product Table and Pagination */}
       <ProductTable
         page={page}
         pageSize={pageSize}
