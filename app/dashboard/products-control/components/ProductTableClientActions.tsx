@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { toast } from "sonner";
 import { deleteProduct } from "../actions/deleteProduct";
+import { BarChart2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: string;
@@ -18,6 +20,7 @@ interface Product {
 }
 
 export default function ProductTableClientActions({ product, onDeleted }: { product: Product, onDeleted?: () => void }) {
+  const router = useRouter();
   const handleDeleteProduct = async () => {
     try {
       await deleteProduct(product.id);
@@ -27,10 +30,16 @@ export default function ProductTableClientActions({ product, onDeleted }: { prod
       toast.error(err.message || "لا يمكن حذف المنتج. تحقق من عدم ارتباطه بمعاملات.");
     }
   };
-
+  const handleAnalytics = () => {
+    router.push(`/dashboard/products-control/analytics/${product.id}`);
+  };
   return (
     <div className="flex gap-2">
       <UpdateProductDialog product={product} />
+      <Button variant="secondary" size="icon" title="عرض التحليلات" onClick={handleAnalytics}>
+        <BarChart2 className="w-5 h-5" />
+        <span className="sr-only">تحليلات</span>
+      </Button>
       <ConfirmDeleteDialog onConfirm={handleDeleteProduct}>
         <Button variant="destructive" size="icon" title="حذف المنتج">
           <span className="sr-only">حذف</span>🗑️
