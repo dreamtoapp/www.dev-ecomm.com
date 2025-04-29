@@ -13,28 +13,50 @@ export async function getProductAnalytics(productId: string, dateFrom?: string, 
     supplier = await db.supplier.findUnique({ where: { id: product.supplierId }, select: { name: true } });
   }
   // Date range logic
-  const fromDate = dateFrom ? new Date(dateFrom) : new Date(new Date().getFullYear(), new Date().getMonth() - 11, 1);
-  const toDate = dateTo ? new Date(dateTo) : new Date();
-  // Total quantity sold for this product
+  let fromDate = dateFrom ? new Date(dateFrom) : undefined;
+  let toDate = dateTo ? new Date(dateTo) : undefined;
+  // If no range, default to all time (no filter)
+  const orderItemWhere: any = { productId };
+  if (fromDate && toDate) {
+    orderItemWhere.order = { createdAt: { gte: fromDate, lte: toDate } };
+  }
+  // Total quantity sold for this product (filtered)
   const totalSalesAgg = await db.orderItem.aggregate({
     _sum: { quantity: true },
-    where: { productId },
+    where: orderItemWhere,
   });
-  const totalOrders = await db.orderItem.count({ where: { productId } });
-  // Fetch all orderItems for this product in the date range
+  const totalOrders = await db.orderItem.count({ where: orderItemWhere });
+  // Fetch all orderItems for this product in the date range (for chart and history)
   const orderItems = await db.orderItem.findMany({
-    where: {
-      productId,
-      order: { createdAt: { gte: fromDate, lte: toDate } },
-    },
+    where: orderItemWhere,
     include: { order: true },
   });
+  // Calculate total revenue (sum of quantity * price for all order items)
+  const totalRevenue = orderItems.reduce((sum, oi) => sum + (oi.quantity * (oi.price || 0)), 0);
   // Group sales by month
   const months = [];
-  let iter = new Date(fromDate);
-  while (iter <= toDate) {
-    months.push(new Date(iter));
-    iter.setMonth(iter.getMonth() + 1);
+  let iter: Date;
+  if (fromDate && toDate) {
+    iter = new Date(fromDate);
+    while (iter <= toDate) {
+      months.push(new Date(iter));
+      iter.setMonth(iter.getMonth() + 1);
+    }
+  } else if (orderItems.length > 0) {
+    // If no filter, use earliest/latest order dates
+    const itemsWithOrder = orderItems.filter(oi => oi.order && oi.order.createdAt);
+    if (itemsWithOrder.length > 0) {
+      const sorted = itemsWithOrder.slice().sort(
+        (a, b) => new Date(a.order!.createdAt).getTime() - new Date(b.order!.createdAt).getTime()
+      );
+      let min = new Date(sorted[0].order!.createdAt);
+      let max = new Date(sorted[sorted.length - 1].order!.createdAt);
+      iter = new Date(min.getFullYear(), min.getMonth(), 1);
+      while (iter <= max) {
+        months.push(new Date(iter));
+        iter.setMonth(iter.getMonth() + 1);
+      }
+    }
   }
   const salesByMonth = months.map((monthDate, idx) => {
     const nextMonth = new Date(monthDate);
@@ -46,10 +68,12 @@ export async function getProductAnalytics(productId: string, dateFrom?: string, 
     }).reduce((sum, oi) => sum + (oi.quantity || 0), 0);
     return { month, sales };
   });
+  // For history pagination, just return all filtered orderItems; paging is handled in frontend
   return {
     product: { ...product, supplier: supplier?.name || null },
-    totalSales: totalSalesAgg._sum.quantity || 0,
+    totalSales: totalRevenue, // إجمالي قيمة المبيعات بالريال
     totalOrders,
     salesByMonth,
+    orderHistory: orderItems,
   };
 }

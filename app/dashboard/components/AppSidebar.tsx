@@ -9,6 +9,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarRail,
   SidebarTrigger
 } from '@/components/ui/sidebar';
 import { menuGroups } from '../helpers/mainMenu';
@@ -80,6 +81,7 @@ export default function AppSidebar() {
       <SidebarFooter className="p-4 border-t">
         <div className="text-xs text-muted-foreground text-center w-full"> {new Date().getFullYear()} www.amwag.com</div>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

@@ -61,6 +61,7 @@ PaginationLink.displayName = "PaginationLink"
 
 const PaginationPrevious = ({
   className,
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
@@ -70,13 +71,14 @@ const PaginationPrevious = ({
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    <span>{children || "السابق"}</span>
   </PaginationLink>
 )
 PaginationPrevious.displayName = "PaginationPrevious"
 
 const PaginationNext = ({
   className,
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
@@ -85,7 +87,7 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Next</span>
+    <span>{children || "التالي"}</span>
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 )
@@ -106,12 +108,31 @@ const PaginationEllipsis = ({
 )
 PaginationEllipsis.displayName = "PaginationEllipsis"
 
+interface PaginationNavProps extends React.ComponentProps<typeof PaginationPrevious> {
+  previousLabel?: string;
+  nextLabel?: string;
+}
+
+const PaginationNav = ({ previousLabel, nextLabel, ...props }: PaginationNavProps) => {
+  // Default to Arabic for all app, will support multi-language later
+  const prev = previousLabel || "السابق";
+  const next = nextLabel || "التالي";
+  return (
+    <>
+      <PaginationPrevious aria-label={prev}>{prev}</PaginationPrevious>
+      {props.children}
+      <PaginationNext aria-label={next}>{next}</PaginationNext>
+    </>
+  );
+};
+
 export {
   Pagination,
   PaginationContent,
-  PaginationLink,
   PaginationItem,
+  PaginationLink,
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  PaginationNav,
 }

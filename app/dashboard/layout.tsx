@@ -19,7 +19,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   // Hardcode RTL for now; in the future, detect from language/i18n
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen={true}>
       <div className="flex min-h-screen bg-background w-full" dir="rtl">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-h-screen">
