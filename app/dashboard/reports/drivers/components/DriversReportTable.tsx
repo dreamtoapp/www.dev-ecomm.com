@@ -14,7 +14,13 @@ interface DriversReportTableProps {
   }>;
 }
 
-export function DriversReportTable({ drivers }: DriversReportTableProps) {
+
+
+interface DriversReportTablePropsWithPage extends DriversReportTableProps {
+  page: number;
+}
+
+export function DriversReportTable({ drivers, page }: DriversReportTablePropsWithPage) {
   return (
     <Card>
       <CardContent className="overflow-x-auto p-0">
@@ -27,12 +33,13 @@ export function DriversReportTable({ drivers }: DriversReportTableProps) {
               <TableHead className="text-right">الطلبات المكتملة</TableHead>
               <TableHead className="text-right">الطلبات الملغاة</TableHead>
               <TableHead className="text-right">إجمالي الأرباح</TableHead>
+              <TableHead className="text-right">المزيد</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {drivers.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-gray-400">لا توجد بيانات سائقين</TableCell>
+                <TableCell colSpan={7} className="text-center text-gray-400">لا توجد بيانات سائقين</TableCell>
               </TableRow>
             )}
             {drivers.map((driver) => {
@@ -48,6 +55,9 @@ export function DriversReportTable({ drivers }: DriversReportTableProps) {
                   <TableCell>{completedOrders}</TableCell>
                   <TableCell>{cancelledOrders}</TableCell>
                   <TableCell>{totalEarnings.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ر.س</TableCell>
+                  <TableCell>
+                    <a href={`/dashboard/reports/drivers/${driver.id}`} className="text-blue-600 underline hover:text-blue-800">مزيد من المعلومات</a>
+                  </TableCell>
                 </TableRow>
               );
             })}

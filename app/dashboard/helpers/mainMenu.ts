@@ -1,6 +1,7 @@
 // Main menu items for dashboard sidebar (updated URLs)
 import {
   AlertTriangle,
+  Home,
   ListOrdered,
   Timer,
   Truck,
@@ -33,6 +34,7 @@ import {
 } from 'lucide-react';
 
 export const menuGroups = [
+
   {
     label: 'إدارة الطلبات',
     items: [

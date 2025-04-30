@@ -26,7 +26,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           {/* Sticky header */}
           <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-3 bg-secondary border-b">
             <div className="flex items-center gap-2">
-              <SidebarTrigger className="md:hidden block" />
+              <SidebarTrigger />
               <CurrentLinkTitle />
             </div>
             <PusherNotify />

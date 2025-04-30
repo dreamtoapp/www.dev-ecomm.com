@@ -45,8 +45,7 @@ export default function AppSidebar() {
             <LayoutDashboard className="w-6 h-6 text-primary" />
           </Link>
         </div>
-        <span className="font-bold text-2xl text-primary text-center w-full">لوحة التحكم</span>
-        <SidebarTrigger className="md:hidden absolute top-4 left-4" />
+
       </SidebarHeader>
       <SidebarContent className="flex-1 overflow-y-auto p-2">
         {menuGroups.map((group, i) => {
