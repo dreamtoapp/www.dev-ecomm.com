@@ -110,6 +110,7 @@ model Order {
   status        String  @default("Pending")
   isTripStart   Boolean @default(false) // true if trip start -- false on cancel or delever
   amount        Float   @default(0)
+  discount      Float?  @default(0) // Optional discount per order
   resonOfcancel String? @default("")
 
   items      OrderItem[]
@@ -437,4 +438,15 @@ model SupportPing {
   userId    String
   message   String
   timestamp DateTime @default(now())
+}
+
+// Expense Model
+model Expense {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float    // قيمة المصروف
+  note      String?  // وصف أو ملاحظة
+  category  String?  // تصنيف المصروف (اختياري)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?  // المستخدم الذي أضاف المصروف
 }

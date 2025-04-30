@@ -15,6 +15,11 @@ import {
 import { menuGroups } from '../helpers/mainMenu';
 import { Home, LayoutDashboard } from 'lucide-react';
 
+// Type guard for menu items with children
+function hasChildren(item: any): item is { children: any[] } {
+  return Array.isArray(item.children) && item.children.length > 0;
+}
+
 export default function AppSidebar() {
   // For now, hardcode RTL (right side) for Arabic; in future, detect from i18n or context
   const side: 'left' | 'right' = 'right';
@@ -63,15 +68,33 @@ export default function AppSidebar() {
                 style={{ direction: 'rtl' }}
               >
                 {group.items.map(item => (
-                  <li key={item.url}>
-                    <Link
-                      href={item.url}
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors text-sm font-medium hover:bg-accent hover:text-accent-foreground ${pathname === item.url ? 'bg-accent text-accent-foreground font-bold' : ''}`}
-                    >
-                      <item.icon className="w-5 h-5 text-primary" />
-                      <span className="flex-1">{item.title}</span>
-                    </Link>
-                  </li>
+                  <React.Fragment key={item.url}>
+                    <li>
+                      <Link
+                        href={item.url}
+                        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors text-sm font-medium hover:bg-accent hover:text-accent-foreground ${pathname === item.url ? 'bg-accent text-accent-foreground font-bold' : ''}`}
+                      >
+                        <item.icon className="w-5 h-5 text-primary" />
+                        <span className="flex-1">{item.title}</span>
+                      </Link>
+                    </li>
+                    {/* Render sub-menu if available */}
+                    {hasChildren(item) && (
+                      <ul className="pl-8 pr-2 py-1 space-y-1 overflow-y-auto max-h-[400px]">
+                        {item.children.map(child => (
+                          <li key={child.url}>
+                            <Link
+                              href={child.url}
+                              className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors text-xs font-medium hover:bg-blue-50 hover:text-blue-700 ${pathname === child.url ? 'bg-blue-100 text-blue-800 font-bold' : ''}`}
+                            >
+                              <child.icon className="w-4 h-4 text-blue-500" />
+                              <span>{child.title}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </React.Fragment>
                 ))}
               </ul>
             </SidebarGroup>

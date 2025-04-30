@@ -21,6 +21,15 @@ import {
   MapPin,
   Folder,
   Info,
+  BarChart2,
+  TrendingUp,
+  UserCheck,
+  DollarSign,
+  ClipboardList,
+  Gift,
+  Star,
+  ThumbsUp,
+  Award,
 } from 'lucide-react';
 
 export const menuGroups = [
@@ -52,21 +61,46 @@ export const menuGroups = [
     ],
   },
   {
-    label: 'التنبيهات والتقارير',
+    label: 'التقارير',
+    items: [
+      {
+        title: 'التقارير',
+        url: '/dashboard/reports',
+        icon: FileText,
+        children: [
+          { title: 'تقرير المبيعات', url: '/dashboard/reports/sales', icon: TrendingUp },
+          { title: 'التقارير المالية', url: '/dashboard/reports/finance', icon: DollarSign },
+          { title: 'تقرير أداء المنتجات', url: '/dashboard/reports/product-performance', icon: BarChart2 },
+          { title: 'تقرير العملاء', url: '/dashboard/reports/customers', icon: UserCheck },
+          { title: 'تحليلات الطلبات', url: '/dashboard/reports/orders', icon: ClipboardList },
+          { title: 'تقرير المخزون', url: '/dashboard/reports/inventory', icon: ClipboardList },
+          { title: 'تقرير العروض والتخفيضات', url: '/dashboard/reports/promotions', icon: Gift },
+          { title: 'تقرير السائقين والتوصيل', url: '/dashboard/reports/drivers', icon: Truck },
+          { title: 'تقرير التقييمات والمراجعات', url: '/dashboard/reports/reviews', icon: Star },
+          { title: 'الإنجازات والأرقام القياسية', url: '/dashboard/reports/milestones', icon: Award },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'المصروفات',
+    items: [
+      { title: 'المصروفات', url: '/dashboard/expenses', icon: ClipboardList },
+    ],
+  },
+  {
+    label: 'التنبيهات',
     items: [
       { title: 'التنبيهات', url: '/dashboard/alerts', icon: AlertTriangle },
-      { title: 'التقارير', url: '/dashboard/reports', icon: FileText },
       { title: 'تنبيهات الطوارئ', url: '/dashboard/fallback-alerts', icon: AlertTriangle },
     ],
   },
   {
-    label: 'الإعدادات والصيانة',
+    label: 'الإعدادات والمساعدة',
     items: [
-      { title: 'الإعدادات', url: '/dashboard/setting', icon: Settings },
-      { title: 'الصيانة', url: '/dashboard/maintinance', icon: Wrench },
-      { title: 'الشروط والأحكام', url: '/dashboard/rulesandcondtions', icon: ShieldCheck },
+      { title: 'الإعدادات', url: '/dashboard/settings', icon: Settings },
+      { title: 'الدعم الفني', url: '/dashboard/support', icon: Wrench },
       { title: 'الدليل والإرشادات', url: '/dashboard/guidelines', icon: Info },
     ],
   },
-  
 ];
