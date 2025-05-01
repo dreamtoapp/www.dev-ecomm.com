@@ -24,8 +24,8 @@ export async function getFinanceReportData({ from, to }: { from?: string, to?: s
   const expenses = await db.expense.findMany({ where: dateFilter });
   const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount ?? 0), 0);
 
-  // إجمالي الخصومات (من جدول الطلبات)
-  const totalDiscounts = completedOrders.reduce((sum, o) => sum + (o.discount ?? 0), 0);
+  // إجمالي الخصومات (حاليًا غير متوفر في النموذج)
+  const totalDiscounts = 0;
 
   // الربح الصافي
   const netProfit = totalRevenue - totalExpenses;

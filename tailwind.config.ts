@@ -48,8 +48,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        cairo: ["var(--font-cairo)", "sans-serif"],
-        roboto: ["var(--font-roboto)", "sans-serif"],
+        sans: ["var(--font-cairo)", "system-ui", "sans-serif"],
       },
       animation: {
         'bounce-slow': 'bounce-slow 1.5s infinite',

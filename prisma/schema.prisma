@@ -110,7 +110,6 @@ model Order {
   status        String  @default("Pending")
   isTripStart   Boolean @default(false) // true if trip start -- false on cancel or delever
   amount        Float   @default(0)
-  discount      Float?  @default(0) // Optional discount per order
   resonOfcancel String? @default("")
 
   items      OrderItem[]
