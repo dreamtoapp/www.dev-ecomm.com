@@ -1,7 +1,20 @@
 "use client";
-import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
-import Link from "next/link";
+import React from 'react';
+
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+import Link from '@/components/link';
 
 interface DashboardHomePageProps {
   summary: {

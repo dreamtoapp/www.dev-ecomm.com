@@ -1,13 +1,16 @@
-import { Gift } from 'lucide-react'
-import Image from 'next/image'
+"use client";
+import { useState } from 'react';
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Gift } from 'lucide-react';
+import Image from 'next/image';
 
-import { formatCurrency } from '../../../../lib/formatCurrency'
-import { useCartStore } from '../../../../store/cartStore'
-import DeleteItemDialog from './DeleteItem'
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+
+import { formatCurrency } from '../../../../lib/formatCurrency';
+import { useCartStore } from '../../../../store/cartStore';
+import DeleteItemDialog from './DeleteItem';
 
 interface CartItemProps {
   product: {
@@ -23,6 +26,7 @@ interface CartItemProps {
 
 const CartItem = ({ product, quantity }: CartItemProps) => {
   const { removeItem, updateQuantity } = useCartStore();
+  const [imgSrc, setImgSrc] = useState<string>(product.imageUrl);
 
   // Check if the product is an offer
   const isOffer = product.type === "offer";
@@ -30,8 +34,8 @@ const CartItem = ({ product, quantity }: CartItemProps) => {
   return (
     <Card
       className={`p-4 transition-all hover:shadow-md dark:hover:shadow-gray-800/50 max-w-3xl border-2 rounded-xl relative overflow-hidden ${isOffer
-          ? "border-gradient bg-gradient-to-r from-primary/10 to-secondary/10" // Gradient background for offers
-          : "border-border bg-background" // Default background for regular products
+        ? "border-gradient bg-gradient-to-r from-primary/10 to-secondary/10" // Gradient background for offers
+        : "border-border bg-background" // Default background for regular products
         }`}
     >
       {/* Offer Text in the Background */}
@@ -47,11 +51,18 @@ const CartItem = ({ product, quantity }: CartItemProps) => {
         {/* Product Image */}
         <div className="relative w-full lg:w-32 aspect-square rounded-lg overflow-hidden">
           <Image
-            src={product.imageUrl}
+            src={imgSrc}
             alt={product.name}
             fill
             className="object-cover"
-            sizes="(max-width: 1024px) 50vw, 100px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 128px"
+            onError={() => {
+              // Fallback to a local placeholder image if the original image fails to load
+              setImgSrc("/fallback/fallback.avif");
+            }}
+            quality={80}
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PC9zdmc+"
           />
           {/* Offer Badge */}
           {isOffer && (

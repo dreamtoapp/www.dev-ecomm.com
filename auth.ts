@@ -1,4 +1,4 @@
-console.log("NEXTAUTH_URL at runtime:", process.env.NEXTAUTH_URL);
+// console.log("NEXTAUTH_URL at runtime:", process.env.NEXTAUTH_URL);
 
 import NextAuth from 'next-auth';
 import { Adapter } from 'next-auth/adapters';

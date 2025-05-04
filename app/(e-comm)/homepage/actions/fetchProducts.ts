@@ -1,24 +1,28 @@
 "use server";
 
-import { cacheData } from '@/lib/cache';
 import db from '@/lib/prisma';
 
-async function fetchProductsFromDB(sulg?: string) {
-  // if (!sulg || typeof sulg !== "string" || sulg.trim() === "") {
-  //   return []; // Return an empty array if the slug is invalid
-  // }
+async function fetchProductsFromDB(slug?: string, limit?: number) {
+  // Find supplier if slug is provided
+  let whereClause: any = { published: true };
 
-  const supplier = await db.supplier.findFirst({
-    where: { slug: sulg },
-    select: { id: true }
-  });
+  if (slug && slug.trim() !== "") {
+    const supplier = await db.supplier.findFirst({
+      where: { slug },
+      select: { id: true }
+    });
 
+    if (supplier) {
+      whereClause.supplierId = supplier.id;
+    }
+  }
+
+  // Fetch products with optional limit
   const products = await db.product.findMany({
-    where: {
-      published: true,
-      supplierId: supplier?.id, // Filter by supplierId if sid is provided
-    },
+    where: whereClause,
     include: { supplier: true },
+    ...(limit ? { take: limit } : {}),
+    orderBy: { createdAt: 'desc' },
   });
 
   return products.map((product) => ({
@@ -27,11 +31,8 @@ async function fetchProductsFromDB(sulg?: string) {
   }));
 }
 
-export const fetchProducts = cacheData(
-  fetchProductsFromDB,
-  ["fetchProducts"], // Cache key
-  { revalidate: 3600 } // Revalidate every 60 seconds
-);
+// Don't use cache for this function as it can exceed the 2MB limit
+export const fetchProducts = fetchProductsFromDB;
 
 
 

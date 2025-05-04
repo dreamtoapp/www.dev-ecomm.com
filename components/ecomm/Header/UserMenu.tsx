@@ -2,7 +2,7 @@
 import {
   useEffect,
   useState,
-} from 'react'
+} from 'react';
 
 import {
   BadgeAlert,
@@ -14,13 +14,13 @@ import {
   Settings,
   User as UserIcon,
   Wallet,
-} from 'lucide-react'
-import Link from 'next/link'
+} from 'lucide-react';
 
+import Link from '@/components/link';
 import {
   Avatar,
   AvatarFallback,
-} from '@/components/ui/avatar'
+} from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,11 +28,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
-import { userLogOut } from '../../../app/(e-comm)/auth/action'
-import { Button } from '../../ui/button'
+import { userLogOut } from '../../../app/(e-comm)/auth/action';
+import { Button } from '../../ui/button';
 
 interface UserMenuProps {
   session: any;

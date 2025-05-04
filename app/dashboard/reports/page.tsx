@@ -1,6 +1,5 @@
 "use client";
 import React, { useRef } from 'react';
-import DownloadPdfButton from '@/components/ui/DownloadPdfButton';
 
 const REPORTS = [
   { key: 'sales', label: 'تقرير المبيعات', description: 'ملخص المبيعات والإيرادات والأداء المالي.' },
@@ -20,7 +19,7 @@ export default function ReportsPage() {
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
       <div className="flex justify-end mb-4">
-        <DownloadPdfButton targetRef={analyticsRef as React.RefObject<HTMLElement>} fileName="تقرير-التحليلات.pdf" />
+        {/* <DownloadDataButton targetRef={analyticsRef as React.RefObject<HTMLElement>} fileName="تقرير-التحليلات.csv" /> */}
       </div>
       <div ref={analyticsRef} dir="rtl">
         <h1 className="text-2xl font-bold mb-8 text-center">تقارير وتحليلات المتجر</h1>

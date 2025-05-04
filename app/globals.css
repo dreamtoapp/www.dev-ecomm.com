@@ -104,7 +104,7 @@
   }
 }
 
- 
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -129,39 +129,154 @@
   height: 100%;
 }
 
-.swiper-slide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.swiper-slide img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
 @media (max-width: 768px) {
   .relative.w-full.h-0 {
     padding-bottom: 100%; /* Adjust aspect ratio for smaller screens */
   }
-
-  .swiper-slide img {
-    object-fit: contain; /* Ensure images fit well on smaller screens */
-  }
 }
 
 @media (max-width: 480px) {
-  .swiper-slide img {
-    width: 100%;
-    height: auto;
-    object-fit: cover; /* Maintain cover for very small screens */
-  }
-
   .absolute.inset-0.w-full.h-full {
     padding: 10px; /* Add padding for better spacing */
   }
 }
 
+/* React-Multi-Carousel Custom Styles */
+/* Carousel container */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Carousel item */
+.carousel-item {
+  padding: 0;
+  height: 100%;
+}
+
+/* Custom dot styles */
+.custom-dot-list-style {
+  position: absolute;
+  bottom: 10px;
+  display: flex !important;
+  justify-content: center;
+  width: 100%;
+  z-index: 20;
+}
+
+.custom-dot-list-style li {
+  margin: 0 4px;
+}
+
+.custom-dot-list-style button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-dot-list-style .react-multi-carousel-dot--active button {
+  background: white;
+  width: 10px;
+  height: 10px;
+}
+
+/* Fix for carousel arrows */
+.react-multi-carousel-list .react-multiple-carousel__arrow {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 50% !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  z-index: 20 !important;
+}
+
+.react-multi-carousel-list .react-multiple-carousel__arrow:hover {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.react-multi-carousel-list .react-multiple-carousel__arrow--left {
+  left: 10px !important;
+}
+
+.react-multi-carousel-list .react-multiple-carousel__arrow--right {
+  right: 10px !important;
+}
+
+/* Simple Carousel Styles */
+.react-multi-carousel-list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.carousel-item-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+}
+
+.custom-dot-list-style {
+  position: absolute;
+  bottom: 10px;
+  display: flex !important;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  z-index: 1;
+}
+
+.custom-dot-list-style li {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.custom-dot-list-style button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-dot-list-style .react-multi-carousel-dot--active button {
+  background: white;
+  width: 10px;
+  height: 10px;
+}
 

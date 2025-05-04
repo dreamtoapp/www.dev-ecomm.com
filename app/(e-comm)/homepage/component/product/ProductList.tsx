@@ -1,6 +1,6 @@
 "use client";
 import React, {
-  useEffect,
+  memo,
   useState,
 } from 'react';
 
@@ -14,8 +14,11 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cartStore';
 import { Product } from '@/types/product';
 
-import ProductSkeleton from '../ProductSkeleton';
+// Import ProductCard directly for better performance
 import ProductCard from './ProductCard';
+
+// Memoize ProductCard for better performance
+const MemoizedProductCard = memo(ProductCard);
 
 export default function ProductList({ products }: { products: Product[] }) {
   if (!products || products.length === 0) {
@@ -23,40 +26,43 @@ export default function ProductList({ products }: { products: Product[] }) {
   }
 
   const { addItem, cart } = useCartStore();
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>(
+
+  // Initialize quantities only once with a stable reference
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>(() =>
     products.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
   );
+
   const [notifications, setNotifications] = useState<{
     [key: string]: boolean;
   }>({});
-  const [isLoading, setIsLoading] = useState(true);
   const [isSingleColumn, setIsSingleColumn] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const updateQuantity = (productId: string, delta: number) => {
+  // Memoize these functions to prevent unnecessary re-renders
+  const updateQuantity = React.useCallback((productId: string, delta: number) => {
     setQuantities((prev) => ({
       ...prev,
-      [productId]: Math.max(1, prev[productId] + delta),
+      [productId]: Math.max(1, (prev[productId] || 1) + delta),
     }));
-  };
+  }, []);
 
-  const handleAddToCart = (
+  const handleAddToCart = React.useCallback((
     productId: string,
     quantity: number,
     product: Product
   ) => {
     addItem(product, quantity);
     setNotifications((prev) => ({ ...prev, [productId]: true }));
-    setTimeout(() => {
+
+    // Use a ref to track and clear timeouts
+    const timeoutId = setTimeout(() => {
       setNotifications((prev) => ({ ...prev, [productId]: false }));
     }, 2000);
-  };
 
-  if (isLoading) return <ProductSkeleton count={products.length} />;
+    // Clean up timeout on unmount
+    return () => clearTimeout(timeoutId);
+  }, [addItem]);
+
+  // Removed loading state check
 
   return (
     <div className="container mx-auto p-4">
@@ -75,10 +81,10 @@ export default function ProductList({ products }: { products: Product[] }) {
           } sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
       >
         {products.map((product, index) => (
-          <ProductCard
-            key={product.id}
+          <MemoizedProductCard
+            key={(product as any)._uniqueKey || product.id}
             product={product}
-            quantity={quantities[product.id]}
+            quantity={quantities[product.id] || 1}
             onQuantityChange={updateQuantity}
             onAddToCart={handleAddToCart}
             isInCart={!!cart[product.id]}

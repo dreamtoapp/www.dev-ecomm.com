@@ -29,7 +29,39 @@ async function getSuppliersWithProducts() {
     },
   });
 
-  return { offerData, companyData };
+  // Process suppliers to ensure valid image URLs
+  const fallbackImage = "/fallback/fallback.avif";
+
+  const processedOfferData = offerData.map(supplier => {
+    // Check if the logo exists and is valid
+    const hasValidLogo = supplier.logo && typeof supplier.logo === 'string' &&
+      (supplier.logo.startsWith('/') || // Local images
+        supplier.logo.startsWith('http')); // Remote images
+
+    return {
+      ...supplier,
+      // Always return a string for logo
+      logo: hasValidLogo ? supplier.logo : fallbackImage
+    };
+  });
+
+  const processedCompanyData = companyData.map(supplier => {
+    // Check if the logo exists and is valid
+    const hasValidLogo = supplier.logo && typeof supplier.logo === 'string' &&
+      (supplier.logo.startsWith('/') || // Local images
+        supplier.logo.startsWith('http')); // Remote images
+
+    return {
+      ...supplier,
+      // Always return a string for logo
+      logo: hasValidLogo ? supplier.logo : fallbackImage
+    };
+  });
+
+  return {
+    offerData: processedOfferData,
+    companyData: processedCompanyData
+  };
 }
 
 export const fetchSuppliersWithProducts = cacheData(

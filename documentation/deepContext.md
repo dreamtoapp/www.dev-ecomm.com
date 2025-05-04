@@ -1,10 +1,10 @@
 ## 🔥 Core Principles
-✅ **Non-negotiable Requirements**  
-1. TypeScript-first development (strict mode)  
-2. App Router pattern enforcement  
-3. Atomic component architecture  
-4. Zero client-side data mutations  
-5. Automatic accessibility checks  
+✅ **Non-negotiable Requirements**
+1. TypeScript-first development (strict mode)
+2. App Router pattern enforcement
+3. Atomic component architecture
+4. Zero client-side data mutations
+5. Automatic accessibility checks
 
 ## 🛠 Tech Stack Constitution
 ```yaml
@@ -36,7 +36,7 @@ export default async function Page() {
     cache: { revalidate: 3600 },
     select: { /* explicit fields */ }
   });
-  
+
   return <ClientComponent data={data} />;
 }
 ```
@@ -103,17 +103,17 @@ $ next build --profile --debug
 ```
 
 ## 🚩 Key Reminders
-1. All images → `next/image` with sizes prop  
-2. User content → sanitize-html processing  
-3. PDF generation → jspdf auto-layout  
-4. Data tables → shadcn/ui components  
-5. Icons → lucide-react imports  
-6. Dates → date-fns UTC handling  
+1. All images → `next/image` with sizes prop
+2. User content → sanitize-html processing
+3. Data export → CSV lightweight export
+4. Data tables → shadcn/ui components
+5. Icons → lucide-react imports
+6. Dates → date-fns UTC handling
 
-🔗 **Documentation Links**  
-- [Next.js Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions)  
-- [Prisma MongoDB Guide](https://www.prisma.io/docs/guides/database/mongodb)  
-- [NextAuth Security](https://next-auth.js.org/security)  
+🔗 **Documentation Links**
+- [Next.js Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions)
+- [Prisma MongoDB Guide](https://www.prisma.io/docs/guides/database/mongodb)
+- [NextAuth Security](https://next-auth.js.org/security)
 
 ---
 

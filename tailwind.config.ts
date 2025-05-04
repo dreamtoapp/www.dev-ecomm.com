@@ -52,8 +52,11 @@ export default {
       },
       animation: {
         'bounce-slow': 'bounce-slow 1.5s infinite',
-        "fade-in": "fade-in 0.5s ease-in-out forwards",
+        "fade-in": "fade-in 0.3s ease-in-out forwards",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        "fadeIn": "fadeIn 0.2s ease-out forwards",
+        "slideUp": "slideUp 0.3s ease-out forwards",
+        "scaleIn": "scaleIn 0.2s ease-out forwards",
       },
       keyframes: {
         "caret-blink": {
@@ -67,6 +70,18 @@ export default {
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" }
+        },
+        "fadeIn": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "slideUp": {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" }
+        },
+        "scaleIn": {
+          "0%": { transform: "scale(0.9)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" }
         }
       },
     },

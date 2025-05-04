@@ -1,8 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
+
+import {
+  Home,
+  LayoutDashboard,
+} from 'lucide-react';
 import { usePathname } from 'next/navigation';
+
+import Link from '@/components/link';
 import {
   Sidebar,
   SidebarContent,
@@ -10,10 +16,9 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarRail,
-  SidebarTrigger
 } from '@/components/ui/sidebar';
+
 import { menuGroups } from '../helpers/mainMenu';
-import { Home, LayoutDashboard } from 'lucide-react';
 
 // Type guard for menu items with children
 function hasChildren(item: any): item is { children: any[] } {

@@ -32,7 +32,6 @@ export default async function EcommerceLayout({
         twitter={companyData?.twitter}
         linkedin={companyData?.linkedin}
         whatsapp={companyData?.whatsappNumber}
-
       />
     </TooltipProvider>
   );

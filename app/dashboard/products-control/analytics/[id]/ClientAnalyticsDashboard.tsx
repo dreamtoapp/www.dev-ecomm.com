@@ -1,14 +1,21 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import ProductInfo from "./ProductInfo";
-import DateRangePicker from "./DateRangePicker";
-import ChartTypeSwitcher from "./ChartTypeSwitcher";
-import AnalyticsChart from "./AnalyticsChart";
-import ClientAnalyticsActions from "./ClientAnalyticsActions";
-import ProductRatingsSection from "./ProductRatingsSection";
-import ProductOrderHistoryTable from "./ProductOrderHistoryTable"; // Import the new component
-import ExportAnalyticsPdfButton from '@/components/ui/ExportAnalyticsPdfButton';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import { fetchCompany } from '@/app/dashboard/setting/actions/fetchCompany';
+// Using the CSV export component instead of PDF
+import ExportAnalyticsPdfButton from '@/components/ui/ExportAnalyticsPdfButton';
+
+import AnalyticsChart from './AnalyticsChart';
+import ChartTypeSwitcher from './ChartTypeSwitcher';
+import ClientAnalyticsActions from './ClientAnalyticsActions';
+import DateRangePicker from './DateRangePicker';
+import ProductInfo from './ProductInfo';
+import ProductOrderHistoryTable from './ProductOrderHistoryTable'; // Import the new component
+import ProductRatingsSection from './ProductRatingsSection';
 
 export default function ClientAnalyticsDashboard({
   analytics,
@@ -62,7 +69,7 @@ export default function ClientAnalyticsDashboard({
                 price: order.price || 0
               })) || [],
             }}
-            fileName={`تقرير-تحليلات-المنتج-${analytics?.product?.name || ''}.pdf`}
+            fileName={`تقرير-تحليلات-المنتج-${analytics?.product?.name || ''}`}
             company={company}
           />
           <ClientAnalyticsActions analytics={analytics} id={id} />

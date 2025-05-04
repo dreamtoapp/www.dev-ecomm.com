@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { menuGroups } from '../helpers/mainMenu';
-import SidebarHeader from "./SidebarHeader";
-import { UserCircle, ChevronDown, ChevronUp } from "lucide-react";
 
+import {
+  ChevronDown,
+  ChevronUp,
+  UserCircle,
+} from 'lucide-react';
+
+import Link from '@/components/link';
+
+import { menuGroups } from '../helpers/mainMenu';
+import SidebarHeader from './SidebarHeader';
 
 type SidebarMenuItemProps = { item: any; level?: number };
 function SidebarMenuItem({ item, level = 0 }: SidebarMenuItemProps) {

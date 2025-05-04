@@ -38,22 +38,22 @@ export default async function RootLayout({
 
   return (
     // <SessionProvider>
-      <html lang={locale} dir={dir} suppressHydrationWarning>
-        {/* <head>{head()}</head> */}
-        <body className={`${cairo.className} min-h-screen bg-background antialiased`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextTopLoader />
-            <main className="min-h-screen">{children}</main>
-            <Toaster position="top-center" />
-          </ThemeProvider>
-          {/* </NotificationsProvider> */}
-        </body>
-      </html>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
+      {/* <head>{head()}</head> */}
+      <body className={`${cairo.className} min-h-screen bg-background antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextTopLoader />
+          <main className="min-h-screen">{children}</main>
+          <Toaster position="top-center" />
+        </ThemeProvider>
+        {/* </NotificationsProvider> */}
+      </body>
+    </html>
     // </SessionProvider>
   );
 }

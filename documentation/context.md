@@ -25,7 +25,7 @@
 | State          | [Zustand](https://zustand-demo.pmnd.rs/) / React Context                        |
 | UI             | [shadcn](https://ui.shadcn.com/) / [Tailwind](https://tailwindcss.com/) / [Lucide](https://lucide.dev/) / [SweetAlert2](https://sweetalert2.github.io/) |
 | Utilities      | [Date-fns](https://date-fns.org/) / [clsx](https://github.com/lukeed/clsx) / [Zod](https://zod.dev/) |
-| File Handling  | [Sharp](https://sharp.pixelplumbing.com/) / [jspdf](https://parall.ax/products/jspdf) |
+| File Handling  | [Sharp](https://sharp.pixelplumbing.com/) |
 
 ## 🔧 Development Standards
 ### Server Actions (Primary Data Handling)

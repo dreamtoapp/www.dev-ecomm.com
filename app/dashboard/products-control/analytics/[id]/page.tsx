@@ -1,10 +1,10 @@
-import AnalyticsChart from "./AnalyticsChart";
-import { getProductAnalytics } from "./getAnalytics";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import ClientAnalyticsDashboard from "./ClientAnalyticsDashboard";
-import ProductNotFound from "./ProductNotFound";
-import { notFound } from "next/navigation";
+import { ArrowRight } from 'lucide-react';
+
+import Link from '@/components/link';
+
+import ClientAnalyticsDashboard from './ClientAnalyticsDashboard';
+import { getProductAnalytics } from './getAnalytics';
+import ProductNotFound from './ProductNotFound';
 
 function isValidObjectId(id: string) {
   return /^[a-f\d]{24}$/i.test(id);

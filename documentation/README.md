@@ -108,14 +108,14 @@ www.ammawag.com/
 - **Database:** Prisma with MongoDb
 - **Styling:** TailwindCSS
 - **Authentication:** NextAuth
-- **UI Components:** 
+- **UI Components:**
   - shadcn UI
   - Framer Motion
   - Sonner
   - SweetAlert2
 - **Maps:** Google Maps & Leaflet
 - **Real-time:** Pusher
-- **PDF Generation:** jsPDF, PDFMake
+- **Data Export:** CSV export (lightweight alternative to PDF)
 - **State Management:** Zustand
 
 ## 🔐 Security

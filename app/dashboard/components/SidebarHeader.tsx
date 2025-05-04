@@ -1,5 +1,5 @@
+import Link from "@/components/link";
 import { Home, LayoutGrid } from "lucide-react";
-import Link from "next/link";
 
 export default function SidebarHeader() {
   return (
