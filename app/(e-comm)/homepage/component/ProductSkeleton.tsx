@@ -10,6 +10,9 @@ const SkeletonItem = memo(() => (
       height: '500px'
     }}
   >
+    {/* Wishlist button placeholder */}
+    <div className="absolute top-2 left-2 z-10 w-8 h-8 bg-white/80 rounded-full"></div>
+
     {/* Image section - fixed height */}
     <div className="w-full h-48 bg-muted rounded-t-2xl"></div>
 
@@ -21,8 +24,18 @@ const SkeletonItem = memo(() => (
       {/* Details */}
       <div className="h-10 bg-muted rounded w-1/2 mx-auto mt-2 mb-2"></div>
 
+      {/* Rating stars placeholder */}
+      <div className="flex items-center justify-center gap-1 mb-3">
+        <div className="flex gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="w-3.5 h-3.5 bg-muted rounded"></div>
+          ))}
+        </div>
+        <div className="h-3 bg-muted rounded w-16 ml-1"></div>
+      </div>
+
       {/* Spacer */}
-      <div className="flex-grow min-h-[20px]"></div>
+      <div className="flex-grow min-h-[10px]"></div>
 
       {/* Price section */}
       <div className="flex justify-between items-center mt-3 mb-2">

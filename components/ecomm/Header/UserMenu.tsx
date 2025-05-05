@@ -7,11 +7,15 @@ import {
 import {
   BadgeAlert,
   ChevronRight,
+  Heart,
   Loader2,
   Lock,
   LogIn,
   LogOut,
   Settings,
+  ShoppingBag,
+  ShoppingCart,
+  Star,
   User as UserIcon,
   Wallet,
 } from 'lucide-react';
@@ -30,6 +34,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { useCartStore } from '@/store/cartStore';
 
 import { userLogOut } from '../../../app/(e-comm)/auth/action';
 import { Button } from '../../ui/button';
@@ -41,12 +46,25 @@ interface UserMenuProps {
 export default function UserMenu({ session }: UserMenuProps) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isClearingCart, setIsClearingCart] = useState(false);
+  const { clearCart, getTotalItems } = useCartStore();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   if (!isMounted) return null;
+
+  const handleClearCart = async () => {
+    try {
+      setIsClearingCart(true);
+      clearCart();
+      // Small delay to show the loading state
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } finally {
+      setIsClearingCart(false);
+    }
+  };
 
   if (!session) {
     return (
@@ -152,6 +170,54 @@ export default function UserMenu({ session }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
 
+        {/* Purchase History */}
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/user/purchase-history`}
+            className="flex items-center justify-between px-4 py-2 hover:bg-accent/20 rounded-md transition-all duration-150"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500/10 rounded-md">
+                <ShoppingBag size={16} className="text-blue-500" />
+              </div>
+              <span className="text-sm font-medium">سجل المشتريات</span>
+            </div>
+            <ChevronRight size={14} className="text-muted-foreground" />
+          </Link>
+        </DropdownMenuItem>
+
+        {/* Rating History */}
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/user/ratings`}
+            className="flex items-center justify-between px-4 py-2 hover:bg-accent/20 rounded-md transition-all duration-150"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-500/10 rounded-md">
+                <Star size={16} className="text-amber-500" />
+              </div>
+              <span className="text-sm font-medium">تقييماتي</span>
+            </div>
+            <ChevronRight size={14} className="text-muted-foreground" />
+          </Link>
+        </DropdownMenuItem>
+
+        {/* Wishlist */}
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/user/wishlist`}
+            className="flex items-center justify-between px-4 py-2 hover:bg-accent/20 rounded-md transition-all duration-150"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-red-500/10 rounded-md">
+                <Heart size={16} className="text-red-500" />
+              </div>
+              <span className="text-sm font-medium">المفضلة</span>
+            </div>
+            <ChevronRight size={14} className="text-muted-foreground" />
+          </Link>
+        </DropdownMenuItem>
+
         {/* Setting */}
         <DropdownMenuItem asChild>
           <Link
@@ -191,6 +257,31 @@ export default function UserMenu({ session }: UserMenuProps) {
         )}
 
         <DropdownMenuSeparator className="bg-border/50 my-1" />
+
+        {/* Cart Actions */}
+        {getTotalItems() > 0 && (
+          <>
+            <DropdownMenuItem
+              onClick={handleClearCart}
+              disabled={isClearingCart}
+              className="flex items-center justify-between px-4 py-2 text-destructive hover:bg-destructive/10 rounded-md transition-all duration-150 cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-destructive/10 rounded-md">
+                  {isClearingCart ? (
+                    <Loader2 className="animate-spin text-destructive" size={16} />
+                  ) : (
+                    <ShoppingCart size={16} className="text-destructive" />
+                  )}
+                </div>
+                <span className="text-sm font-medium">
+                  {isClearingCart ? "جاري إفراغ السلة..." : "إفراغ سلة التسوق"}
+                </span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-border/50 my-1" />
+          </>
+        )}
 
         {/* Logout Button */}
         <DropdownMenuItem

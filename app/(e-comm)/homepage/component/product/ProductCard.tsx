@@ -12,6 +12,9 @@ import {
 import Image from 'next/image';
 import { FaCartPlus } from 'react-icons/fa6';
 
+import RatingPreview from '@/components/rating/RatingPreview';
+import WishlistButton from '@/components/wishlist/WishlistButton';
+
 import { Button } from '../../../../../components/ui/button';
 import {
   Card,
@@ -22,6 +25,7 @@ import {
 import { Product } from '../../../../../types/product';
 import Notification from '../NotificationSection';
 import QuantityControls from '../QuantityControls';
+import Link from '@/components/link';
 
 // Memoized TotalPrice component
 const TotalPrice = memo(({
@@ -58,6 +62,8 @@ const AddToCartButton = memo(({ onClick }: { onClick: () => void }) => {
   );
 });
 
+// We're now using the RatingPreview component instead of custom rendering
+
 // Product Card Component - Optimized for performance
 const ProductCard = memo(({
   product,
@@ -70,17 +76,28 @@ const ProductCard = memo(({
 }: {
   product: Product;
   quantity: number;
-  index: number;
   onQuantityChange: (productId: string, delta: number) => void;
   onAddToCart: (productId: string, quantity: number, product: Product) => void;
   isInCart: boolean;
   showNotification: boolean;
+  index: number;
 }) => {
   // Use state for the image source
   const [imgSrc, setImgSrc] = useState(product.imageUrl || "/fallback/product-fallback.avif");
 
   return (
     <Card className="rounded-2xl shadow-md overflow-hidden relative bg-card border-border hover:shadow-lg transition-shadow duration-300 flex flex-col h-[500px]">
+      {/* Wishlist button */}
+      <div className="absolute top-3 left-3 z-10">
+        <WishlistButton
+          productId={product.id}
+          size="sm"
+          showBackground={true}
+          className="hover:scale-110 transition-transform duration-200"
+        />
+      </div>
+
+      {/* Cart indicator */}
       {isInCart && (
         <div className="absolute top-2 right-2 z-10 bg-green-500 text-white rounded-full p-2 shadow-lg animate-fadeIn">
           <Check size={16} />
@@ -90,28 +107,51 @@ const ProductCard = memo(({
       <Notification show={showNotification} />
 
       <CardHeader className="p-0 relative">
-        <div className="w-full h-48 rounded-t-2xl overflow-hidden">
-          <Image
-            src={imgSrc}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
-            onError={() => {
-              setImgSrc('/fallback/product-fallback.avif');
-            }}
-          />
-        </div>
+        <Link href={`/product/${product.slug || product.id}`} className="block w-full h-48">
+          <div className="w-full h-48 rounded-t-2xl overflow-hidden">
+            <Image
+              src={imgSrc}
+              alt={product.name}
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              onError={() => {
+                setImgSrc('/fallback/product-fallback.avif');
+              }}
+            />
+          </div>
+        </Link>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col p-4 text-center">
         {/* Product title - fixed height with ellipsis for overflow */}
-        <h3 className="text-base font-bold text-foreground line-clamp-1 mb-1">{product.name}</h3>
+        <Link href={`/product/${product.slug || product.id}`} className="hover:underline">
+          <h3 className="text-base font-bold text-foreground line-clamp-1 mb-1">{product.name}</h3>
+        </Link>
 
         {/* Product details - fixed height with ellipsis for overflow */}
         <p className="text-muted-foreground text-sm line-clamp-2 mb-2 h-10">{product.details}</p>
 
+        {/* Rating section - NEW */}
+        <div className="flex items-center justify-center mb-3">
+          {(product.rating && product.rating > 0) ? (
+            <RatingPreview
+              productId={product.id}
+              productSlug={product.slug}
+              rating={product.rating}
+              reviewCount={product.reviewCount || 0}
+              size="sm"
+              className="mx-auto"
+              disableLink={true}
+            />
+          ) : (
+            <span className="text-xs text-muted-foreground">
+              لا توجد تقييمات بعد
+            </span>
+          )}
+        </div>
+
         {/* Spacer to push content to top and bottom */}
-        <div className="flex-grow min-h-[20px]"></div>
+        <div className="flex-grow min-h-[10px]"></div>
 
         {/* Price section */}
         <div className="flex justify-between items-center text-sm font-semibold text-foreground mb-2">
@@ -134,13 +174,21 @@ const ProductCard = memo(({
         />}
       </CardContent>
 
-      <CardFooter className="h-[80px] flex justify-center items-center">
+      <CardFooter className="h-[80px] flex flex-col justify-center items-center gap-2">
         {!product.outOfStock ? (
-          <AddToCartButton
-            onClick={() => {
-              onAddToCart(product.id, quantity, product);
-            }}
-          />
+          <>
+            <AddToCartButton
+              onClick={() => {
+                onAddToCart(product.id, quantity, product);
+              }}
+            />
+            <Link
+              href={`/product/${product.slug || product.id}`}
+              className="text-sm text-primary hover:underline"
+            >
+              عرض المنتج
+            </Link>
+          </>
         ) : (
           <div className="flex flex-col gap-2 w-full">
             <div className="bg-red-500 text-white rounded-2xl px-3 py-1 shadow-lg w-full flex items-center justify-center">

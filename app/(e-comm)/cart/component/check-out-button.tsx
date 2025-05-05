@@ -51,8 +51,7 @@ function CheckOut({ amount = 0, productCount = 0 }: CheckOutProps) {
       }
 
       router.push("/checkout");
-      Alert.toast.success('جاري التوجيه إلى صفحة الدفع...');
-      // toast.success("جاري التوجيه إلى صفحة الدفع...");
+      toast.success("جاري التوجيه إلى صفحة الدفع...");
     } catch (error) {
       toast.error("حدث خطأ أثناء التحقق من حالة الدخول");
     } finally {
@@ -72,13 +71,13 @@ function CheckOut({ amount = 0, productCount = 0 }: CheckOutProps) {
         disabled={isLoading || productCount === 0}
         aria-label="إتمام عملية الشراء"
         className={`
-          relative w-full py-6 px-8 
-          bg-gradient-to-r from-blue-500 to-indigo-600 
-          hover:from-blue-600 hover:to-indigo-700 
-          text-white font-semibold rounded-xl 
-          transition-all duration-300 
-          transform hover:scale-105 
-          disabled:opacity-50 disabled:cursor-not-allowed 
+          relative w-full py-6 px-8
+          bg-gradient-to-r from-blue-500 to-indigo-600
+          hover:from-blue-600 hover:to-indigo-700
+          text-white font-semibold rounded-xl
+          transition-all duration-300
+          transform hover:scale-105
+          disabled:opacity-50 disabled:cursor-not-allowed
           overflow-hidden group
         `}
       >

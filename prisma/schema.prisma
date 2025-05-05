@@ -11,7 +11,7 @@ datasource db {
 model Supplier {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String    @default("")
-  slug      String    @default("") 
+  slug      String    @default("")
   logo      String? // Logo URL for branding (optional)
   email     String    @default("")
   phone     String    @default("")
@@ -26,17 +26,41 @@ model Supplier {
 model Product {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String   @default("")
-  slug       String   @default("") 
+  slug       String   @default("") @unique // Make slug unique for SEO-friendly URLs
   price      Float    @default(0)
   size       String?
   details    String?
-  imageUrl   String?
+  imageUrl   String?  // Main image (keeping for backward compatibility)
+  images     String[] // Array of image URLs for multiple product images
   supplierId String   @db.ObjectId
   type       String   @default("product")
   supplier   Supplier @relation(fields: [supplierId], references: [id])
 
-  published  Boolean @default(false) // Add this field
-  outOfStock Boolean @default(false) // Add this field
+  // Product specifications
+  productCode String?  // Product code/SKU
+  material    String?  // Material information
+  brand       String?  // Brand name
+  color       String?  // Color information
+  dimensions  String?  // Product dimensions
+  weight      String?  // Product weight
+  features    String[] // Product features as array
+
+  // Shipping and return information
+  shippingDays        String?  @default("3-5") // Default shipping days
+  returnPeriodDays    Int?     @default(14)    // Default return period in days
+  hasQualityGuarantee Boolean  @default(true)  // Whether product has quality guarantee
+  careInstructions    String?  // Care instructions
+
+  published  Boolean @default(false)
+  outOfStock Boolean @default(false)
+
+  // Rating and review fields
+  rating      Float?  // Average rating (1-5 stars)
+  reviewCount Int     @default(0) // Number of reviews
+  reviews     Review[] // Relation to reviews
+
+  // Wishlist relation
+  wishlistedBy WishlistItem[] // Users who have wishlisted this product
 
   orderItems OrderItem[] // A product can belong to multiple order items
   createdAt  DateTime    @default(now())
@@ -47,14 +71,14 @@ model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId // Explicitly define as ObjectId
   phone         String?         @unique
   name          String?
-  email         String?        
+  email         String?
   emailVerified DateTime?       @map("email_verified")
   password      String?
   image     String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   accounts      Account[]
-   
+
 
   latitude  String  @default("")
   longitude String  @default("")
@@ -64,7 +88,8 @@ model User {
    isOauth   Boolean   @default(false)
   otpCode   String? @default("")
   orders    Order[] // List of orders associated with the user
-
+  reviews   Review[] // User's product reviews
+  wishlist  WishlistItem[] // User's wishlist items
 
   Notification Notification[]
 }
@@ -91,11 +116,11 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
- 
 
- 
 
- 
+
+
+
 
 model Order {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId // Explicitly define as ObjectId
@@ -321,7 +346,7 @@ model GlobalSEO {
   @@map("seo_entries")
 }
 
- 
+
 type SocialMedia {
   /// عنوان Open Graph
   openGraphTitle String?
@@ -448,4 +473,35 @@ model Expense {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdBy String?  // المستخدم الذي أضاف المصروف
+}
+
+// Review Model for Product Ratings
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  rating    Int      // 1-5 stars
+  comment   String   // Review text
+  productId String   @db.ObjectId
+  userId    String   @db.ObjectId
+  isVerified Boolean @default(false) // Whether the user has purchased the product
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// Wishlist Model for User's Favorite Products
+model WishlistItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  // Ensure a user can only wishlist a product once
+  @@unique([userId, productId])
 }

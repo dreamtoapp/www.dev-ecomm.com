@@ -52,6 +52,10 @@ async function fetchPaginatedProductsFromDB(
       imageUrl: hasValidImageUrl ? product.imageUrl as string : fallbackImage,
       // Ensure price is a valid number
       price: typeof product.price === 'number' && !isNaN(product.price) ? product.price : 0,
+      // Ensure slug is available
+      slug: product.slug || product.id,
+      // Ensure images array is available
+      images: product.images || [hasValidImageUrl ? product.imageUrl as string : fallbackImage],
     };
 
     return processedProduct;

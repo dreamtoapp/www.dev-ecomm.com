@@ -117,7 +117,7 @@ async function seedSuppliers(count: number): Promise<void> {
         data: {
           name: faker.company.name(),
           logo: getRealImage(), // Use real image URL
-          
+
           email: faker.internet.email(),
           phone: faker.phone.number(),
           address: faker.location.streetAddress(),
@@ -140,6 +140,11 @@ async function seedProducts(count: number): Promise<void> {
     }
     for (let i = 0; i < count; i++) {
       const supplier = faker.helpers.arrayElement(allSuppliers);
+      // Generate random rating between 1 and 5 with one decimal place
+      const rating = parseFloat((Math.random() * 4 + 1).toFixed(1));
+      // Generate random review count between 0 and 100
+      const reviewCount = Math.floor(Math.random() * 100);
+
       await db.product.create({
         data: {
           name: faker.commerce.productName(),
@@ -148,12 +153,14 @@ async function seedProducts(count: number): Promise<void> {
           size: faker.helpers.arrayElement(["1L", "500ml", "250ml"]),
           details: faker.lorem.sentence(), // Added details field
           imageUrl: getRealImage(), // Use real image URL
-          
           published: faker.datatype.boolean(),
+          // Add rating and review count
+          rating: rating,
+          reviewCount: reviewCount,
         },
       });
     }
-    log(`Generated ${count} fake products.`);
+    log(`Generated ${count} fake products with ratings.`);
   } catch (error) {
     throw new Error(`Error seeding products: ${error}`);
   }

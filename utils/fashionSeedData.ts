@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker/locale/ar'; // Use Arabic locale
 
 import { generateOrderNumber } from '../app/(e-comm)/checkout/helpers/orderNumber';
 import db from '../lib/prisma';
+import { Slugify } from './slug';
 
 // Create multiple fashion suppliers for more realistic data
 async function createFashionSuppliers() {
@@ -275,6 +276,43 @@ ${faker.commerce.productDescription()}
 Care instructions: ${care}.`;
 };
 
+// Generate product features as array
+const generateProductFeatures = (category: CategoryType): string[] => {
+  const features = [];
+  const featureCount = faker.number.int({ min: 3, max: 6 });
+
+  // Common features based on category
+  if (category === "footwear") {
+    const footwearFeatures = [
+      'مريح', 'رياضي', 'عام', 'خفيف الوزن', 'مقاوم للماء', 'مقاوم للانزلاق',
+      'نعل مطاطي', 'بطانة ناعمة', 'تصميم عصري', 'مناسب للمشي اليومي'
+    ];
+    for (let i = 0; i < featureCount; i++) {
+      features.push(faker.helpers.arrayElement(footwearFeatures));
+    }
+  } else if (category === "menClothing" || category === "womenClothing") {
+    const clothingFeatures = [
+      'قطن ناعم', 'قماش مريح', 'تصميم أنيق', 'خامة ممتازة', 'مناسب للمناسبات',
+      'سهل الغسيل', 'مقاوم للتجاعيد', 'ألوان ثابتة', 'تصميم عصري', 'قصة مميزة'
+    ];
+    for (let i = 0; i < featureCount; i++) {
+      features.push(faker.helpers.arrayElement(clothingFeatures));
+    }
+  } else {
+    // Accessories
+    const accessoryFeatures = [
+      'تصميم فريد', 'جودة عالية', 'مناسب للهدايا', 'سهل الاستخدام', 'متعدد الاستخدامات',
+      'خامات فاخرة', 'حجم مناسب', 'خفيف الوزن', 'متين', 'عملي'
+    ];
+    for (let i = 0; i < featureCount; i++) {
+      features.push(faker.helpers.arrayElement(accessoryFeatures));
+    }
+  }
+
+  // Remove duplicates
+  return [...new Set(features)];
+};
+
 // Utility logging function with timestamps
 const log = (message: string): void => {
   console.log(`[${new Date().toISOString()}] ${message}`);
@@ -315,17 +353,77 @@ async function generateFashionProducts(count: number, supplierId: string) {
       faker.helpers.arrayElement(suppliers).id :
       supplierId;
 
+    // Add initial rating and review count for some products
+    const hasInitialRating = faker.datatype.boolean(0.7); // 70% of products have initial ratings
+    const initialRating = hasInitialRating ? faker.number.float({ min: 3.0, max: 5.0, fractionDigits: 1 }) : null;
+    const initialReviewCount = hasInitialRating ? faker.number.int({ min: 1, max: 50 }) : 0;
+
+    // Generate a unique slug using the Slugify function
+    const baseSlug = Slugify(name);
+
+    // Add a short random string to ensure uniqueness
+    const uniqueSlug = `${baseSlug}-${faker.string.alphanumeric(4).toLowerCase()}`;
+
+    // Generate 2-5 additional images for the product
+    const additionalImagesCount = faker.number.int({ min: 2, max: 5 });
+    const mainImage = getFashionImage(category.type);
+    const additionalImages = [mainImage]; // Include main image in the array
+
+    // Add additional images from the same category
+    for (let j = 0; j < additionalImagesCount; j++) {
+      const additionalImage = getFashionImage(category.type);
+      // Avoid duplicate images
+      if (!additionalImages.includes(additionalImage)) {
+        additionalImages.push(additionalImage);
+      }
+    }
+
+    // Generate product features
+    const features = generateProductFeatures(category.type);
+
+    // Generate care instructions
+    const careInstructions = faker.helpers.arrayElement([
+      'غسيل يدوي فقط',
+      'غسيل آلي بماء بارد',
+      'تنظيف جاف فقط',
+      'مسح بقطعة قماش مبللة',
+      'غسيل عادي'
+    ]);
+
+    // Generate product code (SKU)
+    const productCode = faker.string.alphanumeric(8).toUpperCase();
+
+    // Generate material based on category
+    const material = category.type === "footwear" ?
+      faker.helpers.arrayElement(['جلد', 'جلد صناعي', 'قماش', 'مطاط', 'نسيج']) :
+      faker.helpers.arrayElement(['قطن', 'حرير', 'كتان', 'بوليستر', 'صوف', 'كشمير', 'جينز']);
+
     products.push({
       name: name,
-      slug: name.toLowerCase().replace(/ /g, '-'),
+      slug: uniqueSlug,
       price: price,
       size: generateSizes(category.type),
       details: generateProductDetails(category.type, brand, isLuxury),
-      imageUrl: getFashionImage(category.type),
+      imageUrl: mainImage, // Keep main image for backward compatibility
+      images: additionalImages, // Add array of images
       supplierId: productSupplierId,
       type: category.type,
       published: faker.datatype.boolean(0.9), // 90% chance to be published
       outOfStock: faker.datatype.boolean(0.15), // 15% chance to be out of stock
+      rating: initialRating,
+      reviewCount: initialReviewCount,
+
+      // New fields
+      productCode: productCode,
+      material: material,
+      brand: brand,
+      features: features,
+      careInstructions: careInstructions,
+
+      // Shipping and return info - using defaults from schema
+      shippingDays: "3-5",
+      returnPeriodDays: 14,
+      hasQualityGuarantee: true
     });
 
     if ((i + 1) % 100 === 0) {
@@ -336,6 +434,7 @@ async function generateFashionProducts(count: number, supplierId: string) {
   try {
     await db.product.createMany({ data: products });
     log(`Successfully created ${count} fashion products`);
+    return products;
   } catch (error) {
     log(`Error creating products: ${error}`);
     throw error;
@@ -531,6 +630,190 @@ async function generateSliderImages() {
   }
 }
 
+// Generate product reviews with realistic distribution
+async function generateProductReviews() {
+  log("Generating product reviews...");
+
+  try {
+    // Get all products and users
+    const products = await db.product.findMany({
+      where: { reviewCount: { gt: 0 } } // Only products with reviewCount > 0
+    });
+    const users = await db.user.findMany();
+
+    if (!users.length) {
+      log("No users found. Skipping review generation.");
+      return;
+    }
+
+    let totalReviews = 0;
+    const reviews = [];
+
+    // For each product with reviewCount > 0, generate that many reviews
+    for (const product of products) {
+      if (!product.reviewCount) continue;
+
+      // Get all orders containing this product to mark reviews as verified
+      const orderItems = await db.orderItem.findMany({
+        where: { productId: product.id },
+        include: { order: { include: { customer: true } } }
+      });
+
+      // Create a set of user IDs who have purchased this product
+      const purchaserIds = new Set(
+        orderItems
+          .filter(item => item.order?.status === "Delivered")
+          .map(item => item.order?.customerId)
+          .filter(Boolean)
+      );
+
+      // Generate reviews up to the reviewCount
+      for (let i = 0; i < product.reviewCount; i++) {
+        // Try to use purchasers first, then fall back to random users
+        let userId: string;
+        let isVerified = false;
+
+        if (purchaserIds.size > 0 && i < purchaserIds.size) {
+          // Use a purchaser (verified review)
+          const purchaserId = Array.from(purchaserIds)[i];
+          if (purchaserId) {
+            userId = purchaserId;
+            isVerified = true;
+          } else {
+            // Fallback to random user if purchaserId is undefined
+            userId = faker.helpers.arrayElement(users).id;
+          }
+        } else {
+          // Use a random user (unverified review)
+          userId = faker.helpers.arrayElement(users).id;
+        }
+
+        // Generate a rating that's close to the product's average rating
+        const baseRating = product.rating || 4;
+        const variation = faker.number.int({ min: -1, max: 1 });
+        const rating = Math.max(1, Math.min(5, Math.round(baseRating + variation)));
+
+        // Generate review text based on rating
+        let comment;
+        if (rating >= 4) {
+          comment = faker.helpers.arrayElement([
+            `منتج رائع! ${faker.commerce.productAdjective()} جداً.`,
+            `أنا سعيد جداً بهذا المنتج. الجودة ممتازة.`,
+            `تجربة شراء ممتازة. سأشتري مرة أخرى.`,
+            `يستحق كل ريال. ${faker.commerce.productAdjective()} وعملي.`,
+            `أفضل ${product.type} اشتريته. أوصي به بشدة.`
+          ]);
+        } else if (rating === 3) {
+          comment = faker.helpers.arrayElement([
+            `منتج جيد ولكن ليس رائعاً. ${faker.commerce.productAdjective()} ولكن هناك بعض العيوب.`,
+            `جودة معقولة مقابل السعر.`,
+            `منتج متوسط. يمكن أن يكون أفضل.`,
+            `يلبي الغرض ولكن لا يتجاوز التوقعات.`,
+            `تجربة مقبولة ولكن هناك مجال للتحسين.`
+          ]);
+        } else {
+          comment = faker.helpers.arrayElement([
+            `لست راضياً عن هذا المنتج. ${faker.commerce.productAdjective()} ولكن الجودة سيئة.`,
+            `لا أوصي بهذا المنتج. خيبة أمل كبيرة.`,
+            `سعر مرتفع مقابل جودة منخفضة.`,
+            `لن أشتري مرة أخرى. تجربة سيئة.`,
+            `المنتج لا يطابق الوصف. غير راضٍ.`
+          ]);
+        }
+
+        reviews.push({
+          productId: product.id,
+          userId: userId,
+          rating: rating,
+          comment: comment,
+          isVerified: isVerified,
+          createdAt: faker.date.past({ years: 1 }),
+        });
+
+        totalReviews++;
+      }
+    }
+
+    // Create reviews in batches to avoid overwhelming the database
+    const batchSize = 100;
+    for (let i = 0; i < reviews.length; i += batchSize) {
+      const batch = reviews.slice(i, i + batchSize);
+      await db.review.createMany({ data: batch });
+      log(`Created ${Math.min(i + batchSize, reviews.length)} of ${reviews.length} reviews`);
+    }
+
+    log(`Successfully generated ${totalReviews} product reviews`);
+  } catch (error) {
+    log(`Error generating product reviews: ${error}`);
+    throw error;
+  }
+}
+
+// Generate wishlist items for users
+async function generateWishlistItems() {
+  log("Generating wishlist items...");
+
+  try {
+    const users = await db.user.findMany();
+    const products = await db.product.findMany({
+      where: { published: true }
+    });
+
+    if (!users.length || !products.length) {
+      log("No users or products found. Skipping wishlist generation.");
+      return;
+    }
+
+    const wishlistItems = [];
+    let totalItems = 0;
+
+    // For each user, add some products to their wishlist
+    for (const user of users) {
+      // Determine how many items to add to this user's wishlist (0-10)
+      const itemCount = faker.number.int({ min: 0, max: 10 });
+
+      if (itemCount === 0) continue;
+
+      // Select random products for this user's wishlist
+      const selectedProducts = faker.helpers.arrayElements(products, itemCount);
+
+      for (const product of selectedProducts) {
+        wishlistItems.push({
+          userId: user.id,
+          productId: product.id,
+          createdAt: faker.date.past({ years: 1 }),
+        });
+        totalItems++;
+      }
+    }
+
+    // Process wishlist items one by one to handle duplicates
+    let processedItems = 0;
+    for (const item of wishlistItems) {
+      try {
+        await db.wishlistItem.create({
+          data: item
+        });
+        processedItems++;
+
+        if (processedItems % 100 === 0) {
+          log(`Processed ${processedItems} of ${wishlistItems.length} wishlist items`);
+        }
+      } catch (error) {
+        // Skip duplicates (unique constraint violation)
+        if (!(error instanceof Error) || !error.message.includes('Unique constraint')) {
+          log(`Error creating wishlist item: ${error}`);
+        }
+      }
+    }
+
+    log(`Successfully generated ${totalItems} wishlist items`);
+  } catch (error) {
+    log(`Error generating wishlist items: ${error}`);
+    throw error;
+  }
+}
+
 // Clean up existing data before seeding
 async function cleanupExistingData(shouldCleanup: boolean) {
   if (!shouldCleanup) {
@@ -542,6 +825,12 @@ async function cleanupExistingData(shouldCleanup: boolean) {
 
   try {
     // Delete in the correct order to respect foreign key constraints
+    log("Deleting existing reviews...");
+    await db.review.deleteMany({});
+
+    log("Deleting existing wishlist items...");
+    await db.wishlistItem.deleteMany({});
+
     log("Deleting existing orders and order items...");
     await db.orderItem.deleteMany({});
     await db.order.deleteMany({});
@@ -590,7 +879,18 @@ async function main() {
     // Generate orders
     await generateFashionOrders(orderCount, shift.id);
 
-    log("Fashion seed data generation completed successfully!");
+    // Generate product reviews
+    await generateProductReviews();
+
+    // Generate wishlist items
+    await generateWishlistItems();
+
+    log("Fashion seed data generation completed successfully with full data flow!");
+    log("✅ Suppliers created");
+    log("✅ Products created");
+    log("✅ Orders created");
+    log("✅ Product reviews created");
+    log("✅ Wishlist items created");
   } catch (error) {
     log(`Seed data generation failed: ${error}`);
     process.exit(1);
@@ -607,4 +907,4 @@ if (require.main === module) {
     });
 }
 
-export { cleanupExistingData, generateFashionOrders, generateFashionProducts, generateSliderImages };
+export { cleanupExistingData, generateFashionOrders, generateFashionProducts, generateProductReviews, generateSliderImages, generateWishlistItems };

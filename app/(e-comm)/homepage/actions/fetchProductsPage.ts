@@ -42,12 +42,16 @@ export async function fetchProductsPage(
       select: {
         id: true,
         name: true,
+        slug: true,
         price: true,
         details: true,
         size: true,
         published: true,
         outOfStock: true,
         imageUrl: true,
+        images: true,
+        rating: true,
+        reviewCount: true,
         supplier: {
           select: {
             id: true,
@@ -71,13 +75,17 @@ export async function fetchProductsPage(
       return {
         id: product.id,
         name: product.name || '',
+        slug: product.slug || product.id, // Use slug or fallback to ID
         price: typeof product.price === 'number' ? product.price : 0,
         details: product.details || '',
         size: product.size || '',
         published: !!product.published,
         outOfStock: !!product.outOfStock,
         imageUrl: product.imageUrl || "/fallback/fallback.avif",
+        images: product.images || [product.imageUrl || "/fallback/fallback.avif"],
         type: 'product',
+        rating: product.rating,
+        reviewCount: product.reviewCount || 0,
         supplier: product.supplier
       };
     });
